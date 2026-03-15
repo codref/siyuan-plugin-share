@@ -16,7 +16,7 @@ if (file_exists(__DIR__ . '/config.example.php')) {
 }
 
 $config = [
-    'app_name' => '思源笔记分享',
+    'app_name' => 'SiYuan Note Share',
     'site_version' => '',
     'central_stats_url' => '',
     'db_path' => __DIR__ . '/storage/app.db',
@@ -32,9 +32,9 @@ $config = [
     'captcha_enabled' => true,
     'email_verification_enabled' => false,
     'email_from' => 'no-reply@example.com',
-    'email_from_name' => '思源笔记分享',
-    'email_subject' => '邮箱验证码',
-    'email_reset_subject' => '重置密码验证码',
+    'email_from_name' => 'SiYuan Note Share',
+    'email_subject' => 'Email Verification Code',
+    'email_reset_subject' => 'Password Reset Verification Code',
     'smtp_enabled' => false,
     'smtp_host' => '',
     'smtp_port' => 587,
@@ -516,7 +516,7 @@ function check_csrf(): void {
     $token = $_POST['csrf'] ?? '';
     if (!$token || !hash_equals($_SESSION['csrf'] ?? '', $token)) {
         http_response_code(400);
-        echo 'CSRF 校验失败。';
+        echo 'CSRF validation failed.';
         exit;
     }
 }
@@ -772,10 +772,10 @@ function render_meta_chips(array $meta): string {
     $updated = $meta['lastmod'] ?? $meta['updated'] ?? $meta['modified'] ?? $meta['last_modified'] ?? '';
     $chips = [];
     if ($created !== '') {
-        $chips[] = ['label' => '创建', 'value' => format_meta_date($created)];
+        $chips[] = ['label' => 'Created', 'value' => format_meta_date($created)];
     }
     if ($updated !== '') {
-        $chips[] = ['label' => '更新', 'value' => format_meta_date($updated)];
+        $chips[] = ['label' => 'Updated', 'value' => format_meta_date($updated)];
     }
     if (empty($chips)) {
         return '';
@@ -1008,15 +1008,15 @@ function render_share_stats(array $share, string $extraHtml = ''): string {
     $expiresAt = (int)($share['expires_at'] ?? 0);
     $visitorLimit = (int)($share['visitor_limit'] ?? 0);
     $chips = [];
-    $chips[] = ['label' => '访问次数', 'value' => $count . ' 次'];
+    $chips[] = ['label' => 'Access Count', 'value' => $count . ' times'];
     if ($created !== '') {
-        $chips[] = ['label' => '创建时间', 'value' => $created];
+        $chips[] = ['label' => 'Creation Time', 'value' => $created];
     }
     if ($expiresAt > 0) {
-        $chips[] = ['label' => '到期时间', 'value' => date('Y-m-d H:i', $expiresAt)];
+        $chips[] = ['label' => 'Expiration Time', 'value' => date('Y-m-d H:i', $expiresAt)];
     }
     if ($visitorLimit > 0) {
-        $chips[] = ['label' => '访客上限', 'value' => $visitorLimit . ' 人'];
+        $chips[] = ['label' => 'Visitor Limit', 'value' => $visitorLimit . ' people'];
     }
     if (empty($chips) && $extraHtml === '') {
         return '';
@@ -1203,31 +1203,31 @@ function render_page(string $title, string $content, ?array $user = null, string
         echo "<div class='share-page'>";
         echo render_share_icon_defs();
         echo $content;
-        echo "<footer class='share-footer'>由 <a href='https://github.com/b8l8u8e8/siyuan-plugin-share' target='_blank' rel='noopener noreferrer'>b8l8u8e8</a> 提供支持</footer>";
-        echo "<button class='share-side-trigger' type='button' data-share-drawer-open aria-label='打开侧边栏'><svg viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z'/></svg><span>导航</span></button>";
+        echo "<footer class='share-footer'>Powered by <a href='https://github.com/b8l8u8e8/siyuan-plugin-share' target='_blank' rel='noopener noreferrer'>b8l8u8e8</a></footer>";
+        echo "<button class='share-side-trigger' type='button' data-share-drawer-open aria-label='Open sidebar'><svg viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z'/></svg><span>Nav</span></button>";
         echo "<div class='share-side-backdrop' data-share-drawer-close></div>";
-        echo "<button class='scroll-top' type='button' data-scroll-top aria-label='回到顶部'><svg viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M12 2c-2.76 0-5 2.24-5 5v2.5L4 13l4.5 1L12 22l3.5-8L20 13l-3-3.5V7c0-2.76-2.24-5-5-5zm0 3a2 2 0 0 1 2 2v1.5l-2 2-2-2V7a2 2 0 0 1 2-2z'/></svg></button>";
+        echo "<button class='scroll-top' type='button' data-scroll-top aria-label='Back to top'><svg viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M12 2c-2.76 0-5 2.24-5 5v2.5L4 13l4.5 1L12 22l3.5-8L20 13l-3-3.5V7c0-2.76-2.24-5-5-5zm0 3a2 2 0 0 1 2 2v1.5l-2 2-2-2V7a2 2 0 0 1 2-2z'/></svg></button>";
         echo "</div>";
     } elseif ($user) {
         $navItems = [
-            ['key' => 'dashboard', 'label' => '控制台', 'href' => $base . '/dashboard'],
-            ['key' => 'shares', 'label' => '分享记录', 'href' => $base . '/dashboard#shares'],
-            ['key' => 'access-stats', 'label' => '访问统计', 'href' => $base . '/dashboard#access-stats'],
-            ['key' => 'account', 'label' => '账号设置', 'href' => $base . '/account'],
+            ['key' => 'dashboard', 'label' => 'Dashboard', 'href' => $base . '/dashboard'],
+            ['key' => 'shares', 'label' => 'Shares', 'href' => $base . '/dashboard#shares'],
+            ['key' => 'access-stats', 'label' => 'Access Stats', 'href' => $base . '/dashboard#access-stats'],
+            ['key' => 'account', 'label' => 'Account Settings', 'href' => $base . '/account'],
         ];
         if (($user['role'] ?? '') === 'admin') {
             $reportBadge = pending_report_count();
             $navItems = [
-                ['key' => 'dashboard', 'label' => '控制台', 'href' => $base . '/dashboard'],
-                ['key' => 'account', 'label' => '账号设置', 'href' => $base . '/account'],
-                ['key' => 'admin-home', 'label' => '数据统计', 'href' => $base . '/admin-home'],
-                ['key' => 'admin-settings', 'label' => '站点设置', 'href' => $base . '/admin#settings'],
-                ['key' => 'admin-announcements', 'label' => '公告管理', 'href' => $base . '/admin#announcements'],
-                ['key' => 'admin-reports', 'label' => '举报管理', 'href' => $base . '/admin#reports', 'badge' => $reportBadge],
-                ['key' => 'admin-users', 'label' => '用户管理', 'href' => $base . '/admin#users'],
-                ['key' => 'admin-shares', 'label' => '分享管理', 'href' => $base . '/admin#shares'],
-                ['key' => 'admin-chunks', 'label' => '分片清理', 'href' => $base . '/admin#chunks'],
-                ['key' => 'admin-scan', 'label' => '违禁词扫描', 'href' => $base . '/admin#scan'],
+                ['key' => 'dashboard', 'label' => 'Dashboard', 'href' => $base . '/dashboard'],
+                ['key' => 'account', 'label' => 'Account Settings', 'href' => $base . '/account'],
+                ['key' => 'admin-home', 'label' => 'Statistics', 'href' => $base . '/admin-home'],
+                ['key' => 'admin-settings', 'label' => 'Site Settings', 'href' => $base . '/admin#settings'],
+                ['key' => 'admin-announcements', 'label' => 'Announcements', 'href' => $base . '/admin#announcements'],
+                ['key' => 'admin-reports', 'label' => 'Report Management', 'href' => $base . '/admin#reports', 'badge' => $reportBadge],
+                ['key' => 'admin-users', 'label' => 'User Management', 'href' => $base . '/admin#users'],
+                ['key' => 'admin-shares', 'label' => 'Share Management', 'href' => $base . '/admin#shares'],
+                ['key' => 'admin-chunks', 'label' => 'Chunk Cleanup', 'href' => $base . '/admin#chunks'],
+                ['key' => 'admin-scan', 'label' => 'Banned Word Scan', 'href' => $base . '/admin#scan'],
             ];
         }
         echo "<div class='app-shell'>";
@@ -1259,21 +1259,21 @@ function render_page(string $title, string $content, ?array $user = null, string
         echo "<div class='app-main'>";
         echo "<header class='app-topbar'>";
         echo "<div class='topbar-left'>";
-        echo "<button class='app-side-trigger' type='button' data-app-drawer-open aria-label='打开导航'><svg viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z'/></svg></button>";
+        echo "<button class='app-side-trigger' type='button' data-app-drawer-open aria-label='Open navigation'><svg viewBox='0 0 24 24' aria-hidden='true'><path fill='currentColor' d='M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z'/></svg></button>";
         echo "<div class='topbar-title'>{$titleHtml}</div>";
         echo "</div>";
         echo "<div class='topbar-right'>";
         echo "<span class='user-pill'>{$userName}</span>";
         echo "<form method='post' action='{$base}/logout' class='inline-form'>";
         echo "<input type='hidden' name='csrf' value='" . csrf_token() . "'>";
-        echo "<button class='button ghost' type='submit'>退出</button>";
+        echo "<button class='button ghost' type='submit'>Logout</button>";
         echo "</form>";
         echo "</div>";
         echo "</header>";
         echo "<main class='app-content'>";
         echo $content;
         echo "</main>";
-        echo "<footer class='app-footer'>由 <a href='https://github.com/b8l8u8e8/siyuan-plugin-share' target='_blank' rel='noopener noreferrer'>b8l8u8e8</a> 提供支持</footer>";
+        echo "<footer class='app-footer'>Powered by <a href='https://github.com/b8l8u8e8/siyuan-plugin-share' target='_blank' rel='noopener noreferrer'>b8l8u8e8</a></footer>";
         echo "</div>";
         echo "</div>";
         echo "<div class='app-side-backdrop' data-app-drawer-close></div>";
@@ -1330,13 +1330,13 @@ function render_404_page(): void {
     $content .= '<div class="error-page__comet"></div>';
     $content .= '</div>';
     $content .= '<h1 class="error-page__code">404</h1>';
-    $content .= '<h2 class="error-page__title">页面飞走了</h2>';
-    $content .= '<p class="error-page__desc">你访问的页面不存在，可能已被移除或者地址有误。</p>';
+    $content .= '<h2 class="error-page__title">Page Not Found</h2>';
+    $content .= '<p class="error-page__desc">The page you are looking for does not exist or may have been removed.</p>';
     $content .= '<a class="error-page__back" href="' . $base . '/">';
     $content .= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>';
-    $content .= '返回首页</a>';
+    $content .= 'Back to Home</a>';
     $content .= '</div>';
-    render_page('页面未找到', $content, null);
+    render_page('Page Not Found', $content, null);
 }
 
 function render_share_not_found_page(): void {
@@ -1346,13 +1346,13 @@ function render_share_not_found_page(): void {
     $content .= '<div class="error-page__stars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>';
     $content .= '<div class="error-page__signal"><i></i><i></i><i></i><i></i><div class="error-page__signal-core"></div></div>';
     $content .= '</div>';
-    $content .= '<h2 class="error-page__title">找不到这个分享</h2>';
-    $content .= '<p class="error-page__desc">该分享链接不存在或已被创建者删除。</p>';
+    $content .= '<h2 class="error-page__title">Share Not Found</h2>';
+    $content .= '<p class="error-page__desc">This share link does not exist or has been deleted by the owner.</p>';
     $content .= '<a class="error-page__back" href="' . $base . '/">';
     $content .= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>';
-    $content .= '返回首页</a>';
+    $content .= 'Back to Home</a>';
     $content .= '</div>';
-    render_page('分享不存在', $content, null);
+    render_page('Share Not Found', $content, null);
 }
 
 function generate_captcha_code(int $length = 5): string {
@@ -1996,7 +1996,7 @@ function build_topbar_title(string $title, ?array $user): string {
             if ($updateVersion !== '' && stripos($updateVersion, 'v') !== 0) {
                 $updateVersion = 'v' . $updateVersion;
             }
-            $updateLabel = htmlspecialchars('有新版 ' . $updateVersion);
+            $updateLabel = htmlspecialchars('New version ' . $updateVersion);
             $updateUrl = trim((string)($update['url'] ?? ''));
             if ($updateUrl !== '') {
                 $titleHtml .= ' <a class="topbar-version is-update" href="' . htmlspecialchars($updateUrl) . '" target="_blank" rel="noopener noreferrer">' . $updateLabel . '</a>';
@@ -2014,255 +2014,255 @@ function country_code_zh_map(): array {
         return $map;
     }
     $map = [
-        'AF' => '阿富汗',
-        'AL' => '阿尔巴尼亚',
-        'DZ' => '阿尔及利亚',
-        'AS' => '美属萨摩亚',
-        'AD' => '安道尔',
-        'AO' => '安哥拉',
-        'AI' => '安圭拉',
-        'AQ' => '南极洲',
-        'AG' => '安提瓜和巴布达',
-        'AR' => '阿根廷',
-        'AM' => '亚美尼亚',
-        'AW' => '阿鲁巴',
-        'AU' => '澳大利亚',
-        'AT' => '奥地利',
-        'AZ' => '阿塞拜疆',
-        'BS' => '巴哈马',
-        'BH' => '巴林',
-        'BD' => '孟加拉国',
-        'BB' => '巴巴多斯',
-        'BY' => '白俄罗斯',
-        'BE' => '比利时',
-        'BZ' => '伯利兹',
-        'BJ' => '贝宁',
-        'BM' => '百慕大',
-        'BT' => '不丹',
-        'BO' => '玻利维亚',
-        'BA' => '波斯尼亚和黑塞哥维那',
-        'BW' => '博茨瓦纳',
-        'BR' => '巴西',
-        'IO' => '英属印度洋领地',
-        'BN' => '文莱',
-        'BG' => '保加利亚',
-        'BF' => '布基纳法索',
-        'BI' => '布隆迪',
-        'KH' => '柬埔寨',
-        'CM' => '喀麦隆',
-        'CA' => '加拿大',
-        'CV' => '佛得角',
-        'KY' => '开曼群岛',
-        'CF' => '中非共和国',
-        'TD' => '乍得',
-        'CL' => '智利',
-        'CN' => '中国',
-        'CX' => '圣诞岛',
-        'CC' => '科科斯（基林）群岛',
-        'CO' => '哥伦比亚',
-        'KM' => '科摩罗',
-        'CG' => '刚果（布）',
-        'CD' => '刚果（金）',
-        'CK' => '库克群岛',
-        'CR' => '哥斯达黎加',
-        'CI' => '科特迪瓦',
-        'HR' => '克罗地亚',
-        'CU' => '古巴',
-        'CY' => '塞浦路斯',
-        'CZ' => '捷克',
-        'DK' => '丹麦',
-        'DJ' => '吉布提',
-        'DM' => '多米尼克',
-        'DO' => '多米尼加共和国',
-        'EC' => '厄瓜多尔',
-        'EG' => '埃及',
-        'SV' => '萨尔瓦多',
-        'GQ' => '赤道几内亚',
-        'ER' => '厄立特里亚',
-        'EE' => '爱沙尼亚',
-        'SZ' => '斯威士兰',
-        'ET' => '埃塞俄比亚',
-        'FK' => '福克兰群岛',
-        'FO' => '法罗群岛',
-        'FJ' => '斐济',
-        'FI' => '芬兰',
-        'FR' => '法国',
-        'GF' => '法属圭亚那',
-        'PF' => '法属波利尼西亚',
-        'TF' => '法属南部领地',
-        'GA' => '加蓬',
-        'GM' => '冈比亚',
-        'GE' => '格鲁吉亚',
-        'DE' => '德国',
-        'GH' => '加纳',
-        'GI' => '直布罗陀',
-        'GR' => '希腊',
-        'GL' => '格陵兰',
-        'GD' => '格林纳达',
-        'GP' => '瓜德罗普',
-        'GU' => '关岛',
-        'GT' => '危地马拉',
-        'GG' => '根西',
-        'GN' => '几内亚',
-        'GW' => '几内亚比绍',
-        'GY' => '圭亚那',
-        'HT' => '海地',
-        'HM' => '赫德岛和麦克唐纳群岛',
-        'HN' => '洪都拉斯',
-        'HK' => '中国香港',
-        'HU' => '匈牙利',
-        'IS' => '冰岛',
-        'IN' => '印度',
-        'ID' => '印度尼西亚',
-        'IR' => '伊朗',
-        'IQ' => '伊拉克',
-        'IE' => '爱尔兰',
-        'IM' => '马恩岛',
-        'IL' => '以色列',
-        'IT' => '意大利',
-        'JM' => '牙买加',
-        'JP' => '日本',
-        'JE' => '泽西',
-        'JO' => '约旦',
-        'KZ' => '哈萨克斯坦',
-        'KE' => '肯尼亚',
-        'KI' => '基里巴斯',
-        'KP' => '朝鲜',
-        'KR' => '韩国',
-        'KW' => '科威特',
-        'KG' => '吉尔吉斯斯坦',
-        'LA' => '老挝',
-        'LV' => '拉脱维亚',
-        'LB' => '黎巴嫩',
-        'LS' => '莱索托',
-        'LR' => '利比里亚',
-        'LY' => '利比亚',
-        'LI' => '列支敦士登',
-        'LT' => '立陶宛',
-        'LU' => '卢森堡',
-        'MO' => '中国澳门',
-        'MK' => '北马其顿',
-        'MG' => '马达加斯加',
-        'MW' => '马拉维',
-        'MY' => '马来西亚',
-        'MV' => '马尔代夫',
-        'ML' => '马里',
-        'MT' => '马耳他',
-        'MH' => '马绍尔群岛',
-        'MQ' => '马提尼克',
-        'MR' => '毛里塔尼亚',
-        'MU' => '毛里求斯',
-        'YT' => '马约特',
-        'MX' => '墨西哥',
-        'FM' => '密克罗尼西亚',
-        'MD' => '摩尔多瓦',
-        'MC' => '摩纳哥',
-        'MN' => '蒙古',
-        'ME' => '黑山',
-        'MS' => '蒙特塞拉特',
-        'MA' => '摩洛哥',
-        'MZ' => '莫桑比克',
-        'MM' => '缅甸',
-        'NA' => '纳米比亚',
-        'NR' => '瑙鲁',
-        'NP' => '尼泊尔',
-        'NL' => '荷兰',
-        'NC' => '新喀里多尼亚',
-        'NZ' => '新西兰',
-        'NI' => '尼加拉瓜',
-        'NE' => '尼日尔',
-        'NG' => '尼日利亚',
-        'NU' => '纽埃',
-        'NF' => '诺福克岛',
-        'MP' => '北马里亚纳群岛',
-        'NO' => '挪威',
-        'OM' => '阿曼',
-        'PK' => '巴基斯坦',
-        'PW' => '帕劳',
-        'PS' => '巴勒斯坦',
-        'PA' => '巴拿马',
-        'PG' => '巴布亚新几内亚',
-        'PY' => '巴拉圭',
-        'PE' => '秘鲁',
-        'PH' => '菲律宾',
-        'PN' => '皮特凯恩群岛',
-        'PL' => '波兰',
-        'PT' => '葡萄牙',
-        'PR' => '波多黎各',
-        'QA' => '卡塔尔',
-        'RE' => '留尼汪',
-        'RO' => '罗马尼亚',
-        'RU' => '俄罗斯',
-        'RW' => '卢旺达',
-        'BL' => '圣巴泰勒米',
-        'SH' => '圣赫勒拿',
-        'KN' => '圣基茨和尼维斯',
-        'LC' => '圣卢西亚',
-        'MF' => '法属圣马丁',
-        'PM' => '圣皮埃尔和密克隆',
-        'VC' => '圣文森特和格林纳丁斯',
-        'WS' => '萨摩亚',
-        'SM' => '圣马力诺',
-        'ST' => '圣多美和普林西比',
-        'SA' => '沙特阿拉伯',
-        'SN' => '塞内加尔',
-        'RS' => '塞尔维亚',
-        'SC' => '塞舌尔',
-        'SL' => '塞拉利昂',
-        'SG' => '新加坡',
-        'SX' => '荷属圣马丁',
-        'SK' => '斯洛伐克',
-        'SI' => '斯洛文尼亚',
-        'SB' => '所罗门群岛',
-        'SO' => '索马里',
-        'ZA' => '南非',
-        'GS' => '南乔治亚和南桑威奇群岛',
-        'SS' => '南苏丹',
-        'ES' => '西班牙',
-        'LK' => '斯里兰卡',
-        'SD' => '苏丹',
-        'SR' => '苏里南',
-        'SJ' => '斯瓦尔巴和扬马延',
-        'SE' => '瑞典',
-        'CH' => '瑞士',
-        'SY' => '叙利亚',
-        'TW' => '中国台湾',
-        'TJ' => '塔吉克斯坦',
-        'TZ' => '坦桑尼亚',
-        'TH' => '泰国',
-        'TL' => '东帝汶',
-        'TG' => '多哥',
-        'TK' => '托克劳',
-        'TO' => '汤加',
-        'TT' => '特立尼达和多巴哥',
-        'TN' => '突尼斯',
-        'TR' => '土耳其',
-        'TM' => '土库曼斯坦',
-        'TC' => '特克斯和凯科斯群岛',
-        'TV' => '图瓦卢',
-        'UG' => '乌干达',
-        'UA' => '乌克兰',
-        'AE' => '阿联酋',
-        'GB' => '英国',
-        'US' => '美国',
-        'UM' => '美国本土外小岛屿',
-        'UY' => '乌拉圭',
-        'UZ' => '乌兹别克斯坦',
-        'VU' => '瓦努阿图',
-        'VA' => '梵蒂冈',
-        'VE' => '委内瑞拉',
-        'VN' => '越南',
-        'VG' => '英属维尔京群岛',
-        'VI' => '美属维尔京群岛',
-        'WF' => '瓦利斯和富图纳',
-        'EH' => '西撒哈拉',
-        'YE' => '也门',
-        'ZM' => '赞比亚',
-        'ZW' => '津巴布韦',
-        'AX' => '奥兰群岛',
-        'BQ' => '荷兰加勒比区',
-        'CW' => '库拉索',
-        'XK' => '科索沃',
+        'AF' => 'Afghanistan',
+        'AL' => 'Albania',
+        'DZ' => 'Algeria',
+        'AS' => 'American Samoa',
+        'AD' => 'Andorra',
+        'AO' => 'Angola',
+        'AI' => 'Anguilla',
+        'AQ' => 'Antarctica',
+        'AG' => 'Antigua and Barbuda',
+        'AR' => 'Argentina',
+        'AM' => 'Armenia',
+        'AW' => 'Aruba',
+        'AU' => 'Australia',
+        'AT' => 'Austria',
+        'AZ' => 'Azerbaijan',
+        'BS' => 'Bahamas',
+        'BH' => 'Bahrain',
+        'BD' => 'Bangladesh',
+        'BB' => 'Barbados',
+        'BY' => 'Belarus',
+        'BE' => 'Belgium',
+        'BZ' => 'Belize',
+        'BJ' => 'Benin',
+        'BM' => 'Bermuda',
+        'BT' => 'Bhutan',
+        'BO' => 'Bolivia',
+        'BA' => 'Bosnia and Herzegovina',
+        'BW' => 'Botswana',
+        'BR' => 'Brazil',
+        'IO' => 'British Indian Ocean Territory',
+        'BN' => 'Brunei',
+        'BG' => 'Bulgaria',
+        'BF' => 'Burkina Faso',
+        'BI' => 'Burundi',
+        'KH' => 'Cambodia',
+        'CM' => 'Cameroon',
+        'CA' => 'Canada',
+        'CV' => 'Cape Verde',
+        'KY' => 'Cayman Islands',
+        'CF' => 'Central African Republic',
+        'TD' => 'Chad',
+        'CL' => 'Chile',
+        'CN' => 'China',
+        'CX' => 'Christmas Island',
+        'CC' => 'Cocos (Keeling) Islands',
+        'CO' => 'Colombia',
+        'KM' => 'Comoros',
+        'CG' => 'Republic of the Congo',
+        'CD' => 'Democratic Republic of the Congo',
+        'CK' => 'Cook Islands',
+        'CR' => 'Costa Rica',
+        'CI' => 'Ivory Coast',
+        'HR' => 'Croatia',
+        'CU' => 'Cuba',
+        'CY' => 'Cyprus',
+        'CZ' => 'Czech Republic',
+        'DK' => 'Denmark',
+        'DJ' => 'Djibouti',
+        'DM' => 'Dominica',
+        'DO' => 'Dominican Republic',
+        'EC' => 'Ecuador',
+        'EG' => 'Egypt',
+        'SV' => 'El Salvador',
+        'GQ' => 'Equatorial Guinea',
+        'ER' => 'Eritrea',
+        'EE' => 'Estonia',
+        'SZ' => 'Eswatini',
+        'ET' => 'Ethiopia',
+        'FK' => 'Falkland Islands',
+        'FO' => 'Faroe Islands',
+        'FJ' => 'Fiji',
+        'FI' => 'Finland',
+        'FR' => 'France',
+        'GF' => 'French Guiana',
+        'PF' => 'French Polynesia',
+        'TF' => 'French Southern Territories',
+        'GA' => 'Gabon',
+        'GM' => 'Gambia',
+        'GE' => 'Georgia',
+        'DE' => 'Germany',
+        'GH' => 'Ghana',
+        'GI' => 'Gibraltar',
+        'GR' => 'Greece',
+        'GL' => 'Greenland',
+        'GD' => 'Grenada',
+        'GP' => 'Guadeloupe',
+        'GU' => 'Guam',
+        'GT' => 'Guatemala',
+        'GG' => 'Guernsey',
+        'GN' => 'Guinea',
+        'GW' => 'Guinea-Bissau',
+        'GY' => 'Guyana',
+        'HT' => 'Haiti',
+        'HM' => 'Heard Island and McDonald Islands',
+        'HN' => 'Honduras',
+        'HK' => 'ChinaHong Kong',
+        'HU' => 'Hungary',
+        'IS' => 'Iceland',
+        'IN' => 'India',
+        'ID' => 'Indonesia',
+        'IR' => 'Iran',
+        'IQ' => 'Iraq',
+        'IE' => 'Ireland',
+        'IM' => 'Isle of Man',
+        'IL' => 'Israel',
+        'IT' => 'Italy',
+        'JM' => 'Jamaica',
+        'JP' => 'Japan',
+        'JE' => 'Jersey',
+        'JO' => 'Jordan',
+        'KZ' => 'Kazakhstan',
+        'KE' => 'Kenya',
+        'KI' => 'Kiribati',
+        'KP' => 'North Korea',
+        'KR' => 'South Korea',
+        'KW' => 'Kuwait',
+        'KG' => 'Kyrgyzstan',
+        'LA' => 'Laos',
+        'LV' => 'Latvia',
+        'LB' => 'Lebanon',
+        'LS' => 'Lesotho',
+        'LR' => 'Liberia',
+        'LY' => 'Libya',
+        'LI' => 'Liechtenstein',
+        'LT' => 'Lithuania',
+        'LU' => 'Luxembourg',
+        'MO' => 'ChinaMacau',
+        'MK' => 'North Macedonia',
+        'MG' => 'Madagascar',
+        'MW' => 'Malawi',
+        'MY' => 'Malaysia',
+        'MV' => 'Maldives',
+        'ML' => 'Mali',
+        'MT' => 'Malta',
+        'MH' => 'Marshall Islands',
+        'MQ' => 'Martinique',
+        'MR' => 'Mauritania',
+        'MU' => 'Mauritius',
+        'YT' => 'Mayotte',
+        'MX' => 'Mexico',
+        'FM' => 'Micronesia',
+        'MD' => 'Moldova',
+        'MC' => 'Monaco',
+        'MN' => 'Mongolia',
+        'ME' => 'Montenegro',
+        'MS' => 'Montserrat',
+        'MA' => 'Morocco',
+        'MZ' => 'Mozambique',
+        'MM' => 'Myanmar',
+        'NA' => 'Namibia',
+        'NR' => 'Nauru',
+        'NP' => 'Nepal',
+        'NL' => 'Netherlands',
+        'NC' => 'New Caledonia',
+        'NZ' => 'New Zealand',
+        'NI' => 'Nicaragua',
+        'NE' => 'Niger',
+        'NG' => 'Nigeria',
+        'NU' => 'Niue',
+        'NF' => 'Norfolk Island',
+        'MP' => 'Northern Mariana Islands',
+        'NO' => 'Norway',
+        'OM' => 'Oman',
+        'PK' => 'Pakistan',
+        'PW' => 'Palau',
+        'PS' => 'Palestine',
+        'PA' => 'Panama',
+        'PG' => 'Papua New Guinea',
+        'PY' => 'Paraguay',
+        'PE' => 'Peru',
+        'PH' => 'Philippines',
+        'PN' => 'Pitcairn Islands',
+        'PL' => 'Poland',
+        'PT' => 'Portugal',
+        'PR' => 'Puerto Rico',
+        'QA' => 'Qatar',
+        'RE' => 'Réunion',
+        'RO' => 'Romania',
+        'RU' => 'Russia',
+        'RW' => 'Rwanda',
+        'BL' => 'Saint Barthélemy',
+        'SH' => 'Saint Helena',
+        'KN' => 'Saint Kitts and Nevis',
+        'LC' => 'Saint Lucia',
+        'MF' => 'Saint Martin (French)',
+        'PM' => 'Saint Pierre and Miquelon',
+        'VC' => 'Saint Vincent and the Grenadines',
+        'WS' => 'Samoa',
+        'SM' => 'San Marino',
+        'ST' => 'São Tomé and Príncipe',
+        'SA' => 'Saudi Arabia',
+        'SN' => 'Senegal',
+        'RS' => 'Serbia',
+        'SC' => 'Seychelles',
+        'SL' => 'Sierra Leone',
+        'SG' => 'Singapore',
+        'SX' => 'Sint Maarten',
+        'SK' => 'Slovakia',
+        'SI' => 'Slovenia',
+        'SB' => 'Solomon Islands',
+        'SO' => 'Somalia',
+        'ZA' => 'South Africa',
+        'GS' => 'South Georgia and the South Sandwich Islands',
+        'SS' => 'South Sudan',
+        'ES' => 'Spain',
+        'LK' => 'Sri Lanka',
+        'SD' => 'Sudan',
+        'SR' => 'Suriname',
+        'SJ' => 'Svalbard and Jan Mayen',
+        'SE' => 'Sweden',
+        'CH' => 'Switzerland',
+        'SY' => 'Syria',
+        'TW' => 'ChinaTaiwan',
+        'TJ' => 'Tajikistan',
+        'TZ' => 'Tanzania',
+        'TH' => 'Thailand',
+        'TL' => 'Timor-Leste',
+        'TG' => 'Togo',
+        'TK' => 'Tokelau',
+        'TO' => 'Tonga',
+        'TT' => 'Trinidad and Tobago',
+        'TN' => 'Tunisia',
+        'TR' => 'Turkey',
+        'TM' => 'Turkmenistan',
+        'TC' => 'Turks and Caicos Islands',
+        'TV' => 'Tuvalu',
+        'UG' => 'Uganda',
+        'UA' => 'Ukraine',
+        'AE' => 'United Arab Emirates',
+        'GB' => 'United Kingdom',
+        'US' => 'United States',
+        'UM' => 'U.S. Minor Outlying Islands',
+        'UY' => 'Uruguay',
+        'UZ' => 'Uzbekistan',
+        'VU' => 'Vanuatu',
+        'VA' => 'Vatican City',
+        'VE' => 'Venezuela',
+        'VN' => 'Vietnam',
+        'VG' => 'British Virgin Islands',
+        'VI' => 'U.S. Virgin Islands',
+        'WF' => 'Wallis and Futuna',
+        'EH' => 'Western Sahara',
+        'YE' => 'Yemen',
+        'ZM' => 'Zambia',
+        'ZW' => 'Zimbabwe',
+        'AX' => 'Åland Islands',
+        'BQ' => 'Caribbean Netherlands',
+        'CW' => 'Curaçao',
+        'XK' => 'Kosovo',
     ];
     return $map;
 }
@@ -2288,115 +2288,115 @@ function normalize_us_region(string $region): string {
         return '';
     }
     $abbrMap = [
-        'AL' => '阿拉巴马州',
-        'AK' => '阿拉斯加州',
-        'AZ' => '亚利桑那州',
-        'AR' => '阿肯色州',
-        'CA' => '加利福尼亚州',
-        'CO' => '科罗拉多州',
-        'CT' => '康涅狄格州',
-        'DE' => '特拉华州',
-        'FL' => '佛罗里达州',
-        'GA' => '佐治亚州',
-        'HI' => '夏威夷州',
-        'ID' => '爱达荷州',
-        'IL' => '伊利诺伊州',
-        'IN' => '印第安纳州',
-        'IA' => '爱荷华州',
-        'KS' => '堪萨斯州',
-        'KY' => '肯塔基州',
-        'LA' => '路易斯安那州',
-        'ME' => '缅因州',
-        'MD' => '马里兰州',
-        'MA' => '马萨诸塞州',
-        'MI' => '密歇根州',
-        'MN' => '明尼苏达州',
-        'MS' => '密西西比州',
-        'MO' => '密苏里州',
-        'MT' => '蒙大拿州',
-        'NE' => '内布拉斯加州',
-        'NV' => '内华达州',
-        'NH' => '新罕布什尔州',
-        'NJ' => '新泽西州',
-        'NM' => '新墨西哥州',
-        'NY' => '纽约州',
-        'NC' => '北卡罗来纳州',
-        'ND' => '北达科他州',
-        'OH' => '俄亥俄州',
-        'OK' => '俄克拉何马州',
-        'OR' => '俄勒冈州',
-        'PA' => '宾夕法尼亚州',
-        'RI' => '罗得岛州',
-        'SC' => '南卡罗来纳州',
-        'SD' => '南达科他州',
-        'TN' => '田纳西州',
-        'TX' => '德克萨斯州',
-        'UT' => '犹他州',
-        'VT' => '佛蒙特州',
-        'VA' => '弗吉尼亚州',
-        'WA' => '华盛顿州',
-        'WV' => '西弗吉尼亚州',
-        'WI' => '威斯康星州',
-        'WY' => '怀俄明州',
-        'DC' => '哥伦比亚特区',
+        'AL' => 'Alabama',
+        'AK' => 'Alaska',
+        'AZ' => 'Arizona',
+        'AR' => 'Arkansas',
+        'CA' => 'California',
+        'CO' => 'Colorado',
+        'CT' => 'Connecticut',
+        'DE' => 'Delaware',
+        'FL' => 'Florida',
+        'GA' => 'Georgia',
+        'HI' => 'Hawaii',
+        'ID' => 'Idaho',
+        'IL' => 'Illinois',
+        'IN' => 'Indiana',
+        'IA' => 'Iowa',
+        'KS' => 'Kansas',
+        'KY' => 'Kentucky',
+        'LA' => 'Louisiana',
+        'ME' => 'Maine',
+        'MD' => 'Maryland',
+        'MA' => 'Massachusetts',
+        'MI' => 'Michigan',
+        'MN' => 'Minnesota',
+        'MS' => 'Mississippi',
+        'MO' => 'Missouri',
+        'MT' => 'Montana',
+        'NE' => 'Nebraska',
+        'NV' => 'Nevada',
+        'NH' => 'New Hampshire',
+        'NJ' => 'New Jersey',
+        'NM' => 'New Mexico',
+        'NY' => 'New York',
+        'NC' => 'North Carolina',
+        'ND' => 'North Dakota',
+        'OH' => 'Ohio',
+        'OK' => 'Oklahoma',
+        'OR' => 'Oregon',
+        'PA' => 'Pennsylvania',
+        'RI' => 'Rhode Island',
+        'SC' => 'South Carolina',
+        'SD' => 'South Dakota',
+        'TN' => 'Tennessee',
+        'TX' => 'Texas',
+        'UT' => 'Utah',
+        'VT' => 'Vermont',
+        'VA' => 'Virginia',
+        'WA' => 'Washington',
+        'WV' => 'West Virginia',
+        'WI' => 'Wisconsin',
+        'WY' => 'Wyoming',
+        'DC' => 'District of Columbia',
     ];
     $upper = strtoupper($raw);
     if (isset($abbrMap[$upper])) {
         return $abbrMap[$upper];
     }
     $nameMap = [
-        'alabama' => '阿拉巴马州',
-        'alaska' => '阿拉斯加州',
-        'arizona' => '亚利桑那州',
-        'arkansas' => '阿肯色州',
-        'california' => '加利福尼亚州',
-        'colorado' => '科罗拉多州',
-        'connecticut' => '康涅狄格州',
-        'delaware' => '特拉华州',
-        'florida' => '佛罗里达州',
-        'georgia' => '佐治亚州',
-        'hawaii' => '夏威夷州',
-        'idaho' => '爱达荷州',
-        'illinois' => '伊利诺伊州',
-        'indiana' => '印第安纳州',
-        'iowa' => '爱荷华州',
-        'kansas' => '堪萨斯州',
-        'kentucky' => '肯塔基州',
-        'louisiana' => '路易斯安那州',
-        'maine' => '缅因州',
-        'maryland' => '马里兰州',
-        'massachusetts' => '马萨诸塞州',
-        'michigan' => '密歇根州',
-        'minnesota' => '明尼苏达州',
-        'mississippi' => '密西西比州',
-        'missouri' => '密苏里州',
-        'montana' => '蒙大拿州',
-        'nebraska' => '内布拉斯加州',
-        'nevada' => '内华达州',
-        'new hampshire' => '新罕布什尔州',
-        'new jersey' => '新泽西州',
-        'new mexico' => '新墨西哥州',
-        'new york' => '纽约州',
-        'north carolina' => '北卡罗来纳州',
-        'north dakota' => '北达科他州',
-        'ohio' => '俄亥俄州',
-        'oklahoma' => '俄克拉何马州',
-        'oregon' => '俄勒冈州',
-        'pennsylvania' => '宾夕法尼亚州',
-        'rhode island' => '罗得岛州',
-        'south carolina' => '南卡罗来纳州',
-        'south dakota' => '南达科他州',
-        'tennessee' => '田纳西州',
-        'texas' => '德克萨斯州',
-        'utah' => '犹他州',
-        'vermont' => '佛蒙特州',
-        'virginia' => '弗吉尼亚州',
-        'washington' => '华盛顿州',
-        'west virginia' => '西弗吉尼亚州',
-        'wisconsin' => '威斯康星州',
-        'wyoming' => '怀俄明州',
-        'district of columbia' => '哥伦比亚特区',
-        'washington, d.c.' => '哥伦比亚特区',
+        'alabama' => 'Alabama',
+        'alaska' => 'Alaska',
+        'arizona' => 'Arizona',
+        'arkansas' => 'Arkansas',
+        'california' => 'California',
+        'colorado' => 'Colorado',
+        'connecticut' => 'Connecticut',
+        'delaware' => 'Delaware',
+        'florida' => 'Florida',
+        'georgia' => 'Georgia',
+        'hawaii' => 'Hawaii',
+        'idaho' => 'Idaho',
+        'illinois' => 'Illinois',
+        'indiana' => 'Indiana',
+        'iowa' => 'Iowa',
+        'kansas' => 'Kansas',
+        'kentucky' => 'Kentucky',
+        'louisiana' => 'Louisiana',
+        'maine' => 'Maine',
+        'maryland' => 'Maryland',
+        'massachusetts' => 'Massachusetts',
+        'michigan' => 'Michigan',
+        'minnesota' => 'Minnesota',
+        'mississippi' => 'Mississippi',
+        'missouri' => 'Missouri',
+        'montana' => 'Montana',
+        'nebraska' => 'Nebraska',
+        'nevada' => 'Nevada',
+        'new hampshire' => 'New Hampshire',
+        'new jersey' => 'New Jersey',
+        'new mexico' => 'New Mexico',
+        'new york' => 'New York',
+        'north carolina' => 'North Carolina',
+        'north dakota' => 'North Dakota',
+        'ohio' => 'Ohio',
+        'oklahoma' => 'Oklahoma',
+        'oregon' => 'Oregon',
+        'pennsylvania' => 'Pennsylvania',
+        'rhode island' => 'Rhode Island',
+        'south carolina' => 'South Carolina',
+        'south dakota' => 'South Dakota',
+        'tennessee' => 'Tennessee',
+        'texas' => 'Texas',
+        'utah' => 'Utah',
+        'vermont' => 'Vermont',
+        'virginia' => 'Virginia',
+        'washington' => 'Washington',
+        'west virginia' => 'West Virginia',
+        'wisconsin' => 'Wisconsin',
+        'wyoming' => 'Wyoming',
+        'district of columbia' => 'District of Columbia',
+        'washington, d.c.' => 'District of Columbia',
     ];
     $lower = strtolower($raw);
     return $nameMap[$lower] ?? $region;
@@ -2432,13 +2432,13 @@ function lookup_ip_location_cn(string $ip): array {
     $cityOut = '';
     $countryCode = '';
     if ($pro !== '' || $city !== '') {
-        $country = '中国';
+        $country = 'China';
         $countryCode = 'CN';
         $region = $pro;
         $cityOut = $city;
     } elseif ($addr !== '') {
         $country = preg_replace('/\s+/', ' ', $addr);
-        if (strpos($country, '中国') !== false) {
+        if (strpos($country, 'China') !== false) {
             $countryCode = 'CN';
         }
     }
@@ -2715,16 +2715,16 @@ function render_comment_emoji_picker(): string {
 function render_comment_editor_fields(string $content = '', string $textareaName = 'content'): string {
     $html = '<div class="comment-editor" data-comment-editor>';
     $html .= '<div class="comment-toolbar">';
-    $html .= '<button class="comment-tool" type="button" data-emoji-toggle aria-label="表情" title="表情">';
+    $html .= '<button class="comment-tool" type="button" data-emoji-toggle aria-label="Emoji" title="Emoji">';
     $html .= '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><circle cx="9" cy="10" r="1.2" fill="currentColor"></circle><circle cx="15" cy="10" r="1.2" fill="currentColor"></circle><path d="M8 14c1.2 1.2 2.5 1.8 4 1.8 1.5 0 2.8-.6 4-1.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>';
     $html .= '</button>';
-    $html .= '<button class="comment-tool" type="button" data-image-insert aria-label="图片" title="图片">';
+    $html .= '<button class="comment-tool" type="button" data-image-insert aria-label="Image" title="Image">';
     $html .= '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"></rect><circle cx="9" cy="11" r="2" fill="currentColor"></circle><path d="M21 16l-5-5-4 4-2-2-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
     $html .= '</button>';
     $html .= '<input class="comment-image-input" type="file" accept="image/*" data-image-input hidden>';
     $html .= render_comment_emoji_picker();
     $html .= '</div>';
-    $html .= '<textarea class="input comment-input" name="' . htmlspecialchars($textareaName) . '" rows="4" placeholder="写下你的评论..." required>' . htmlspecialchars($content) . '</textarea>';
+    $html .= '<textarea class="input comment-input" name="' . htmlspecialchars($textareaName) . '" rows="4" placeholder="Write your comment..." required>' . htmlspecialchars($content) . '</textarea>';
     $html .= '</div>';
     return $html;
 }
@@ -2739,12 +2739,12 @@ function render_comment_form(string $action, ?string $docId, string $emailValue,
         $html .= '<input type="hidden" name="parent_id" value="' . (int)$parentId . '">';
     }
     $html .= '<div class="comment-grid">';
-    $html .= '<div><label>邮箱</label><input class="input" name="email" type="email" value="' . htmlspecialchars($emailValue) . '" placeholder="name@example.com" required></div>';
-    $html .= '<div class="comment-wide"><label>评论</label>' . render_comment_editor_fields($contentValue, 'content') . '</div>';
+    $html .= '<div><label>Email</label><input class="input" name="email" type="email" value="' . htmlspecialchars($emailValue) . '" placeholder="name@example.com" required></div>';
+    $html .= '<div class="comment-wide"><label>Comment</label>' . render_comment_editor_fields($contentValue, 'content') . '</div>';
     if (captcha_enabled()) {
-        $html .= '<div class="comment-captcha"><label>验证码</label><div class="comment-captcha-row">';
-        $html .= '<input class="input" name="captcha" placeholder="验证码" required>';
-        $html .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="验证码" data-captcha>';
+        $html .= '<div class="comment-captcha"><label>Captcha</label><div class="comment-captcha-row">';
+        $html .= '<input class="input" name="captcha" placeholder="Captcha" required>';
+        $html .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="Captcha" data-captcha>';
         $html .= '</div></div>';
     }
     $html .= '</div>';
@@ -2762,11 +2762,11 @@ function render_comment_node(array $comment, array $share, ?array $user, string 
     $content = format_comment_content($rawContent);
     $isOwner = (int)($comment['user_id'] ?? 0) === (int)$share['user_id'];
     $viewerIsOwner = $user && (int)($user['id'] ?? 0) === (int)$share['user_id'];
-    $avatarSeed = $rawEmail !== '' ? $rawEmail : '访客';
+    $avatarSeed = $rawEmail !== '' ? $rawEmail : 'Guest';
     $avatarLabel = function_exists('mb_substr')
         ? mb_substr($avatarSeed, 0, 1, 'UTF-8')
         : substr($avatarSeed, 0, 1);
-    $authorLabel = $email !== '' ? $email : '访客';
+    $authorLabel = $email !== '' ? $email : 'Guest';
     $metaParts = [];
     if ($created !== '') {
         $metaParts[] = $created;
@@ -2783,22 +2783,22 @@ function render_comment_node(array $comment, array $share, ?array $user, string 
     }
     $html .= '<div class="comment-author">' . htmlspecialchars($authorLabel) . '</div>';
     if ($isOwner) {
-        $html .= '<span class="comment-badge">分享者</span>';
+        $html .= '<span class="comment-badge">Owner</span>';
     }
     if ($metaLabel !== '') {
         $html .= '<span class="comment-time">' . htmlspecialchars($metaLabel) . '</span>';
     }
     $html .= '<details class="comment-menu">';
-    $html .= '<summary class="comment-menu-trigger" aria-label="更多操作">...</summary>';
+    $html .= '<summary class="comment-menu-trigger" aria-label="More Actions">...</summary>';
     $html .= '<div class="comment-menu-list">';
-    $html .= '<button class="comment-menu-item" type="button" data-comment-action="edit" data-comment-id="' . $commentId . '" data-comment-content="' . htmlspecialchars($rawContent, ENT_QUOTES) . '" data-comment-email="' . htmlspecialchars($authorLabel, ENT_QUOTES) . '">编辑</button>';
-    $html .= '<button class="comment-menu-item" type="button" data-comment-action="delete" data-comment-id="' . $commentId . '" data-comment-email="' . htmlspecialchars($authorLabel, ENT_QUOTES) . '" data-comment-owner="' . ($viewerIsOwner ? '1' : '0') . '">删除</button>';
+    $html .= '<button class="comment-menu-item" type="button" data-comment-action="edit" data-comment-id="' . $commentId . '" data-comment-content="' . htmlspecialchars($rawContent, ENT_QUOTES) . '" data-comment-email="' . htmlspecialchars($authorLabel, ENT_QUOTES) . '">Edit</button>';
+    $html .= '<button class="comment-menu-item" type="button" data-comment-action="delete" data-comment-id="' . $commentId . '" data-comment-email="' . htmlspecialchars($authorLabel, ENT_QUOTES) . '" data-comment-owner="' . ($viewerIsOwner ? '1' : '0') . '">Delete</button>';
     $html .= '</div>';
     $html .= '</details>';
     $html .= '</div>';
     $html .= '<div class="comment-content">' . $content . '</div>';
     $html .= '<div class="comment-footer">';
-    $html .= '<button class="comment-reply-btn" type="button" data-comment-action="reply" data-comment-parent-id="' . $commentId . '" data-comment-email="' . htmlspecialchars($authorLabel, ENT_QUOTES) . '" data-comment-author="' . htmlspecialchars($authorLabel, ENT_QUOTES) . '">回复</button>';
+    $html .= '<button class="comment-reply-btn" type="button" data-comment-action="reply" data-comment-parent-id="' . $commentId . '" data-comment-email="' . htmlspecialchars($authorLabel, ENT_QUOTES) . '" data-comment-author="' . htmlspecialchars($authorLabel, ENT_QUOTES) . '">Reply</button>';
     $html .= '</div>';
     $html .= '</div>';
     $html .= '</div>';
@@ -2874,8 +2874,8 @@ function render_share_comments(array $share, ?array $user, ?string $docId = null
     $viewerIsOwner = $user && (int)($user['id'] ?? 0) === (int)$share['user_id'];
     $html = '<section class="share-comments" id="comments" data-comment-upload="' . htmlspecialchars($uploadAction) . '">';
     $html .= '<div class="comment-header">';
-    $html .= '<h2>评论</h2>';
-    $html .= '<div class="comment-count">' . count($comments) . ' 条评论</div>';
+    $html .= '<h2>Comment</h2>';
+    $html .= '<div class="comment-count">' . count($comments) . ' recordsComment</div>';
     $html .= '</div>';
     if ($error) {
         $html .= '<div class="flash comment-flash error">' . htmlspecialchars($error) . '</div>';
@@ -2884,7 +2884,7 @@ function render_share_comments(array $share, ?array $user, ?string $docId = null
         $html .= '<div class="flash comment-flash">' . htmlspecialchars($info) . '</div>';
     }
     if (empty($tree)) {
-        $html .= '<p class="muted">暂无评论，欢迎第一个留言。</p>';
+        $html .= '<p class="muted">No comments yet. Be the first to leave one.</p>';
     } else {
         $html .= '<div class="comment-list">';
         foreach ($tree as $comment) {
@@ -2892,11 +2892,11 @@ function render_share_comments(array $share, ?array $user, ?string $docId = null
         }
         $html .= '</div>';
     }
-    $html .= render_comment_form($actionBase . '/comment', $docId, $commentFormEmail, null, '发表评论', $commentFormContent);
+    $html .= render_comment_form($actionBase . '/comment', $docId, $commentFormEmail, null, 'Post Comment', $commentFormContent);
     $html .= '<div class="modal comment-modal" data-comment-modal data-comment-action-base="' . htmlspecialchars($actionBase) . '" data-comment-doc-id="' . htmlspecialchars($docValue) . '" data-comment-owner="' . ($viewerIsOwner ? '1' : '0') . '" data-comment-default-email="' . htmlspecialchars($emailValue) . '" data-comment-reopen="' . ($modalReopen ? '1' : '0') . '" data-comment-reopen-mode="reply" data-comment-reopen-parent="' . (int)$modalParentId . '" data-comment-reopen-email="' . htmlspecialchars($modalEmail, ENT_QUOTES) . '" data-comment-reopen-content="' . htmlspecialchars($modalContent, ENT_QUOTES) . '" data-comment-reopen-note="' . htmlspecialchars($modalNote, ENT_QUOTES) . '" hidden>';
     $html .= '<div class="modal-backdrop" data-modal-close></div>';
     $html .= '<div class="modal-card">';
-    $html .= '<div class="modal-header" data-comment-modal-title>回复评论</div>';
+    $html .= '<div class="modal-header" data-comment-modal-title>Reply to Comment</div>';
     $html .= '<div class="modal-body">';
     $html .= '<form method="post" action="' . htmlspecialchars($actionBase . '/comment') . '" data-comment-form>';
     $html .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
@@ -2905,11 +2905,11 @@ function render_share_comments(array $share, ?array $user, ?string $docId = null
     $html .= '<input type="hidden" name="parent_id" value="" data-comment-parent>';
     $html .= '<div class="comment-modal-note" data-comment-modal-note></div>';
     $html .= '<div class="comment-modal-fields" data-comment-verify>';
-    $html .= '<div><label>邮箱</label><input class="input" name="email" type="email" value="" placeholder="name@example.com" required></div>';
+    $html .= '<div><label>Email</label><input class="input" name="email" type="email" value="" placeholder="name@example.com" required></div>';
     if (captcha_enabled()) {
-        $html .= '<div class="comment-captcha"><label>验证码</label><div class="comment-captcha-row">';
-        $html .= '<input class="input" name="captcha" placeholder="验证码" required>';
-        $html .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="验证码" data-captcha>';
+        $html .= '<div class="comment-captcha"><label>Captcha</label><div class="comment-captcha-row">';
+        $html .= '<input class="input" name="captcha" placeholder="Captcha" required>';
+        $html .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="Captcha" data-captcha>';
         $html .= '</div></div>';
     }
     $html .= '</div>';
@@ -2917,8 +2917,8 @@ function render_share_comments(array $share, ?array $user, ?string $docId = null
     $html .= render_comment_editor_fields($modalContent, 'content');
     $html .= '</div>';
     $html .= '<div class="modal-actions">';
-    $html .= '<button class="button ghost" type="button" data-modal-close>取消</button>';
-    $html .= '<button class="button primary" type="submit" data-comment-submit>提交</button>';
+    $html .= '<button class="button ghost" type="button" data-modal-close>Cancel</button>';
+    $html .= '<button class="button primary" type="submit" data-comment-submit>Submit</button>';
     $html .= '</div>';
     $html .= '</form>';
     $html .= '</div>';
@@ -2930,10 +2930,10 @@ function render_share_comments(array $share, ?array $user, ?string $docId = null
 
 function report_reason_options(): array {
     return [
-        ['value' => 'illegal', 'label' => '违法违规'],
-        ['value' => 'spam', 'label' => '垃圾广告/引流'],
-        ['value' => 'infringe', 'label' => '侵权/盗用'],
-        ['value' => 'other', 'label' => '其他'],
+        ['value' => 'illegal', 'label' => 'Illegal content'],
+        ['value' => 'spam', 'label' => 'Spam / Advertisement'],
+        ['value' => 'infringe', 'label' => 'Copyright infringement'],
+        ['value' => 'other', 'label' => 'Other'],
     ];
 }
 
@@ -2956,7 +2956,7 @@ function render_share_report_trigger(array $share): string {
         return '';
     }
     $modalId = share_report_modal_id($slug);
-    return '<button class="kb-chip report-trigger" id="report" type="button" data-report-open data-report-target="' . htmlspecialchars($modalId) . '">举报</button>';
+    return '<button class="kb-chip report-trigger" id="report" type="button" data-report-open data-report-target="' . htmlspecialchars($modalId) . '">Report</button>';
 }
 
 function render_share_report_form(array $share, ?array $user, ?string $docId = null): string {
@@ -2993,7 +2993,7 @@ function render_share_report_form(array $share, ?array $user, ?string $docId = n
     $html .= '<div class="modal report-modal" id="' . htmlspecialchars($modalId) . '" data-report-modal' . $modalHidden . '>';
     $html .= '<div class="modal-backdrop" data-modal-close></div>';
     $html .= '<div class="modal-card">';
-    $html .= '<div class="modal-header">举报内容</div>';
+    $html .= '<div class="modal-header">Report Content</div>';
     $html .= '<div class="modal-body">';
     if ($error) {
         $html .= '<div class="alert error">' . htmlspecialchars($error) . '</div>';
@@ -3004,26 +3004,26 @@ function render_share_report_form(array $share, ?array $user, ?string $docId = n
         $html .= '<input type="hidden" name="doc_id" value="' . htmlspecialchars($docId) . '">';
     }
     $html .= '<div class="report-grid">';
-    $html .= '<div><label>举报类型</label><select class="input" name="reason_type" required>';
+    $html .= '<div><label>Report Type</label><select class="input" name="reason_type" required>';
     foreach (report_reason_options() as $option) {
         $value = (string)($option['value'] ?? '');
         $selected = ($formReason !== '' && $formReason === $value) ? ' selected' : '';
         $html .= '<option value="' . htmlspecialchars($value) . '"' . $selected . '>' . htmlspecialchars($option['label']) . '</option>';
     }
     $html .= '</select></div>';
-    $html .= '<div><label>邮箱</label><input class="input" type="email" name="report_email" value="' . htmlspecialchars($reportEmailValue) . '" placeholder="name@example.com" required></div>';
-    $html .= '<div class="report-wide"><label>补充说明</label><textarea class="input" name="reason_detail" rows="4" placeholder="请补充说明原因" required>' . htmlspecialchars($formDetail) . '</textarea></div>';
+    $html .= '<div><label>Email</label><input class="input" type="email" name="report_email" value="' . htmlspecialchars($reportEmailValue) . '" placeholder="name@example.com" required></div>';
+    $html .= '<div class="report-wide"><label>Additional Notes</label><textarea class="input" name="reason_detail" rows="4" placeholder="Please add notes" required>' . htmlspecialchars($formDetail) . '</textarea></div>';
     if (captcha_enabled()) {
         $html .= '<div class="report-captcha">';
-        $html .= '<label>验证码</label><div class="report-captcha-row">';
-        $html .= '<input class="input" name="captcha" placeholder="验证码" required>';
-        $html .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="验证码" data-captcha>';
+        $html .= '<label>Captcha</label><div class="report-captcha-row">';
+        $html .= '<input class="input" name="captcha" placeholder="Captcha" required>';
+        $html .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="Captcha" data-captcha>';
         $html .= '</div></div>';
     }
     $html .= '</div>';
     $html .= '<div class="modal-actions">';
-    $html .= '<button class="button ghost" type="button" data-modal-close>取消</button>';
-    $html .= '<button class="button primary" type="submit">提交举报</button>';
+    $html .= '<button class="button ghost" type="button" data-modal-close>Cancel</button>';
+    $html .= '<button class="button primary" type="submit">Submit Report</button>';
     $html .= '</div>';
     $html .= '</form>';
     $html .= '</div>';
@@ -3082,29 +3082,29 @@ function handle_share_comment_upload(string $slug): void {
     check_csrf();
     $share = find_share_by_slug($slug);
     if (!$share) {
-        api_response(404, null, '分享不存在');
+        api_response(404, null, 'Share not found');
     }
     if (share_is_expired($share) || share_visitor_limit_reached($share)) {
-        api_response(403, null, '分享已关闭，无法上传图片');
+        api_response(403, null, 'Share is closed, cannot upload images');
     }
     if (share_requires_password($share) && !share_access_granted((int)$share['id'])) {
-        api_response(403, null, '请先输入访问密码');
+        api_response(403, null, 'Please enter the access password first');
     }
     $file = $_FILES['image'] ?? null;
     if (!$file || !is_array($file)) {
-        api_response(400, null, '请选择图片文件');
+        api_response(400, null, 'Please select an image file');
     }
     $error = (int)($file['error'] ?? UPLOAD_ERR_NO_FILE);
     if ($error !== UPLOAD_ERR_OK) {
-        api_response(400, null, '图片上传失败');
+        api_response(400, null, 'Image upload failed');
     }
     $tmp = (string)($file['tmp_name'] ?? '');
     if ($tmp === '' || !is_uploaded_file($tmp)) {
-        api_response(400, null, '图片上传失败');
+        api_response(400, null, 'Image upload failed');
     }
     $info = @getimagesize($tmp);
     if (!$info) {
-        api_response(400, null, '仅支持图片文件');
+        api_response(400, null, 'Only image files are supported');
     }
     $type = (int)($info[2] ?? 0);
     $ext = strtolower((string)image_type_to_extension($type, false));
@@ -3113,12 +3113,12 @@ function handle_share_comment_upload(string $slug): void {
         $name = (string)($file['name'] ?? '');
         $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
         if ($ext === '' || !in_array($ext, $allowed, true)) {
-            api_response(400, null, '仅支持图片文件');
+            api_response(400, null, 'Only image files are supported');
         }
     }
     $owner = get_user_by_id((int)$share['user_id']);
     if (!$owner) {
-        api_response(400, null, '分享所属用户不存在');
+        api_response(400, null, 'Share owner not found');
     }
     $size = (int)($file['size'] ?? 0);
     if ($size <= 0 && is_file($tmp)) {
@@ -3127,7 +3127,7 @@ function handle_share_comment_upload(string $slug): void {
     $used = recalculate_user_storage((int)$owner['id']);
     $limit = get_user_limit_bytes($owner);
     if ($limit > 0 && ($used + $size) > $limit) {
-        api_response(413, null, '存储空间不足');
+        api_response(413, null, 'Insufficient storage space');
     }
     $shareId = (int)$share['id'];
     $filename = bin2hex(random_bytes(8)) . '.' . $ext;
@@ -3137,7 +3137,7 @@ function handle_share_comment_upload(string $slug): void {
     ensure_dir($dir);
     $target = $dir . '/' . $filename;
     if (!move_uploaded_file($tmp, $target)) {
-        api_response(500, null, '图片保存失败');
+        api_response(500, null, 'Failed to save image');
     }
     $actualSize = $size;
     if ($actualSize <= 0 && is_file($target)) {
@@ -3163,13 +3163,13 @@ function handle_share_comment_upload(string $slug): void {
 function handle_share_search(string $slug): void {
     $share = find_share_by_slug($slug);
     if (!$share) {
-        api_response(404, null, '分享不存在');
+        api_response(404, null, 'Share not found');
     }
     if (share_is_expired($share) || share_visitor_limit_reached($share)) {
-        api_response(403, null, '分享已关闭');
+        api_response(403, null, 'Share is closed');
     }
     if (share_requires_password($share) && !share_access_granted((int)$share['id'])) {
-        api_response(403, null, '请先输入访问密码');
+        api_response(403, null, 'Please enter the access password first');
     }
     $q = trim((string)($_GET['q'] ?? ''));
     if (mb_strlen($q) < 1) {
@@ -3240,17 +3240,17 @@ function handle_share_comment_submit(string $slug): void {
     $share = find_share_by_slug($slug);
     if (!$share) {
         http_response_code(404);
-        echo '分享不存在';
+        echo 'Share not found';
         exit;
     }
     $docId = trim((string)($_POST['doc_id'] ?? ''));
     $redirectPath = build_share_redirect_path($slug, $docId, 'comments');
     if (share_is_expired($share) || share_visitor_limit_reached($share)) {
-        flash('comment_error', '分享已关闭，无法评论');
+        flash('comment_error', 'Share is closed, cannot post comments');
         redirect($redirectPath);
     }
     if (share_requires_password($share) && !share_access_granted((int)$share['id'])) {
-        flash('comment_error', '请先输入访问密码');
+        flash('comment_error', 'Please enter the access password first');
         redirect($redirectPath);
     }
     $email = trim((string)($_POST['email'] ?? ''));
@@ -3264,7 +3264,7 @@ function handle_share_comment_submit(string $slug): void {
         $check->execute([':id' => $parentId, ':share_id' => $shareId]);
         $row = $check->fetch(PDO::FETCH_ASSOC);
         if (!$row) {
-            flash('comment_error', '回复目标不存在');
+            flash('comment_error', 'Reply target does not exist');
             redirect($redirectPath);
         }
         $parentEmail = trim((string)($row['email'] ?? ''));
@@ -3280,21 +3280,21 @@ function handle_share_comment_submit(string $slug): void {
                 'note' => $parentEmail !== '' ? mask_email($parentEmail) : '',
             ];
             flash('comment_form', json_encode($state, JSON_UNESCAPED_UNICODE));
-            flash('comment_error', '验证码不对');
+            flash('comment_error', 'Incorrect captcha');
             redirect($redirectPath);
         }
     }
     if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        flash('comment_error', '请输入有效邮箱');
+        flash('comment_error', 'Please enter a valid email');
         redirect($redirectPath);
     }
     if ($content === '') {
-        flash('comment_error', '评论内容不能为空');
+        flash('comment_error', 'Comment content cannot be empty');
         redirect($redirectPath);
     }
     $contentLength = function_exists('mb_strlen') ? mb_strlen($content, 'UTF-8') : strlen($content);
     if ($contentLength > 2000) {
-        flash('comment_error', '评论内容过长');
+        flash('comment_error', 'Comment content too long');
         redirect($redirectPath);
     }
     $bannedWords = get_banned_words();
@@ -3309,20 +3309,20 @@ function handle_share_comment_submit(string $slug): void {
                 'note' => $parentEmail !== '' ? mask_email($parentEmail) : '',
             ];
             flash('comment_form', json_encode($state, JSON_UNESCAPED_UNICODE));
-            flash('comment_error', '触发违禁词：' . $hit['word']);
+            flash('comment_error', 'Triggered banned word: ' . $hit['word']);
             redirect($redirectPath);
         }
     }
     $owner = get_user_by_id((int)$share['user_id']);
     if (!$owner) {
-        flash('comment_error', '分享所属用户不存在');
+        flash('comment_error', 'Share owner not found');
         redirect($redirectPath);
     }
     $size = calculate_comment_size($email, $content);
     $used = recalculate_user_storage((int)$owner['id']);
     $limit = get_user_limit_bytes($owner);
     if ($limit > 0 && ($used + $size) > $limit) {
-        flash('comment_error', '存储空间不足，无法发表评论');
+        flash('comment_error', 'Insufficient storage space, cannot post comment');
         redirect($redirectPath);
     }
     $viewer = current_user();
@@ -3370,7 +3370,7 @@ function handle_share_comment_submit(string $slug): void {
         }
     }
     $anchor = $commentId > 0 ? 'comment-' . $commentId : 'comments';
-    flash('comment_info', '评论已提交');
+    flash('comment_info', 'Comment submitted');
     redirect(build_share_redirect_path($slug, $docId, $anchor));
 }
 
@@ -3379,18 +3379,18 @@ function handle_share_comment_delete(string $slug): void {
     $share = find_share_by_slug($slug);
     if (!$share) {
         http_response_code(404);
-        echo '分享不存在';
+        echo 'Share not found';
         exit;
     }
     $docId = trim((string)($_POST['doc_id'] ?? ''));
     $redirectPath = build_share_redirect_path($slug, $docId, 'comments');
     if (share_requires_password($share) && !share_access_granted((int)$share['id'])) {
-        flash('comment_error', '请先输入访问密码');
+        flash('comment_error', 'Please enter the access password first');
         redirect($redirectPath);
     }
     $commentId = max(0, (int)($_POST['comment_id'] ?? 0));
     if ($commentId <= 0) {
-        flash('comment_error', '缺少评论ID');
+        flash('comment_error', 'Missing comment ID');
         redirect($redirectPath);
     }
     $pdo = db();
@@ -3398,7 +3398,7 @@ function handle_share_comment_delete(string $slug): void {
     $stmt->execute([':id' => $commentId, ':share_id' => (int)$share['id']]);
     $comment = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$comment) {
-        flash('comment_error', '评论不存在');
+        flash('comment_error', 'Comment not found');
         redirect($redirectPath);
     }
     $viewer = current_user();
@@ -3408,18 +3408,18 @@ function handle_share_comment_delete(string $slug): void {
         if (captcha_enabled()) {
             $captchaInput = (string)($_POST['captcha'] ?? '');
             if (!check_captcha($captchaInput)) {
-                flash('comment_error', '验证码错误');
+                flash('comment_error', 'Incorrect captcha');
                 redirect($redirectPath);
             }
         }
         $email = trim((string)($_POST['email'] ?? ''));
         if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            flash('comment_error', '请输入有效邮箱');
+            flash('comment_error', 'Please enter a valid email');
             redirect($redirectPath);
         }
         $commentEmail = (string)($comment['email'] ?? '');
         if ($commentEmail === '' || strcasecmp($email, $commentEmail) !== 0) {
-            flash('comment_error', '邮箱验证失败');
+            flash('comment_error', 'Email verification failed');
             redirect($redirectPath);
         }
     }
@@ -3457,7 +3457,7 @@ function handle_share_comment_delete(string $slug): void {
         adjust_share_size($shareId, $delta);
         adjust_user_storage((int)$share['user_id'], $delta);
     }
-    flash('comment_info', '评论已删除');
+    flash('comment_info', 'CommentDeleted');
     redirect($redirectPath);
 }
 
@@ -3466,47 +3466,47 @@ function handle_share_comment_edit(string $slug): void {
     $share = find_share_by_slug($slug);
     if (!$share) {
         http_response_code(404);
-        echo '分享不存在';
+        echo 'Share not found';
         exit;
     }
     $docId = trim((string)($_POST['doc_id'] ?? ''));
     $redirectPath = build_share_redirect_path($slug, $docId, 'comments');
     if (share_requires_password($share) && !share_access_granted((int)$share['id'])) {
-        flash('comment_error', '请先输入访问密码');
+        flash('comment_error', 'Please enter the access password first');
         redirect($redirectPath);
     }
     $commentId = max(0, (int)($_POST['comment_id'] ?? 0));
     if ($commentId <= 0) {
-        flash('comment_error', '缺少评论ID');
+        flash('comment_error', 'Missing comment ID');
         redirect($redirectPath);
     }
     if (captcha_enabled()) {
         $captchaInput = (string)($_POST['captcha'] ?? '');
         if (!check_captcha($captchaInput)) {
-            flash('comment_error', '验证码错误');
+            flash('comment_error', 'Incorrect captcha');
             redirect($redirectPath);
         }
     }
     $email = trim((string)($_POST['email'] ?? ''));
     $content = trim((string)($_POST['content'] ?? ''));
     if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        flash('comment_error', '请输入有效邮箱');
+        flash('comment_error', 'Please enter a valid email');
         redirect($redirectPath);
     }
     if ($content === '') {
-        flash('comment_error', '评论内容不能为空');
+        flash('comment_error', 'Comment content cannot be empty');
         redirect($redirectPath);
     }
     $contentLength = function_exists('mb_strlen') ? mb_strlen($content, 'UTF-8') : strlen($content);
     if ($contentLength > 2000) {
-        flash('comment_error', '评论内容过长');
+        flash('comment_error', 'Comment content too long');
         redirect($redirectPath);
     }
     $bannedWords = get_banned_words();
     if (!empty($bannedWords)) {
         $hit = find_banned_word($content, $bannedWords);
         if ($hit) {
-            flash('comment_error', '触发违禁词：' . $hit['word']);
+            flash('comment_error', 'Triggered banned word: ' . $hit['word']);
             redirect($redirectPath);
         }
     }
@@ -3515,13 +3515,13 @@ function handle_share_comment_edit(string $slug): void {
     $stmt->execute([':id' => $commentId, ':share_id' => (int)$share['id']]);
     $comment = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$comment) {
-        flash('comment_error', '评论不存在');
+        flash('comment_error', 'Comment not found');
         redirect($redirectPath);
     }
     $commentEmail = (string)($comment['email'] ?? '');
     $commentEmailMasked = $commentEmail !== '' ? mask_email($commentEmail) : '';
     if ($commentEmail === '' || strcasecmp($email, $commentEmail) !== 0) {
-        flash('comment_error', '邮箱验证失败');
+        flash('comment_error', 'Email verification failed');
         redirect($redirectPath);
     }
     $shareId = (int)$share['id'];
@@ -3539,13 +3539,13 @@ function handle_share_comment_edit(string $slug): void {
     if ($netDelta > 0) {
         $owner = get_user_by_id((int)$share['user_id']);
         if (!$owner) {
-            flash('comment_error', '分享所属用户不存在');
+            flash('comment_error', 'Share owner not found');
             redirect($redirectPath);
         }
         $used = recalculate_user_storage((int)$owner['id']);
         $limit = get_user_limit_bytes($owner);
         if ($limit > 0 && ($used + $netDelta) > $limit) {
-            flash('comment_error', '存储空间不足，无法保存修改');
+            flash('comment_error', 'Insufficient storage space to save changes');
             redirect($redirectPath);
         }
     }
@@ -3563,7 +3563,7 @@ function handle_share_comment_edit(string $slug): void {
         adjust_user_storage((int)$share['user_id'], $totalDelta);
     }
     $anchor = 'comment-' . $commentId;
-    flash('comment_info', '评论已更新');
+    flash('comment_info', 'Comment updated');
     redirect(build_share_redirect_path($slug, $docId, $anchor));
 }
 
@@ -3572,13 +3572,13 @@ function handle_share_report_submit(string $slug): void {
     $share = find_share_by_slug($slug);
     if (!$share) {
         http_response_code(404);
-        echo '分享不存在';
+        echo 'Share not found';
         exit;
     }
     $docId = trim((string)($_POST['doc_id'] ?? ''));
     $redirectPath = build_share_redirect_path($slug, $docId, 'report');
     if (share_requires_password($share) && !share_access_granted((int)$share['id'])) {
-        flash('report_error', '请先输入访问密码');
+        flash('report_error', 'Please enter the access password first');
         redirect($redirectPath);
     }
     $reportEmail = trim((string)($_POST['report_email'] ?? ''));
@@ -3593,26 +3593,26 @@ function handle_share_report_submit(string $slug): void {
                 'reason_detail' => $reasonDetail,
             ];
             flash('report_form', json_encode($state, JSON_UNESCAPED_UNICODE));
-            flash('report_error', '验证码不对');
+            flash('report_error', 'Incorrect captcha');
             redirect($redirectPath);
         }
     }
     if ($reportEmail === '' || !filter_var($reportEmail, FILTER_VALIDATE_EMAIL)) {
-        flash('report_error', '请输入有效邮箱');
+        flash('report_error', 'Please enter a valid email');
         redirect($redirectPath);
     }
     $validReasons = array_column(report_reason_options(), 'value');
     if ($reasonType === '' || !in_array($reasonType, $validReasons, true)) {
-        flash('report_error', '请选择举报类型');
+        flash('report_error', 'Please select a report type');
         redirect($redirectPath);
     }
     if ($reasonDetail === '') {
-        flash('report_error', '请填写举报说明');
+        flash('report_error', 'Please fill in report details');
         redirect($redirectPath);
     }
     $detailLength = function_exists('mb_strlen') ? mb_strlen($reasonDetail, 'UTF-8') : strlen($reasonDetail);
     if ($detailLength > 1000) {
-        flash('report_error', '举报说明过长');
+        flash('report_error', 'Report details too long');
         redirect($redirectPath);
     }
     $viewer = current_user();
@@ -3632,7 +3632,7 @@ function handle_share_report_submit(string $slug): void {
         ':reason_detail' => $reasonDetail,
         ':created_at' => now(),
     ]);
-    flash('report_info', '举报已提交，感谢反馈');
+    flash('report_info', 'Report submitted, thank you for your feedback');
     redirect($redirectPath);
 }
 
@@ -3647,7 +3647,7 @@ function build_from_header(string $from, string $name): string {
 
 function send_mail(string $email, string $subject, string $body): bool {
     $from = get_setting('email_from', 'no-reply@example.com');
-    $fromName = get_setting('email_from_name', '思源笔记分享');
+    $fromName = get_setting('email_from_name', 'SiYuan Note Share');
     if (smtp_enabled()) {
         return send_smtp_mail($email, $subject, $body, $from, $fromName);
     }
@@ -3713,14 +3713,14 @@ function send_smtp_mail(string $email, string $subject, string $body, string $fr
 }
 
 function send_email_code(string $email, string $code): bool {
-    $subject = get_setting('email_subject', '邮箱验证码');
-    $body = "您的邮箱验证码为：{$code}\n有效期 10 分钟，请勿泄露。";
+    $subject = get_setting('email_subject', 'Email Verification Code');
+    $body = "Your email verification code is: {$code}\nValid for 10 minutes. Do not share it.";
     return send_mail($email, $subject, $body);
 }
 
 function send_reset_code(string $email, string $code): bool {
-    $subject = get_setting('email_reset_subject', '重置密码验证码');
-    $body = "您的密码重置验证码为：{$code}\n有效期 10 分钟，请勿泄露。";
+    $subject = get_setting('email_reset_subject', 'Password Reset Verification Code');
+    $body = "Your password reset code is: {$code}\nValid for 10 minutes. Do not share it.";
     return send_mail($email, $subject, $body);
 }
 
@@ -3740,17 +3740,17 @@ function send_comment_notification(array $share, array $comment, string $recipie
     $commentId = (int)($comment['id'] ?? 0);
     $url = share_url($slug);
     $anchor = $commentId > 0 ? '#comment-' . $commentId : '#comments';
-    $subject = $isReply ? '评论收到回复' : '分享收到新评论';
+    $subject = $isReply ? 'Your comment received a reply' : 'Your share received a new comment';
     $body = $isReply
-        ? "您在分享《{$shareTitle}》下的评论收到回复：\n"
-        : "您的分享《{$shareTitle}》收到新评论：\n";
+        ? "Your comment on share \"{$shareTitle}\" received a reply:\n"
+        : "Your share \"{$shareTitle}\" received a new comment:\n";
     if ($commentEmailMasked !== '') {
-        $body .= "评论邮箱：{$commentEmailMasked}\n";
+        $body .= "Comment Email: {$commentEmailMasked}\n";
     }
     if ($commentContent !== '') {
-        $body .= "评论内容：\n{$commentContent}\n";
+        $body .= "Comment:\n{$commentContent}\n";
     }
-    $body .= "查看评论：{$url}{$anchor}\n";
+    $body .= "View comment: {$url}{$anchor}\n";
     send_mail($recipientEmail, $subject, $body);
 }
 
@@ -3925,7 +3925,7 @@ function require_api_user(): array {
     }
     $user = api_user_from_key($key);
     if (!$user) {
-        api_response(401, null, 'API Key 无效或已失效，请前往控制台重新生成');
+        api_response(401, null, 'API Key is invalid or expired, please regenerate it from the Dashboard');
     }
     touch_user_activity($user);
     return $user;
@@ -4002,7 +4002,7 @@ function render_announcements_html(): string {
     if (empty($items)) {
         return '';
     }
-    $html = '<div class="card"><h2>公告</h2><div class="list">';
+    $html = '<div class="card"><h2>Announcements</h2><div class="list">';
     foreach ($items as $item) {
         $title = htmlspecialchars($item['title']);
         $content = nl2br((string)$item['content']);
@@ -4028,7 +4028,7 @@ function render_announcement_modal(array $items): string {
     $html = '<div class="modal announcement-modal" data-announcement-modal="1">';
     $html .= '<div class="modal-backdrop" data-modal-close="1"></div>';
     $html .= '<div class="modal-card">';
-    $html .= '<div class="modal-header">最新公告</div>';
+    $html .= '<div class="modal-header">Latest Announcement</div>';
     $html .= '<div class="modal-body">';
     foreach ($items as $item) {
         $title = htmlspecialchars($item['title']);
@@ -4037,8 +4037,8 @@ function render_announcement_modal(array $items): string {
     }
     $html .= '</div>';
     $html .= '<div class="modal-footer">';
-    $html .= '<label class="checkbox"><input type="checkbox" data-announcement-hide> 今天不再弹出</label>';
-    $html .= '<button class="button primary" data-modal-close="1">知道了</button>';
+    $html .= '<label class="checkbox"><input type="checkbox" data-announcement-hide> Don't show again today</label>';
+    $html .= '<button class="button primary" data-modal-close="1">Got it</button>';
     $html .= '</div></div></div>';
     return $html;
 }
@@ -4052,7 +4052,7 @@ function build_scan_item_link(array $meta): string {
         $commentCreatedAt = (string)($meta['comment_created_at'] ?? '');
         $commentContent = (string)($meta['comment_content'] ?? '');
         $shareTitle = (string)($meta['share_title'] ?? '');
-        $label = $commentId > 0 ? '评论#' . $commentId : '评论';
+        $label = $commentId > 0 ? 'Comment #' . $commentId : 'Comment';
         $attrs = ' data-admin-comment-edit="1"'
             . ' data-admin-comment-id="' . $commentId . '"'
             . ' data-admin-comment-email="' . htmlspecialchars($commentEmail, ENT_QUOTES) . '"'
@@ -4064,7 +4064,7 @@ function build_scan_item_link(array $meta): string {
     $docId = (string)($meta['doc_id'] ?? '');
     $docTitle = (string)($meta['doc_title'] ?? '');
     $docLabel = trim($docTitle) !== '' ? $docTitle : $docId;
-    $docLabel = $docLabel !== '' ? '文档：' . $docLabel : '文档';
+    $docLabel = $docLabel !== '' ? 'Document: ' . $docLabel : 'Document';
     $docUrl = '';
     if ($slug !== '') {
         $docUrl = $docId !== '' ? base_url() . build_share_redirect_path($slug, $docId, '') : share_url($slug);
@@ -4076,7 +4076,7 @@ function build_scan_item_link(array $meta): string {
 }
 
 function build_scan_log_entry(array $meta, ?array $hit): string {
-    $prefix = $hit ? '命中违禁词 [' . htmlspecialchars((string)$hit['word']) . ']：' : '未命中：';
+    $prefix = $hit ? 'Matched banned word [' . htmlspecialchars((string)$hit['word']) . ']: ' : 'No match: ';
     $parts = [];
     $shareTitle = trim((string)($meta['share_title'] ?? ''));
     if ($shareTitle !== '') {
@@ -4090,16 +4090,16 @@ function build_scan_log_entry(array $meta, ?array $hit): string {
     if ((string)($meta['item_type'] ?? '') === 'comment') {
         $commentEmail = trim((string)($meta['comment_email'] ?? ''));
         if ($commentEmail !== '') {
-            $parts[] = '邮箱：' . htmlspecialchars($commentEmail);
+            $parts[] = 'Email: ' . htmlspecialchars($commentEmail);
         }
         $commentCreatedAt = (string)($meta['comment_created_at'] ?? '');
         if ($commentCreatedAt !== '') {
-            $parts[] = '时间：' . htmlspecialchars(format_share_datetime($commentCreatedAt));
+            $parts[] = 'Time: ' . htmlspecialchars(format_share_datetime($commentCreatedAt));
         }
     } else {
         $hpath = trim((string)($meta['hpath'] ?? ''));
         if ($hpath !== '') {
-            $parts[] = '路径：' . htmlspecialchars($hpath);
+            $parts[] = 'Path: ' . htmlspecialchars($hpath);
         }
     }
     return $prefix . implode(' / ', $parts);
@@ -5153,7 +5153,7 @@ function handle_api(string $path): void {
         $shareId = (int)($payload['shareId'] ?? 0);
         $hardDelete = !empty($payload['hardDelete']);
         if (!$shareId) {
-            api_response(400, null, '缺少分享 ID');
+            api_response(400, null, 'Missing share ID');
         }
         if ($hardDelete) {
             $check = $pdo->prepare('SELECT id FROM shares WHERE id = :id AND user_id = :uid');
@@ -5162,7 +5162,7 @@ function handle_api(string $path): void {
                 ':uid' => $user['id'],
             ]);
             if (!$check->fetchColumn()) {
-                api_response(404, null, '分享不存在');
+                api_response(404, null, 'Share not found');
             }
             hard_delete_share($shareId);
             api_response(200, ['ok' => true, 'hard' => true]);
@@ -5292,13 +5292,13 @@ function handle_api(string $path): void {
                     $hit = find_banned_word($docMarkdown, $bannedWords);
                     if ($hit) {
                         $docTitle = trim((string)($doc['title'] ?? '')) ?: trim((string)($doc['docId'] ?? ''));
-                        api_response(400, null, '触发违禁词：' . $hit['word'] . '（文档：' . $docTitle . '）');
+                        api_response(400, null, 'Triggered banned word: ' . $hit['word'] . ' (Document: ' . $docTitle . ')');
                     }
                 }
             } else {
                 $hit = find_banned_word($markdown, $bannedWords);
                 if ($hit) {
-                    api_response(400, null, '触发违禁词：' . $hit['word']);
+                    api_response(400, null, 'Triggered banned word: ' . $hit['word']);
                 }
             }
         }
@@ -5569,7 +5569,7 @@ function handle_api(string $path): void {
                 $hit = find_banned_word($docMarkdown, $bannedWords);
                 if ($hit) {
                     $docTitle = trim((string)($doc['title'] ?? '')) ?: trim((string)($doc['docId'] ?? ''));
-                    api_response(400, null, '触发违禁词：' . $hit['word'] . '（文档：' . $docTitle . '）');
+                    api_response(400, null, 'Triggered banned word: ' . $hit['word'] . ' (Document: ' . $docTitle . ')');
                 }
             }
         }
@@ -6441,7 +6441,7 @@ function handle_api(string $path): void {
         }
         $meta = json_decode($metaRaw, true);
         if (!is_array($meta)) {
-            api_response(400, null, '数据格式错误');
+            api_response(400, null, 'Invalid data format');
         }
         $docId = trim((string)($meta['docId'] ?? ''));
         $title = trim((string)($meta['title'] ?? ''));
@@ -6457,7 +6457,7 @@ function handle_api(string $path): void {
         $docs = $meta['docs'] ?? [];
         $hasDocs = is_array($docs) && count($docs) > 0;
         if ($docId === '' || (!$hasDocs && $markdown === '')) {
-            api_response(400, null, '缺少文档内容');
+            api_response(400, null, 'Missing document content');
         }
         $bannedWords = get_banned_words();
         if (!empty($bannedWords)) {
@@ -6470,13 +6470,13 @@ function handle_api(string $path): void {
                     $hit = find_banned_word($docMarkdown, $bannedWords);
                     if ($hit) {
                         $docTitle = trim((string)($doc['title'] ?? '')) ?: trim((string)($doc['docId'] ?? ''));
-                        api_response(400, null, '触发违禁词：' . $hit['word'] . '（文档：' . $docTitle . '）');
+                        api_response(400, null, 'Triggered banned word: ' . $hit['word'] . ' (Document: ' . $docTitle . ')');
                     }
                 }
             } else {
                 $hit = find_banned_word($markdown, $bannedWords);
                 if ($hit) {
-                    api_response(400, null, '触发违禁词：' . $hit['word']);
+                    api_response(400, null, 'Triggered banned word: ' . $hit['word']);
                 }
             }
         }
@@ -6534,7 +6534,7 @@ function handle_api(string $path): void {
                 ];
             }
             if (empty($docRows)) {
-                api_response(400, null, '缺少文档内容');
+                api_response(400, null, 'Missing document content');
             }
         } else {
             $docSizeTotal = strlen($markdown);
@@ -6574,7 +6574,7 @@ function handle_api(string $path): void {
         $limit = get_user_limit_bytes($user);
         $usedWithout = max(0, $used - $existingSize);
         if ($limit > 0 && ($usedWithout + $newShareSize) > $limit) {
-            api_response(413, null, '存储空间不足，请清理后重试');
+            api_response(413, null, 'Insufficient storage space, please free up space and retry');
         }
 
         $passwordHash = $existing['password_hash'] ?? null;
@@ -6705,7 +6705,7 @@ function handle_api(string $path): void {
         }
         $meta = json_decode($metaRaw, true);
         if (!is_array($meta)) {
-            api_response(400, null, '数据格式错误');
+            api_response(400, null, 'Invalid data format');
         }
         $notebookId = trim((string)($meta['notebookId'] ?? ''));
         $title = trim((string)($meta['title'] ?? ''));
@@ -6717,7 +6717,7 @@ function handle_api(string $path): void {
         $visitorLimit = parse_visitor_limit($meta['visitorLimit'] ?? null);
         $clearVisitorLimit = !empty($meta['clearVisitorLimit']);
         if ($notebookId === '' || !is_array($docs) || count($docs) === 0) {
-            api_response(400, null, '缺少笔记本 ID 或文档数据');
+            api_response(400, null, 'Missing notebook ID or document data');
         }
         $bannedWords = get_banned_words();
         if (!empty($bannedWords)) {
@@ -6729,7 +6729,7 @@ function handle_api(string $path): void {
                 $hit = find_banned_word($docMarkdown, $bannedWords);
                 if ($hit) {
                     $docTitle = trim((string)($doc['title'] ?? '')) ?: trim((string)($doc['docId'] ?? ''));
-                    api_response(400, null, '触发违禁词：' . $hit['word'] . '（文档：' . $docTitle . '）');
+                    api_response(400, null, 'Triggered banned word: ' . $hit['word'] . ' (Document: ' . $docTitle . ')');
                 }
             }
         }
@@ -6786,7 +6786,7 @@ function handle_api(string $path): void {
             ];
         }
         if (empty($docRows)) {
-            api_response(400, null, '没有可用的文档');
+            api_response(400, null, 'No available documents');
         }
         $baseShareSize = $docSizeTotal + $assetSize;
         $stmt = $pdo->prepare('SELECT * FROM shares WHERE user_id = :uid AND type = "notebook" AND notebook_id = :nid ORDER BY id DESC LIMIT 1');
@@ -6800,7 +6800,7 @@ function handle_api(string $path): void {
         $limit = get_user_limit_bytes($user);
         $usedWithout = max(0, $used - $existingSize);
         if ($limit > 0 && ($usedWithout + $newShareSize) > $limit) {
-            api_response(413, null, '存储空间不足，请清理后重试');
+            api_response(413, null, 'Insufficient storage space, please free up space and retry');
         }
 
         $passwordHash = $existing['password_hash'] ?? null;
@@ -6924,7 +6924,7 @@ function handle_api(string $path): void {
         ]]);
     }
 
-    api_response(404, null, '接口不存在');
+    api_response(404, null, 'Endpoint not found');
 }
 
 function rewrite_asset_links(string $markdown, string $assetBase = ''): string {
@@ -8301,8 +8301,8 @@ function render_share_search_box(string $slug): string {
     $html  = '<div class="kb-search" data-share-search>';
     $html .= '<div class="kb-search-input-wrap">';
     $html .= '<svg class="kb-search-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.35-4.35"/></svg>';
-    $html .= '<input class="kb-search-input" type="search" placeholder="搜索..." data-share-search-input autocomplete="off" spellcheck="false">';
-    $html .= '<button class="kb-search-clear" type="button" data-share-search-clear hidden aria-label="清除搜索">&times;</button>';
+    $html .= '<input class="kb-search-input" type="search" placeholder="Search..." data-share-search-input autocomplete="off" spellcheck="false">';
+    $html .= '<button class="kb-search-clear" type="button" data-share-search-clear hidden aria-label="Clear search">&times;</button>';
     $html .= '</div>';
     $html .= '<div class="kb-search-results" data-share-search-results hidden></div>';
     $html .= '</div>';
@@ -8396,7 +8396,7 @@ function route_share(string $slug, ?string $docId = null): void {
         $content = '<div class="share-shell share-shell--single">';
         $content .= '<div class="share-content">';
         $content .= '<div class="share-header"><h1>' . $shareTitle . '</h1></div>';
-        $content .= '<div class="share-empty">该分享已过期，内容不可见。</div>';
+        $content .= '<div class="share-empty">This share has expired, content is not visible.</div>';
         $content .= '</div></div>';
         render_page($shareTitleRaw, $content, null, '', ['layout' => 'share']);
         return;
@@ -8406,7 +8406,7 @@ function route_share(string $slug, ?string $docId = null): void {
         $content = '<div class="share-shell share-shell--single">';
         $content .= '<div class="share-content">';
         $content .= '<div class="share-header"><h1>' . $shareTitle . '</h1></div>';
-        $content .= '<div class="share-empty">访客数已达上限，分享已关闭。</div>';
+        $content .= '<div class="share-empty">Visitor limit reached, share is closed.</div>';
         $content .= '</div></div>';
         render_page($shareTitleRaw, $content, null, '', ['layout' => 'share']);
         return;
@@ -8423,19 +8423,19 @@ function route_share(string $slug, ?string $docId = null): void {
                 }
                 redirect($redirectPath);
             }
-            $error = '访问密码错误';
+            $error = 'Incorrect access password';
         }
         $content = '<div class="share-shell share-shell--single">';
         $content .= '<div class="share-content">';
         $content .= '<div class="share-header"><h1>' . $shareTitle . '</h1></div>';
         $content .= '<div class="share-gate">';
-        $content .= '<div class="share-gate-note">该分享设置了访问密码</div>';
+        $content .= '<div class="share-gate-note">This share is password protected</div>';
         if ($error) {
             $content .= '<div class="alert error">' . htmlspecialchars($error) . '</div>';
         }
         $content .= '<form method="post" class="share-gate-form">';
-        $content .= '<input class="input" type="password" name="share_password" placeholder="请输入访问密码" required>';
-        $content .= '<button class="button primary" type="submit">验证</button>';
+        $content .= '<input class="input" type="password" name="share_password" placeholder="Enter access password" required>';
+        $content .= '<button class="button primary" type="submit">Verify</button>';
         $content .= '</form></div></div></div>';
         render_page($shareTitleRaw, $content, null, '', ['layout' => 'share']);
         return;
@@ -8514,11 +8514,11 @@ function route_share(string $slug, ?string $docId = null): void {
             $sidebar = '<aside class="kb-sidebar" data-share-sidebar data-share-slug="' . htmlspecialchars($slug) . '">';
             $sidebar .= render_share_search_box($slug);
             $sidebar .= '<div class="kb-side-tabs" data-share-tabs data-share-default="tree">';
-            $sidebar .= '<button class="kb-side-tab is-active" type="button" data-share-tab="tree">文档树</button>';
-            $sidebar .= '<button class="kb-side-tab" type="button" data-share-tab="toc">目录</button>';
+            $sidebar .= '<button class="kb-side-tab is-active" type="button" data-share-tab="tree">Document Tree</button>';
+            $sidebar .= '<button class="kb-side-tab" type="button" data-share-tab="toc">Directory</button>';
             $sidebar .= '<div class="kb-side-actions" data-share-tree-actions>';
-            $sidebar .= '<button class="kb-side-action" type="button" data-tree-collapse title="折叠所有" aria-label="折叠所有"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#sps-tree-collapse-all"></use></svg></button>';
-            $sidebar .= '<button class="kb-side-action" type="button" data-tree-expand title="展开所有" aria-label="展开所有"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#sps-tree-expand-all"></use></svg></button>';
+            $sidebar .= '<button class="kb-side-action" type="button" data-tree-collapse title="Collapse all" aria-label="Collapse all"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#sps-tree-collapse-all"></use></svg></button>';
+            $sidebar .= '<button class="kb-side-action" type="button" data-tree-expand title="Expand all" aria-label="Expand all"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#sps-tree-expand-all"></use></svg></button>';
             $sidebar .= '</div>';
             $sidebar .= '</div>';
             $sidebar .= '<div class="kb-side-panel" data-share-panel="tree">';
@@ -8558,12 +8558,12 @@ function route_share(string $slug, ?string $docId = null): void {
             $mainHtml .= '<div class="kb-header">' . $breadcrumbsHtml;
             $mainHtml .= '<div class="kb-title-row">';
             $mainHtml .= '<h1 class="kb-title">' . $docTitle . '</h1>';
-            $mainHtml .= '<button class="button ghost share-view-toggle" type="button" data-share-toggle aria-pressed="false">源码</button>';
+            $mainHtml .= '<button class="button ghost share-view-toggle" type="button" data-share-toggle aria-pressed="false">Source</button>';
             $mainHtml .= '</div>';
             $mainHtml .= $shareMetaHtml;
             $mainHtml .= '</div>';
             $mainHtml .= '<div class="markdown-body" data-md-id="doc">' . render_markdown($markdown) . '</div>';
-            $mainHtml .= '<textarea class="markdown-source" data-md-id="doc" readonly spellcheck="false" aria-label="Markdown 源码">' . htmlspecialchars($markdown) . '</textarea>';
+            $mainHtml .= '<textarea class="markdown-source" data-md-id="doc" readonly spellcheck="false" aria-label="Markdown Source">' . htmlspecialchars($markdown) . '</textarea>';
             $mainHtml .= $commentHtml;
             $mainHtml .= $reportModalHtml;
             $mainHtml .= '</div></div>';
@@ -8599,7 +8599,7 @@ function route_share(string $slug, ?string $docId = null): void {
         $sidebar = '<aside class="kb-sidebar" data-share-sidebar data-share-slug="' . htmlspecialchars($slug) . '">';
         $sidebar .= render_share_search_box($slug);
         $sidebar .= '<div class="kb-side-tabs" data-share-tabs data-share-default="toc">';
-        $sidebar .= '<button class="kb-side-tab is-active" type="button" data-share-tab="toc">目录</button>';
+        $sidebar .= '<button class="kb-side-tab is-active" type="button" data-share-tab="toc">Directory</button>';
         $sidebar .= '</div>';
         $sidebar .= '<div class="kb-side-panel" data-share-panel="toc" data-share-toc="doc">';
         $sidebar .= '<div class="kb-side-body share-toc-body"></div>';
@@ -8612,12 +8612,12 @@ function route_share(string $slug, ?string $docId = null): void {
         $content .= '<div class="kb-header">';
         $content .= '<div class="kb-title-row">';
         $content .= '<h1 class="kb-title">' . $docTitle . '</h1>';
-        $content .= '<button class="button ghost share-view-toggle" type="button" data-share-toggle aria-pressed="false">源码</button>';
+        $content .= '<button class="button ghost share-view-toggle" type="button" data-share-toggle aria-pressed="false">Source</button>';
         $content .= '</div>';
         $content .= $shareMetaHtml;
         $content .= '</div>';
         $content .= '<div class="markdown-body" data-md-id="doc">' . render_markdown($markdown) . '</div>';
-        $content .= '<textarea class="markdown-source" data-md-id="doc" readonly spellcheck="false" aria-label="Markdown 源码">' . htmlspecialchars($markdown) . '</textarea>';
+        $content .= '<textarea class="markdown-source" data-md-id="doc" readonly spellcheck="false" aria-label="Markdown Source">' . htmlspecialchars($markdown) . '</textarea>';
         $content .= $commentHtml;
         $content .= $reportModalHtml;
         $content .= '</div></div></div>';
@@ -8629,11 +8629,11 @@ function route_share(string $slug, ?string $docId = null): void {
         $sidebar = '<aside class="kb-sidebar" data-share-sidebar data-share-slug="' . htmlspecialchars($slug) . '">';
         $sidebar .= render_share_search_box($slug);
         $sidebar .= '<div class="kb-side-tabs" data-share-tabs data-share-default="tree">';
-        $sidebar .= '<button class="kb-side-tab is-active" type="button" data-share-tab="tree">文档树</button>';
-        $sidebar .= '<button class="kb-side-tab" type="button" data-share-tab="toc">目录</button>';
+        $sidebar .= '<button class="kb-side-tab is-active" type="button" data-share-tab="tree">Document Tree</button>';
+        $sidebar .= '<button class="kb-side-tab" type="button" data-share-tab="toc">Directory</button>';
         $sidebar .= '<div class="kb-side-actions" data-share-tree-actions>';
-        $sidebar .= '<button class="kb-side-action" type="button" data-tree-collapse title="折叠所有" aria-label="折叠所有"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#sps-tree-collapse-all"></use></svg></button>';
-        $sidebar .= '<button class="kb-side-action" type="button" data-tree-expand title="展开所有" aria-label="展开所有"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#sps-tree-expand-all"></use></svg></button>';
+        $sidebar .= '<button class="kb-side-action" type="button" data-tree-collapse title="Collapse all" aria-label="Collapse all"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#sps-tree-collapse-all"></use></svg></button>';
+        $sidebar .= '<button class="kb-side-action" type="button" data-tree-expand title="Expand all" aria-label="Expand all"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#sps-tree-expand-all"></use></svg></button>';
         $sidebar .= '</div>';
         $sidebar .= '</div>';
         $sidebar .= '<div class="kb-side-panel" data-share-panel="tree">';
@@ -8674,7 +8674,7 @@ function route_share(string $slug, ?string $docId = null): void {
             if (!empty($crumbs)) {
                 array_pop($crumbs);
             }
-            $breadcrumbsHtml = '<div class="kb-breadcrumbs"><a class="kb-back" href="' . $base . '/s/' . $slug . '" data-doc-id="" data-share-nav="doc">目录</a>';
+            $breadcrumbsHtml = '<div class="kb-breadcrumbs"><a class="kb-back" href="' . $base . '/s/' . $slug . '" data-doc-id="" data-share-nav="doc">Directory</a>';
             foreach ($crumbs as $crumb) {
                 $breadcrumbsHtml .= '<span>' . htmlspecialchars($crumb) . '</span>';
             }
@@ -8684,12 +8684,12 @@ function route_share(string $slug, ?string $docId = null): void {
             $mainHtml .= '<div class="kb-header">' . $breadcrumbsHtml;
             $mainHtml .= '<div class="kb-title-row">';
             $mainHtml .= '<h1 class="kb-title">' . $docTitle . '</h1>';
-            $mainHtml .= '<button class="button ghost share-view-toggle" type="button" data-share-toggle aria-pressed="false">源码</button>';
+            $mainHtml .= '<button class="button ghost share-view-toggle" type="button" data-share-toggle aria-pressed="false">Source</button>';
             $mainHtml .= '</div>';
             $mainHtml .= $shareMetaHtml;
             $mainHtml .= '</div>';
             $mainHtml .= '<div class="markdown-body" data-md-id="doc">' . render_markdown($markdown) . '</div>';
-            $mainHtml .= '<textarea class="markdown-source" data-md-id="doc" readonly spellcheck="false" aria-label="Markdown 源码">' . htmlspecialchars($markdown) . '</textarea>';
+            $mainHtml .= '<textarea class="markdown-source" data-md-id="doc" readonly spellcheck="false" aria-label="Markdown Source">' . htmlspecialchars($markdown) . '</textarea>';
             $mainHtml .= $commentHtml;
             $mainHtml .= $reportModalHtml;
             $mainHtml .= '</div></div>';
@@ -8709,7 +8709,7 @@ function route_share(string $slug, ?string $docId = null): void {
 
         if (!$docId) {
             $touchShareAccess();
-            $mainHtml = '<div class="kb-main"><div class="share-empty">请先在文档树里面先打开一个文档</div></div>';
+            $mainHtml = '<div class="kb-main"><div class="share-empty">Please open a document from the Document Tree first</div></div>';
             if ($isPartial) {
                 api_response(200, [
                     'title' => $shareTitleRaw,
@@ -8743,9 +8743,9 @@ function route_share(string $slug, ?string $docId = null): void {
             $rows .= '</a>';
         }
         if ($rows === '') {
-            $rows = '<div class="share-empty">暂无文档。</div>';
+            $rows = '<div class="share-empty">No documents.</div>';
         } else {
-            $rows = '<div class="kb-directory"><div class="kb-dir-head"><div>标题</div><div>路径</div><div>更新</div></div>' . $rows . '</div>';
+            $rows = '<div class="kb-directory"><div class="kb-dir-head"><div>Title</div><div>Path</div><div>Updated</div></div>' . $rows . '</div>';
         }
         $reportTrigger = render_share_report_trigger($share);
         $reportModalHtml = render_share_report_form($share, $viewer, null);
@@ -8753,11 +8753,11 @@ function route_share(string $slug, ?string $docId = null): void {
         $content .= $sidebar;
         $content .= '<div class="kb-main">';
         $content .= '<div class="kb-header">';
-        $content .= '<div class="kb-breadcrumbs"><span>目录</span></div>';
+        $content .= '<div class="kb-breadcrumbs"><span>Directory</span></div>';
         $content .= '<div class="kb-title-row">';
         $content .= '<h1 class="kb-title">' . $shareTitle . '</h1>';
         $content .= '</div>';
-        $content .= '<div class="kb-meta"><span class="kb-chip"><strong>文档</strong> ' . count($docs) . ' 篇</span></div>';
+        $content .= '<div class="kb-meta"><span class="kb-chip"><strong>Document</strong> ' . count($docs) . '</span></div>';
         $content .= render_share_stats($share, $reportTrigger);
         $content .= '</div>';
         $content .= $rows;
@@ -8838,7 +8838,7 @@ if ($path === '/logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($path === '/email-code' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     if (!allow_registration()) {
-        flash('error', '当前未开放注册');
+        flash('error', 'Registration is currently not open');
         redirect('/register');
     }
     if (!email_verification_available()) {
@@ -8847,25 +8847,25 @@ if ($path === '/email-code' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim((string)($_POST['email'] ?? ($_SESSION['register_email'] ?? '')));
     $_SESSION['register_email'] = $email;
     if (($_SESSION['register_step'] ?? '') !== 'verify') {
-        flash('error', '请先完成注册信息');
+        flash('error', 'Please complete registration information first');
         redirect('/register');
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        flash('error', '邮箱格式不正确');
+        flash('error', 'Invalid email format');
         redirect('/register?step=verify');
     }
     $lastSent = (int)($_SESSION['register_email_code_at'] ?? 0);
     if ($lastSent && (time() - $lastSent) < 60) {
-        flash('error', '请稍后再发送验证码');
+        flash('error', 'Please wait before sending another code');
         redirect('/register?step=verify');
     }
     $code = create_email_code($email, $_SERVER['REMOTE_ADDR'] ?? '');
     if (!send_email_code($email, $code)) {
-        flash('error', '验证码发送失败，请检查邮件配置');
+        flash('error', 'Failed to send code, please check email configuration');
         redirect('/register?step=verify');
     }
     $_SESSION['register_email_code_at'] = time();
-    flash('info', '验证码已发送，请查收邮件');
+    flash('info', 'Code sent, please check your email');
     redirect('/register?step=verify');
 }
 
@@ -8879,11 +8879,11 @@ if ($path === '/login/email/prepare' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['login_email'] = $email;
     $_SESSION['login_tab'] = 'email';
     if (captcha_enabled() && !check_captcha($captchaInput)) {
-        flash('error', '验证码错误');
+        flash('error', 'Incorrect captcha');
         redirect('/login?tab=email');
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        flash('error', '邮箱格式不正确');
+        flash('error', 'Invalid email format');
         redirect('/login?tab=email');
     }
     $pdo = db();
@@ -8891,11 +8891,11 @@ if ($path === '/login/email/prepare' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([':email' => $email]);
     $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$userRow) {
-        flash('error', '该邮箱未注册');
+        flash('error', 'This email is not registered');
         redirect('/login?tab=email');
     }
     if ((int)$userRow['disabled'] === 1) {
-        flash('error', '账号已被停用');
+        flash('error', 'Account has been disabled');
         redirect('/login?tab=email');
     }
     $_SESSION['login_email_step'] = 'verify';
@@ -8908,35 +8908,35 @@ if ($path === '/login/email-code' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     check_csrf();
     if (($_SESSION['login_email_step'] ?? '') !== 'verify') {
-        flash('error', '请先输入邮箱');
+        flash('error', 'Please enter your email first');
         redirect('/login?tab=email');
     }
     $email = trim((string)($_POST['email'] ?? ($_SESSION['login_email'] ?? '')));
     $_SESSION['login_email'] = $email;
     $_SESSION['login_tab'] = 'email';
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        flash('error', '邮箱格式不正确');
+        flash('error', 'Invalid email format');
         redirect('/login?tab=email&step=verify');
     }
     $pdo = db();
     $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
     $stmt->execute([':email' => $email]);
     if (!$stmt->fetchColumn()) {
-        flash('error', '该邮箱未注册');
+        flash('error', 'This email is not registered');
         redirect('/login?tab=email&step=verify');
     }
     $lastSent = (int)($_SESSION['login_email_code_at'] ?? 0);
     if ($lastSent && (time() - $lastSent) < 60) {
-        flash('error', '请稍后再发送验证码');
+        flash('error', 'Please wait before sending another code');
         redirect('/login?tab=email&step=verify');
     }
     $code = create_email_code($email, $_SERVER['REMOTE_ADDR'] ?? '');
     if (!send_email_code($email, $code)) {
-        flash('error', '验证码发送失败，请检查邮件配置');
+        flash('error', 'Failed to send code, please check email configuration');
         redirect('/login?tab=email&step=verify');
     }
     $_SESSION['login_email_code_at'] = time();
-    flash('info', '验证码已发送，请查收邮件');
+    flash('info', 'Code sent, please check your email');
     redirect('/login?tab=email&step=verify');
 }
 
@@ -8946,7 +8946,7 @@ if ($path === '/login/email' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     check_csrf();
     if (($_SESSION['login_email_step'] ?? '') !== 'verify') {
-        flash('error', '请先输入邮箱');
+        flash('error', 'Please enter your email first');
         redirect('/login?tab=email');
     }
     $email = trim((string)($_POST['email'] ?? ($_SESSION['login_email'] ?? '')));
@@ -8954,11 +8954,11 @@ if ($path === '/login/email' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['login_email'] = $email;
     $_SESSION['login_tab'] = 'email';
     if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        flash('error', '邮箱格式不正确');
+        flash('error', 'Invalid email format');
         redirect('/login?tab=email&step=verify');
     }
     if ($code === '' || !verify_email_code($email, $code)) {
-        flash('error', '邮箱验证码错误');
+        flash('error', 'Incorrect email verification code');
         redirect('/login?tab=email&step=verify');
     }
     $pdo = db();
@@ -8966,11 +8966,11 @@ if ($path === '/login/email' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([':email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$user) {
-        flash('error', '该邮箱未注册');
+        flash('error', 'This email is not registered');
         redirect('/login?tab=email&step=verify');
     }
     if ((int)$user['disabled'] === 1) {
-        flash('error', '账号已被停用');
+        flash('error', 'Account has been disabled');
         redirect('/login?tab=email&step=verify');
     }
     $_SESSION['user_id'] = $user['id'];
@@ -8982,7 +8982,7 @@ if ($path === '/login/email' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $update->execute([':updated_at' => now(), ':id' => $user['id']]);
     }
     if ((int)$user['must_change_password'] === 1) {
-        flash('info', '检测到默认密码，请先修改密码');
+        flash('info', 'Default password detected, please change your password');
         redirect('/account');
     }
     redirect('/dashboard');
@@ -8998,7 +8998,7 @@ if ($path === '/login') {
         $_SESSION['login_username'] = $username;
         $_SESSION['login_tab'] = 'password';
         if (captcha_enabled() && !check_captcha($captchaInput)) {
-            flash('error', '验证码错误');
+            flash('error', 'Incorrect captcha');
             redirect('/login');
         }
         $pdo = db();
@@ -9006,11 +9006,11 @@ if ($path === '/login') {
         $stmt->execute([':username' => $username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$user || !password_verify($password, $user['password_hash'])) {
-            flash('error', '用户名或密码错误');
+            flash('error', 'Incorrect username or password');
             redirect('/login');
         }
         if ((int)$user['disabled'] === 1) {
-            flash('error', '账号已被停用');
+            flash('error', 'Account has been disabled');
             redirect('/login');
         }
         $_SESSION['user_id'] = $user['id'];
@@ -9018,7 +9018,7 @@ if ($path === '/login') {
         $_SESSION['login_email_step'] = 'start';
         unset($_SESSION['login_username']);
         if ((int)$user['must_change_password'] === 1) {
-            flash('info', '检测到默认密码，请先修改密码');
+            flash('info', 'Default password detected, please change your password');
             redirect('/account');
         }
         redirect('/dashboard');
@@ -9063,8 +9063,8 @@ if ($path === '/login') {
 
     $content = '<div class="auth-card">';
     $content .= '<div class="auth-logo">' . $brand . '</div>';
-    $content .= '<div class="auth-title">账号登录</div>';
-    $content .= '<div class="auth-subtitle">欢迎回来，请登录继续</div>';
+    $content .= '<div class="auth-title">Login</div>';
+    $content .= '<div class="auth-subtitle">Welcome back, please log in to continue</div>';
     if ($error) {
         $content .= '<div class="alert error">' . htmlspecialchars($error) . '</div>';
     }
@@ -9073,54 +9073,54 @@ if ($path === '/login') {
     }
     if (email_verification_available()) {
         $content .= '<div class="auth-tabs" data-login-tabs data-login-default="' . $loginTab . '">';
-        $content .= '<button class="auth-tab" type="button" data-login-tab="password">密码登录</button>';
-        $content .= '<button class="auth-tab" type="button" data-login-tab="email">验证码登录</button>';
+        $content .= '<button class="auth-tab" type="button" data-login-tab="password">Password Login</button>';
+        $content .= '<button class="auth-tab" type="button" data-login-tab="email">CaptchaLogin</button>';
         $content .= '</div>';
     }
     $content .= '<form method="post" class="auth-form" data-login-panel="password"' . ($loginTab === 'password' ? '' : ' hidden') . '>';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconUser . '</span><input class="auth-input" name="username" placeholder="用户名" value="' . htmlspecialchars((string)$prefillLoginUser) . '" required></div>';
-    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconLock . '</span><input class="auth-input" type="password" name="password" placeholder="密码" required></div>';
+    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconUser . '</span><input class="auth-input" name="username" placeholder="Username" value="' . htmlspecialchars((string)$prefillLoginUser) . '" required></div>';
+    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconLock . '</span><input class="auth-input" type="password" name="password" placeholder="Password" required></div>';
     if (captcha_enabled()) {
-        $content .= '<div class="auth-field auth-field-captcha"><span class="auth-icon">' . $iconShield . '</span><input class="auth-input" name="captcha" placeholder="验证码" required>';
-        $content .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="验证码" data-captcha></div>';
+        $content .= '<div class="auth-field auth-field-captcha"><span class="auth-icon">' . $iconShield . '</span><input class="auth-input" name="captcha" placeholder="Captcha" required>';
+        $content .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="Captcha" data-captcha></div>';
     }
-    $content .= '<div class="auth-actions"><a class="link" href="' . base_path() . '/forgot">找回密码</a></div>';
-    $content .= '<button class="button primary w-full" type="submit">登录</button>';
+    $content .= '<div class="auth-actions"><a class="link" href="' . base_path() . '/forgot">Forgot Password</a></div>';
+    $content .= '<button class="button primary w-full" type="submit">Login</button>';
     $content .= '</form>';
     if (email_verification_available()) {
         if ($loginEmailStep === 'verify') {
             $content .= '<form method="post" class="auth-form" action="' . base_path() . '/login/email" data-login-panel="email"' . ($loginTab === 'email' ? '' : ' hidden') . '>';
             $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-            $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="邮箱" value="' . htmlspecialchars((string)$prefillLoginEmail) . '" readonly></div>';
-            $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email_code" placeholder="邮箱验证码" required></div>';
+            $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="Email" value="' . htmlspecialchars((string)$prefillLoginEmail) . '" readonly></div>';
+            $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email_code" placeholder="Email Verification Code" required></div>';
             $content .= '<div class="auth-actions">';
-            $content .= '<button class="button ghost" type="submit" formaction="' . base_path() . '/login/email-code" formnovalidate' . $nextLoginAttr . '>发送邮箱验证码</button>';
-            $content .= '<a class="link" href="' . base_path() . '/login?tab=email&step=prepare">修改邮箱</a>';
+            $content .= '<button class="button ghost" type="submit" formaction="' . base_path() . '/login/email-code" formnovalidate' . $nextLoginAttr . '>Send Email Verification Code</button>';
+            $content .= '<a class="link" href="' . base_path() . '/login?tab=email&step=prepare">Change Email</a>';
             $content .= '</div>';
-            $content .= '<button class="button primary w-full" type="submit">登录</button>';
+            $content .= '<button class="button primary w-full" type="submit">Login</button>';
             $content .= '</form>';
         } else {
             $content .= '<form method="post" class="auth-form" action="' . base_path() . '/login/email/prepare" data-login-panel="email"' . ($loginTab === 'email' ? '' : ' hidden') . '>';
             $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-            $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="邮箱" value="' . htmlspecialchars((string)$prefillLoginEmail) . '" required></div>';
+            $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="Email" value="' . htmlspecialchars((string)$prefillLoginEmail) . '" required></div>';
             if (captcha_enabled()) {
-                $content .= '<div class="auth-field auth-field-captcha"><span class="auth-icon">' . $iconShield . '</span><input class="auth-input" name="captcha" placeholder="验证码" required>';
-                $content .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="验证码" data-captcha></div>';
+                $content .= '<div class="auth-field auth-field-captcha"><span class="auth-icon">' . $iconShield . '</span><input class="auth-input" name="captcha" placeholder="Captcha" required>';
+                $content .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="Captcha" data-captcha></div>';
             }
-            $content .= '<button class="button primary w-full" type="submit">下一步</button>';
+            $content .= '<button class="button primary w-full" type="submit">Next</button>';
             $content .= '</form>';
         }
     }
-    $content .= '<div class="auth-footer">没有账号？ <a class="link" href="' . base_path() . '/register">立即注册</a></div>';
+    $content .= '<div class="auth-footer">Don't have an account? <a class="link" href="' . base_path() . '/register">Register now</a></div>';
     $content .= '</div>';
-    render_page('登录', $content, null, '', ['layout' => 'auth']);
+    render_page('Login', $content, null, '', ['layout' => 'auth']);
 }
 
 if ($path === '/register') {
     global $config;
     if (!allow_registration()) {
-        render_page('注册', '<div class="auth-card"><div class="auth-title">暂未开放注册</div></div>', null, '', ['layout' => 'auth']);
+        render_page('Register', '<div class="auth-card"><div class="auth-title">Registration is not open yet</div></div>', null, '', ['layout' => 'auth']);
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         check_csrf();
@@ -9132,21 +9132,21 @@ if ($path === '/register') {
         $_SESSION['register_username'] = $username;
         $_SESSION['register_email'] = $email;
         if ($step === 'info' && captcha_enabled() && !check_captcha($captchaInput)) {
-            flash('error', '验证码错误');
+            flash('error', 'Incorrect captcha');
             redirect('/register');
         }
         if ($step === 'info') {
             if ($username === '' || $password === '') {
-                flash('error', '用户名和密码不能为空');
+                flash('error', 'Username and password cannot be empty');
                 redirect('/register');
             }
             if (strlen($password) < 6) {
-                flash('error', '密码至少 6 位');
+                flash('error', 'Password must be at least 6 characters');
                 redirect('/register');
             }
             if (email_verification_available()) {
                 if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    flash('error', '邮箱格式不正确');
+                    flash('error', 'Invalid email format');
                     redirect('/register');
                 }
                 $_SESSION['register_password_hash'] = password_hash($password, PASSWORD_DEFAULT);
@@ -9155,7 +9155,7 @@ if ($path === '/register') {
             }
 
             if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                flash('error', '邮箱格式不正确');
+                flash('error', 'Invalid email format');
                 redirect('/register');
             }
             $emailVerified = $email !== '' ? 1 : 0;
@@ -9164,7 +9164,7 @@ if ($path === '/register') {
                 $checkEmail = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
                 $checkEmail->execute([':email' => $email]);
                 if ($checkEmail->fetch()) {
-                    flash('error', '该邮箱已注册');
+                    flash('error', 'This email is already registered');
                     redirect('/register');
                 }
             }
@@ -9189,7 +9189,7 @@ if ($path === '/register') {
                     ':updated_at' => now(),
                 ]);
             } catch (PDOException $e) {
-                flash('error', '用户名已存在');
+                flash('error', 'Username already exists');
                 redirect('/register');
             }
             unset($_SESSION['register_step'], $_SESSION['register_password_hash'], $_SESSION['register_email_code_at'], $_SESSION['register_username'], $_SESSION['register_email']);
@@ -9204,27 +9204,27 @@ if ($path === '/register') {
         $passwordHash = (string)($_SESSION['register_password_hash'] ?? '');
         if ($passwordHash === '') {
             $_SESSION['register_step'] = 'info';
-            flash('error', '请先填写注册信息');
+            flash('error', 'Please fill in registration info first');
             redirect('/register');
         }
         $emailCode = trim((string)($_POST['email_code'] ?? ''));
         if ($username === '') {
-            flash('error', '用户名不能为空');
+            flash('error', 'Username cannot be empty');
             redirect('/register?step=verify');
         }
         if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            flash('error', '邮箱格式不正确');
+            flash('error', 'Invalid email format');
             redirect('/register?step=verify');
         }
         if ($emailCode === '' || !verify_email_code($email, $emailCode)) {
-            flash('error', '邮箱验证码错误');
+            flash('error', 'Incorrect email verification code');
             redirect('/register?step=verify');
         }
         $pdo = db();
         $checkEmail = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
         $checkEmail->execute([':email' => $email]);
         if ($checkEmail->fetch()) {
-            flash('error', '该邮箱已注册');
+            flash('error', 'This email is already registered');
             redirect('/register?step=verify');
         }
         $stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash, role, api_key_hash, api_key_prefix, api_key_last4, disabled, storage_limit_bytes, storage_used_bytes, must_change_password, email_verified, created_at, updated_at)
@@ -9247,7 +9247,7 @@ if ($path === '/register') {
                 ':updated_at' => now(),
             ]);
         } catch (PDOException $e) {
-            flash('error', '用户名已存在');
+            flash('error', 'Username already exists');
             redirect('/register?step=verify');
         }
         unset(
@@ -9289,8 +9289,8 @@ if ($path === '/register') {
     $nextCodeAttr = $nextCodeAt ? ' data-countdown-until="' . ($nextCodeAt * 1000) . '"' : '';
     $content = '<div class="auth-card">';
     $content .= '<div class="auth-logo">' . $brand . '</div>';
-    $content .= '<div class="auth-title">注册账号</div>';
-    $content .= '<div class="auth-subtitle">填写信息创建账号</div>';
+    $content .= '<div class="auth-title">Register</div>';
+    $content .= '<div class="auth-subtitle">Fill in info to create account</div>';
     if ($error) {
         $content .= '<div class="alert error">' . htmlspecialchars($error) . '</div>';
     }
@@ -9299,41 +9299,41 @@ if ($path === '/register') {
     }
     if (email_verification_available()) {
         $content .= '<div class="auth-steps">';
-        $content .= '<div class="auth-step' . ($registerStep === 'info' ? ' is-active' : '') . '"><span>1</span>填写信息</div>';
-        $content .= '<div class="auth-step' . ($registerStep === 'verify' ? ' is-active' : '') . '"><span>2</span>邮箱验证</div>';
+        $content .= '<div class="auth-step' . ($registerStep === 'info' ? ' is-active' : '') . '"><span>1</span>Fill in Info</div>';
+        $content .= '<div class="auth-step' . ($registerStep === 'verify' ? ' is-active' : '') . '"><span>2</span>Email Verification</div>';
         $content .= '</div>';
     }
     if ($registerStep === 'verify' && email_verification_available()) {
         $content .= '<form method="post" class="auth-form">';
         $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
         $content .= '<input type="hidden" name="step" value="verify">';
-        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconUser . '</span><input class="auth-input" name="username" placeholder="用户名" value="' . htmlspecialchars((string)$prefillName) . '" readonly></div>';
-        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="邮箱" value="' . htmlspecialchars((string)$prefillEmail) . '" readonly></div>';
-        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email_code" placeholder="邮箱验证码" required></div>';
+        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconUser . '</span><input class="auth-input" name="username" placeholder="Username" value="' . htmlspecialchars((string)$prefillName) . '" readonly></div>';
+        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="Email" value="' . htmlspecialchars((string)$prefillEmail) . '" readonly></div>';
+        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email_code" placeholder="Email Verification Code" required></div>';
         $content .= '<div class="auth-actions">';
-        $content .= '<button class="button ghost" type="submit" formaction="' . base_path() . '/email-code" formnovalidate' . $nextCodeAttr . '>发送邮箱验证码</button>';
-        $content .= '<a class="link" href="' . base_path() . '/register?step=info">修改信息</a>';
+        $content .= '<button class="button ghost" type="submit" formaction="' . base_path() . '/email-code" formnovalidate' . $nextCodeAttr . '>Send Email Verification Code</button>';
+        $content .= '<a class="link" href="' . base_path() . '/register?step=info">Edit Info</a>';
         $content .= '</div>';
-        $content .= '<button class="button primary w-full" type="submit">注册</button>';
-        $content .= '<div class="auth-footer">已有账号？ <a class="link" href="' . base_path() . '/login">立即登录</a></div>';
+        $content .= '<button class="button primary w-full" type="submit">Register</button>';
+        $content .= '<div class="auth-footer">Already have an account? <a class="link" href="' . base_path() . '/login">Login</a></div>';
         $content .= '</form>';
     } else {
         $content .= '<form method="post" class="auth-form">';
         $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
         $content .= '<input type="hidden" name="step" value="info">';
-        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconUser . '</span><input class="auth-input" name="username" placeholder="用户名" value="' . htmlspecialchars((string)$prefillName) . '" required></div>';
-        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="邮箱" value="' . htmlspecialchars((string)$prefillEmail) . '"' . (email_verification_available() ? ' required' : '') . '></div>';
-        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconLock . '</span><input class="auth-input" type="password" name="password" placeholder="密码" required></div>';
+        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconUser . '</span><input class="auth-input" name="username" placeholder="Username" value="' . htmlspecialchars((string)$prefillName) . '" required></div>';
+        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="Email" value="' . htmlspecialchars((string)$prefillEmail) . '"' . (email_verification_available() ? ' required' : '') . '></div>';
+        $content .= '<div class="auth-field"><span class="auth-icon">' . $iconLock . '</span><input class="auth-input" type="password" name="password" placeholder="Password" required></div>';
         if (captcha_enabled()) {
-            $content .= '<div class="auth-field auth-field-captcha"><span class="auth-icon">' . $iconShield . '</span><input class="auth-input" name="captcha" placeholder="验证码" required>';
-            $content .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="验证码" data-captcha></div>';
+            $content .= '<div class="auth-field auth-field-captcha"><span class="auth-icon">' . $iconShield . '</span><input class="auth-input" name="captcha" placeholder="Captcha" required>';
+            $content .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="Captcha" data-captcha></div>';
         }
-        $content .= '<button class="button primary w-full" type="submit">' . (email_verification_available() ? '下一步' : '注册') . '</button>';
-        $content .= '<div class="auth-footer">已有账号？ <a class="link" href="' . base_path() . '/login">立即登录</a></div>';
+        $content .= '<button class="button primary w-full" type="submit">' . (email_verification_available() ? 'Next' : 'Register') . '</button>';
+        $content .= '<div class="auth-footer">Already have an account? <a class="link" href="' . base_path() . '/login">Login</a></div>';
         $content .= '</form>';
     }
     $content .= '</div>';
-    render_page('注册', $content, null, '', ['layout' => 'auth']);
+    render_page('Register', $content, null, '', ['layout' => 'auth']);
 }
 
 if ($path === '/forgot') {
@@ -9343,16 +9343,16 @@ if ($path === '/forgot') {
         $email = trim((string)($_POST['email'] ?? ''));
         $captchaInput = (string)($_POST['captcha'] ?? '');
         if (captcha_enabled() && !check_captcha($captchaInput)) {
-            flash('error', '验证码错误');
+            flash('error', 'Incorrect captcha');
             redirect('/forgot');
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            flash('error', '邮箱格式不正确');
+            flash('error', 'Invalid email format');
             redirect('/forgot');
         }
         $lastSent = (int)($_SESSION['reset_code_at'] ?? 0);
         if ($lastSent && (time() - $lastSent) < 60) {
-            flash('error', '发送过于频繁，请稍后再试');
+            flash('error', 'Too frequent, please try again later');
             redirect('/forgot');
         }
         $pdo = db();
@@ -9363,12 +9363,12 @@ if ($path === '/forgot') {
             $code = create_reset_code((int)$user['id'], $email, $_SERVER['REMOTE_ADDR'] ?? '');
             $sent = send_reset_code($email, $code);
             if (!$sent) {
-                flash('error', '验证码发送失败，请检查邮件配置');
+                flash('error', 'Failed to send code, please check email configuration');
                 redirect('/forgot');
             }
             $_SESSION['reset_code_at'] = time();
         }
-        flash('info', '如果邮箱存在，重置码已发送');
+        flash('info', 'If the email exists, a reset code has been sent');
         redirect('/reset');
     }
 
@@ -9379,8 +9379,8 @@ if ($path === '/forgot') {
     $iconShield = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.6 9.2 8 11 4.4-1.8 8-6 8-11V5z"/></svg>';
     $content = '<div class="auth-card">';
     $content .= '<div class="auth-logo">' . $brand . '</div>';
-    $content .= '<div class="auth-title">找回密码</div>';
-    $content .= '<div class="auth-subtitle">输入邮箱获取重置码</div>';
+    $content .= '<div class="auth-title">Forgot Password</div>';
+    $content .= '<div class="auth-subtitle">Enter email to get a reset code</div>';
     if ($error) {
         $content .= '<div class="alert error">' . htmlspecialchars($error) . '</div>';
     }
@@ -9389,15 +9389,15 @@ if ($path === '/forgot') {
     }
     $content .= '<form method="post" class="auth-form">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="邮箱" required></div>';
+    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="Email" required></div>';
     if (captcha_enabled()) {
-        $content .= '<div class="auth-field auth-field-captcha"><span class="auth-icon">' . $iconShield . '</span><input class="auth-input" name="captcha" placeholder="验证码" required>';
-        $content .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="验证码" data-captcha></div>';
+        $content .= '<div class="auth-field auth-field-captcha"><span class="auth-icon">' . $iconShield . '</span><input class="auth-input" name="captcha" placeholder="Captcha" required>';
+        $content .= '<img class="captcha-img" src="' . htmlspecialchars(captcha_url()) . '" alt="Captcha" data-captcha></div>';
     }
-    $content .= '<button class="button primary w-full" type="submit">发送重置码</button>';
-    $content .= '<div class="auth-footer"><a class="link" href="' . base_path() . '/login">返回登录</a></div>';
+    $content .= '<button class="button primary w-full" type="submit">Send Reset Code</button>';
+    $content .= '<div class="auth-footer"><a class="link" href="' . base_path() . '/login">Back to Login</a></div>';
     $content .= '</form></div>';
-    render_page('找回密码', $content, null, '', ['layout' => 'auth']);
+    render_page('Forgot Password', $content, null, '', ['layout' => 'auth']);
 }
 
 if ($path === '/reset') {
@@ -9409,19 +9409,19 @@ if ($path === '/reset') {
         $password = (string)($_POST['password'] ?? '');
         $confirm = (string)($_POST['confirm_password'] ?? '');
         if ($email === '' || $code === '' || $password === '' || $confirm === '') {
-            flash('error', '请填写完整信息');
+            flash('error', 'Please fill in all required fields');
             redirect('/reset');
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            flash('error', '邮箱格式不正确');
+            flash('error', 'Invalid email format');
             redirect('/reset');
         }
         if (strlen($password) < 6) {
-            flash('error', '密码至少 6 位');
+            flash('error', 'Password must be at least 6 characters');
             redirect('/reset');
         }
         if ($password !== $confirm) {
-            flash('error', '两次密码不一致');
+            flash('error', 'Passwords do not match');
             redirect('/reset');
         }
         $pdo = db();
@@ -9429,11 +9429,11 @@ if ($path === '/reset') {
         $stmt->execute([':email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$user) {
-            flash('error', '账号不存在');
+            flash('error', 'Account does not exist');
             redirect('/reset');
         }
         if (!verify_reset_code((int)$user['id'], $email, $code)) {
-            flash('error', '验证码无效或已过期');
+            flash('error', 'Code is invalid or expired');
             redirect('/reset');
         }
         $update = $pdo->prepare('UPDATE users SET password_hash = :hash, must_change_password = 0, updated_at = :updated_at WHERE id = :id');
@@ -9442,7 +9442,7 @@ if ($path === '/reset') {
             ':updated_at' => now(),
             ':id' => $user['id'],
         ]);
-        flash('info', '密码已重置，请登录');
+        flash('info', 'Password has been reset, please log in');
         redirect('/login');
     }
     $error = flash('error');
@@ -9452,8 +9452,8 @@ if ($path === '/reset') {
     $iconLock = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-6 8v-2a1 1 0 0 1 2 0v2zm3-8H10V7a2 2 0 0 1 4 0z"/></svg>';
     $content = '<div class="auth-card">';
     $content .= '<div class="auth-logo">' . $brand . '</div>';
-    $content .= '<div class="auth-title">重置密码</div>';
-    $content .= '<div class="auth-subtitle">输入邮箱与验证码设置新密码</div>';
+    $content .= '<div class="auth-title">Reset Password</div>';
+    $content .= '<div class="auth-subtitle">Enter email and code to set a new password</div>';
     if ($error) {
         $content .= '<div class="alert error">' . htmlspecialchars($error) . '</div>';
     }
@@ -9462,14 +9462,14 @@ if ($path === '/reset') {
     }
     $content .= '<form method="post" class="auth-form">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="邮箱" required></div>';
-    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="code" placeholder="邮箱验证码" required></div>';
-    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconLock . '</span><input class="auth-input" type="password" name="password" placeholder="新密码" required></div>';
-    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconLock . '</span><input class="auth-input" type="password" name="confirm_password" placeholder="确认密码" required></div>';
-    $content .= '<button class="button primary w-full" type="submit">重置密码</button>';
-    $content .= '<div class="auth-footer"><a class="link" href="' . base_path() . '/login">返回登录</a></div>';
+    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="email" placeholder="Email" required></div>';
+    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconMail . '</span><input class="auth-input" name="code" placeholder="Email Verification Code" required></div>';
+    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconLock . '</span><input class="auth-input" type="password" name="password" placeholder="New Password" required></div>';
+    $content .= '<div class="auth-field"><span class="auth-icon">' . $iconLock . '</span><input class="auth-input" type="password" name="confirm_password" placeholder="Confirm Password" required></div>';
+    $content .= '<button class="button primary w-full" type="submit">Reset Password</button>';
+    $content .= '<div class="auth-footer"><a class="link" href="' . base_path() . '/login">Back to Login</a></div>';
     $content .= '</form></div>';
-    render_page('重置密码', $content, null, '', ['layout' => 'auth']);
+    render_page('Reset Password', $content, null, '', ['layout' => 'auth']);
 }
 
 if ($path === '/account/email-code' && $_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -9477,11 +9477,11 @@ if ($path === '/account/email-code' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $email = trim((string)($_POST['new_email'] ?? ''));
     if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        flash('error', '请输入有效的新邮箱');
+        flash('error', 'Please enter a valid new email');
         redirect('/account');
     }
     if (strcasecmp($email, (string)($user['email'] ?? '')) === 0) {
-        flash('error', '新邮箱不能与当前邮箱相同');
+        flash('error', 'New email cannot be the same as current email');
         redirect('/account');
     }
     $pdo = db();
@@ -9491,22 +9491,22 @@ if ($path === '/account/email-code' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         ':id' => (int)$user['id'],
     ]);
     if ($check->fetchColumn()) {
-        flash('error', '该邮箱已被其他账号使用');
+        flash('error', 'This email is already in use by another account');
         redirect('/account');
     }
     $lastSent = (int)($_SESSION['account_email_code_at'] ?? 0);
     if ($lastSent && (time() - $lastSent) < 60) {
-        flash('error', '请稍后再发送验证码');
+        flash('error', 'Please wait before sending another code');
         redirect('/account');
     }
     $code = create_email_code($email, $_SERVER['REMOTE_ADDR'] ?? '');
     if (!send_email_code($email, $code)) {
-        flash('error', '验证码发送失败，请检查邮件配置');
+        flash('error', 'Failed to send code, please check email configuration');
         redirect('/account');
     }
     $_SESSION['account_email_code_at'] = time();
     $_SESSION['account_email_target'] = $email;
-    flash('info', '验证码已发送，请查收邮件');
+    flash('info', 'Code sent, please check your email');
     redirect('/account');
 }
 
@@ -9516,12 +9516,12 @@ if ($path === '/account/email-change' && $_SERVER['REQUEST_METHOD'] === 'POST') 
     $email = trim((string)($_POST['new_email'] ?? ''));
     $code = trim((string)($_POST['email_code'] ?? ''));
     if ($email === '' || $code === '') {
-        flash('error', '请填写完整信息');
+        flash('error', 'Please fill in all required fields');
         redirect('/account');
     }
     $target = (string)($_SESSION['account_email_target'] ?? '');
     if ($target === '' || strcasecmp($target, $email) !== 0) {
-        flash('error', '请先获取该邮箱验证码');
+        flash('error', 'Please get the email verification code first');
         redirect('/account');
     }
     $pdo = db();
@@ -9531,11 +9531,11 @@ if ($path === '/account/email-change' && $_SERVER['REQUEST_METHOD'] === 'POST') 
         ':id' => (int)$user['id'],
     ]);
     if ($check->fetchColumn()) {
-        flash('error', '该邮箱已被其他账号使用');
+        flash('error', 'This email is already in use by another account');
         redirect('/account');
     }
     if (!verify_email_code($email, $code)) {
-        flash('error', '邮箱验证码错误');
+        flash('error', 'Incorrect email verification code');
         redirect('/account');
     }
     $stmt = $pdo->prepare('UPDATE users SET email = :email, email_verified = 1, updated_at = :updated_at WHERE id = :id');
@@ -9545,7 +9545,7 @@ if ($path === '/account/email-change' && $_SERVER['REQUEST_METHOD'] === 'POST') 
         ':id' => $user['id'],
     ]);
     unset($_SESSION['account_email_target'], $_SESSION['account_email_code_at']);
-    flash('info', '邮箱已更新');
+    flash('info', 'Email updated');
     redirect('/account');
 }
 
@@ -9557,19 +9557,19 @@ if ($path === '/account') {
         $new = (string)($_POST['new_password'] ?? '');
         $confirm = (string)($_POST['confirm_password'] ?? '');
         if ($new === '' || $confirm === '') {
-            flash('error', '请填写完整信息');
+            flash('error', 'Please fill in all required fields');
             redirect('/account');
         }
         if (strlen($new) < 6) {
-            flash('error', '新密码至少 6 位');
+            flash('error', 'New password must be at least 6 characters');
             redirect('/account');
         }
         if ($new !== $confirm) {
-            flash('error', '两次输入的新密码不一致');
+            flash('error', 'New passwords do not match');
             redirect('/account');
         }
         if (!password_verify($current, $user['password_hash'])) {
-            flash('error', '当前密码错误');
+            flash('error', 'Current password is incorrect');
             redirect('/account');
         }
         $pdo = db();
@@ -9581,13 +9581,13 @@ if ($path === '/account') {
         ]);
         unset($_SESSION['user_id'], $_SESSION['password_hash']);
         session_regenerate_id(true);
-        flash('info', '密码修改成功，请重新登录');
+        flash('info', 'Password changed successfully, please log in again');
         redirect('/login');
     }
 
     $error = flash('error');
     $info = flash('info');
-    $content = '<div class="card"><h2>账号设置</h2>';
+    $content = '<div class="card"><h2>Account Settings</h2>';
     if ($error) {
         $content .= '<div class="flash">' . htmlspecialchars($error) . '</div>';
     }
@@ -9595,36 +9595,36 @@ if ($path === '/account') {
         $content .= '<div class="flash">' . htmlspecialchars($info) . '</div>';
     }
     if ((int)$user['must_change_password'] === 1) {
-        $content .= '<div class="notice">当前为默认密码，请尽快修改。</div>';
+        $content .= '<div class="notice">You are using the default password, please change it soon.</div>';
     }
     $content .= '<form method="post" style="margin-top:12px">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="grid">';
-    $content .= '<div><label>当前密码</label><input class="input" type="password" name="current_password" required></div>';
-    $content .= '<div><label>新密码</label><input class="input" type="password" name="new_password" required></div>';
-    $content .= '<div><label>确认新密码</label><input class="input" type="password" name="confirm_password" required></div>';
+    $content .= '<div><label>Current Password</label><input class="input" type="password" name="current_password" required></div>';
+    $content .= '<div><label>New Password</label><input class="input" type="password" name="new_password" required></div>';
+    $content .= '<div><label>Confirm New Password</label><input class="input" type="password" name="confirm_password" required></div>';
     $content .= '</div>';
-    $content .= '<div style="margin-top:12px"><button class="button primary" type="submit">更新密码</button></div>';
+    $content .= '<div style="margin-top:12px"><button class="button primary" type="submit">UpdatedPassword</button></div>';
     $content .= '</form></div>';
 
     $currentEmail = trim((string)($user['email'] ?? ''));
-    $currentEmailLabel = $currentEmail !== '' ? htmlspecialchars($currentEmail) : '未绑定';
+    $currentEmailLabel = $currentEmail !== '' ? htmlspecialchars($currentEmail) : 'Not bound';
     $pendingEmail = (string)($_SESSION['account_email_target'] ?? '');
-    $content .= '<div class="card"><h2>换绑邮箱</h2>';
-    $content .= '<p class="muted">当前邮箱：' . $currentEmailLabel . '</p>';
+    $content .= '<div class="card"><h2>Change Email</h2>';
+    $content .= '<p class="muted">Current Email: ' . $currentEmailLabel . '</p>';
     $content .= '<form method="post" action="' . base_path() . '/account/email-change" style="margin-top:12px">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="grid">';
-    $content .= '<div><label>新邮箱</label><input class="input" type="email" name="new_email" value="' . htmlspecialchars($pendingEmail) . '" required></div>';
-    $content .= '<div><label>邮箱验证码</label><input class="input" name="email_code" placeholder="请输入验证码" required></div>';
+    $content .= '<div><label>New Email</label><input class="input" type="email" name="new_email" value="' . htmlspecialchars($pendingEmail) . '" required></div>';
+    $content .= '<div><label>Email Verification Code</label><input class="input" name="email_code" placeholder="Enter captcha" required></div>';
     $content .= '</div>';
     $content .= '<div class="form-actions" style="margin-top:12px">';
-    $content .= '<button class="button ghost" type="submit" formaction="' . base_path() . '/account/email-code" formnovalidate>发送邮箱验证码</button>';
-    $content .= '<button class="button primary" type="submit">更换邮箱</button>';
+    $content .= '<button class="button ghost" type="submit" formaction="' . base_path() . '/account/email-code" formnovalidate>Send Email Verification Code</button>';
+    $content .= '<button class="button primary" type="submit">Change Email</button>';
     $content .= '</div>';
     $content .= '</form></div>';
-    $titleHtml = build_topbar_title('账号设置', $user);
-    render_page('账号设置', $content, $user, '', ['title_html' => $titleHtml]);
+    $titleHtml = build_topbar_title('Account Settings', $user);
+    render_page('Account Settings', $content, $user, '', ['title_html' => $titleHtml]);
 }
 
 if ($path === '/dashboard') {
@@ -9633,8 +9633,8 @@ if ($path === '/dashboard') {
     $usedBytes = recalculate_user_storage((int)$user['id']);
     $user['storage_used_bytes'] = $usedBytes;
     $limitBytes = get_user_limit_bytes($user);
-    $limitLabel = $limitBytes > 0 ? format_bytes($limitBytes) : '不限';
-    $limitSource = ((int)$user['storage_limit_bytes'] > 0) ? '自定义' : '默认';
+    $limitLabel = $limitBytes > 0 ? format_bytes($limitBytes) : 'Unlimited';
+    $limitSource = ((int)$user['storage_limit_bytes'] > 0) ? 'Custom' : 'Default';
     $storageFull = $limitBytes > 0 && $usedBytes >= $limitBytes;
     $shareSearch = trim((string)($_GET['share_search'] ?? ''));
     $sharePage = max(1, (int)($_GET['share_page'] ?? 1));
@@ -9806,70 +9806,70 @@ if ($path === '/dashboard') {
         $content .= '<div class="flash">' . htmlspecialchars($info) . '</div>';
     }
     if ((int)$user['must_change_password'] === 1) {
-        $content .= '<div class="notice">检测到默认密码，请尽快在账号设置中修改。</div>';
+        $content .= '<div class="notice">Default password detected, please change it in Account Settings.</div>';
     }
-    $content .= '<div class="card"><h2>存储空间</h2>';
-    $content .= '<p>已使用：' . format_bytes($usedBytes) . ' / ' . $limitLabel . '（' . $limitSource . '）</p>';
+    $content .= '<div class="card"><h2>Storage space</h2>';
+    $content .= '<p>Used: ' . format_bytes($usedBytes) . ' / ' . $limitLabel . '(' . $limitSource . ')</p>';
     $content .= '</div>';
     $content .= '<div class="card"><h2>API Key</h2>';
     if ($apiKey) {
-        $content .= '<div class="notice">新的 API Key：<code>' . htmlspecialchars($apiKey) . '</code>（仅显示一次，请妥善保存）</div>';
+        $content .= '<div class="notice">New API Key: <code>' . htmlspecialchars($apiKey) . '</code>(shown once only, please save it)</div>';
     }
     if (!empty($user['api_key_last4'])) {
-        $content .= '<p class="muted">当前 Key 末尾：' . htmlspecialchars($user['api_key_last4'] ?? '') . '</p>';
+        $content .= '<p class="muted">Current Key suffix: ' . htmlspecialchars($user['api_key_last4'] ?? '') . '</p>';
     } else {
-        $content .= '<p class="muted">尚未生成 API Key。</p>';
+        $content .= '<p class="muted">No API Key generated yet.</p>';
     }
-    $buttonLabel = !empty($user['api_key_last4']) ? '重新生成' : '生成 API Key';
+    $buttonLabel = !empty($user['api_key_last4']) ? 'Regenerate' : 'Generate API Key';
     $content .= '<form method="post" action="' . base_path() . '/api-key/rotate">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<button class="button" type="submit">' . $buttonLabel . '</button>';
     $content .= '</form></div>';
 
-    $content .= '<div class="card"><h2>账号设置</h2>';
-    $content .= '<p class="muted">修改登录密码、查看账号状态。</p>';
-    $content .= '<a class="button" href="' . base_path() . '/account">前往账号设置</a>';
+    $content .= '<div class="card"><h2>Account Settings</h2>';
+    $content .= '<p class="muted">Change login password, view account status.</p>';
+    $content .= '<a class="button" href="' . base_path() . '/account">Go to Account Settings</a>';
     $content .= '</div>';
 
-    $content .= '<div class="card" id="shares"><h2>分享列表</h2>';
+    $content .= '<div class="card" id="shares"><h2>Share List</h2>';
     $content .= '<form method="get" action="' . base_path() . '/dashboard#shares" class="filter-form">';
     $content .= render_hidden_inputs($shareQuery);
     $content .= '<div class="grid">';
-    $content .= '<div><label>关键词</label><input class="input" name="share_search" placeholder="标题 / Slug" value="' . htmlspecialchars($shareSearch) . '"></div>';
-    $content .= '<div><label>状态筛选</label><select class="input" name="status">';
-    $content .= '<option value="active"' . ($filterStatus === 'active' ? ' selected' : '') . '>正常</option>';
-    $content .= '<option value="deleted"' . ($filterStatus === 'deleted' ? ' selected' : '') . '>已删除</option>';
-    $content .= '<option value="all"' . ($filterStatus === 'all' ? ' selected' : '') . '>全部</option>';
+    $content .= '<div><label>Keyword</label><input class="input" name="share_search" placeholder="Title / Slug" value="' . htmlspecialchars($shareSearch) . '"></div>';
+    $content .= '<div><label>Filter by Status</label><select class="input" name="status">';
+    $content .= '<option value="active"' . ($filterStatus === 'active' ? ' selected' : '') . '>Active</option>';
+    $content .= '<option value="deleted"' . ($filterStatus === 'deleted' ? ' selected' : '') . '>Deleted</option>';
+    $content .= '<option value="all"' . ($filterStatus === 'all' ? ' selected' : '') . '>All</option>';
     $content .= '</select></div>';
     $content .= '</div>';
-    $content .= '<div style="margin-top:12px"><button class="button" type="submit">筛选</button></div>';
+    $content .= '<div style="margin-top:12px"><button class="button" type="submit">Filter</button></div>';
     $content .= '</form>';
     if (empty($shares)) {
-        $content .= '<p class="muted" style="margin-top:12px">暂无分享记录。</p>';
+        $content .= '<p class="muted" style="margin-top:12px">No shares found.</p>';
     } else {
-        $content .= '<table class="table" style="margin-top:12px"><thead><tr><th>标题</th><th>类型</th><th>链接</th><th>密码</th><th>到期</th><th>访客上限</th><th>状态</th><th>评论邮件通知</th><th>大小</th><th>更新时间</th></tr></thead><tbody>';
+        $content .= '<table class="table" style="margin-top:12px"><thead><tr><th>Title</th><th>Type</th><th>Link</th><th>Password</th><th>Expires</th><th>Visitor Limit</th><th>Status</th><th>Comment Email Notify</th><th>Size</th><th>UpdatedTime</th></tr></thead><tbody>';
         foreach ($shares as $share) {
             $title = htmlspecialchars($share['title']);
-            $type = $share['type'] === 'notebook' ? '笔记本' : '文档';
+            $type = $share['type'] === 'notebook' ? 'Notebook' : 'Document';
             $url = share_url($share['slug']);
             $updated = htmlspecialchars($share['updated_at']);
             $size = format_bytes((int)($share['size_bytes'] ?? 0));
-            $hasPassword = !empty($share['password_hash']) ? '已设置' : '无';
-            $expiresAt = !empty($share['expires_at']) ? date('Y-m-d H:i', (int)$share['expires_at']) : '永久';
+            $hasPassword = !empty($share['password_hash']) ? 'Set' : 'None';
+            $expiresAt = !empty($share['expires_at']) ? date('Y-m-d H:i', (int)$share['expires_at']) : 'Never';
             $visitorLimit = (int)($share['visitor_limit'] ?? 0);
             if ($visitorLimit > 0) {
                 $visitorCount = share_visitor_count((int)$share['id']);
                 $visitorLabel = $visitorCount . '/' . $visitorLimit;
             } else {
-                $visitorLabel = '不限';
+                $visitorLabel = 'Unlimited';
             }
-            $status = $share['deleted_at'] ? '已删除' : '正常';
+            $status = $share['deleted_at'] ? 'Deleted' : 'Active';
             $notifyEnabled = (int)($share['comment_notify'] ?? 0) === 1;
             if (!empty($share['deleted_at'])) {
-                $notifyHtml = '<span class="muted">已删除</span>';
+                $notifyHtml = '<span class="muted">Deleted</span>';
             } else {
                 $notifyHtml = '<div class="comment-notify">';
-                $notifyHtml .= '<span class="comment-notify-status">' . ($notifyEnabled ? '已开启' : '已关闭') . '</span>';
+                $notifyHtml .= '<span class="comment-notify-status">' . ($notifyEnabled ? 'On' : 'Off') . '</span>';
                 if ($notifyEnabled || smtp_enabled()) {
                     $notifyHtml .= '<form method="post" action="' . base_path() . '/dashboard/comment-notify" class="inline-form">';
                     $notifyHtml .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
@@ -9881,7 +9881,7 @@ if ($path === '/dashboard') {
                     $notifyHtml .= '</label>';
                     $notifyHtml .= '</form>';
                 } else {
-                    $notifyHtml .= '<span class="muted">需开启SMTP</span>';
+                    $notifyHtml .= '<span class="muted">SMTP required</span>';
                     $notifyHtml .= '<label class="switch is-disabled">';
                     $notifyHtml .= '<input type="checkbox" disabled>';
                     $notifyHtml .= '<span class="switch-slider"></span>';
@@ -9894,48 +9894,48 @@ if ($path === '/dashboard') {
         $content .= '</tbody></table>';
     }
     $content .= '<div class="pagination">';
-    $content .= '<a class="button ghost" href="' . build_dashboard_query_url(['share_page' => max(1, $sharePage - 1)]) . '">上一页</a>';
-    $content .= '<div class="pagination-info">第 ' . $sharePage . ' / ' . $sharePages . ' 页，共 ' . $totalShares . ' 条分享</div>';
-    $content .= '<a class="button ghost" href="' . build_dashboard_query_url(['share_page' => min($sharePages, $sharePage + 1)]) . '">下一页</a>';
+    $content .= '<a class="button ghost" href="' . build_dashboard_query_url(['share_page' => max(1, $sharePage - 1)]) . '">Previous</a>';
+    $content .= '<div class="pagination-info">Page ' . $sharePage . ' / ' . $sharePages . ' of ' . $totalShares . ' recordsShare</div>';
+    $content .= '<a class="button ghost" href="' . build_dashboard_query_url(['share_page' => min($sharePages, $sharePage + 1)]) . '">Next</a>';
     $content .= '<form method="get" action="' . base_path() . '/dashboard#shares" class="pagination-form">';
     $content .= render_hidden_inputs(array_merge($shareQuery, [
         'share_search' => $shareSearch,
         'status' => $filterStatus,
     ]));
-    $content .= '<label>每页</label><select class="input" name="share_size">';
+    $content .= '<label>Per page</label><select class="input" name="share_size">';
     foreach ([10, 50, 200, 1000] as $size) {
         $selected = $shareSize === $size ? ' selected' : '';
         $content .= '<option value="' . $size . '"' . $selected . '>' . $size . '</option>';
     }
     $content .= '</select>';
-    $content .= '<label>页码</label><input class="input small" type="number" name="share_page" min="1" max="' . $sharePages . '" value="' . $sharePage . '">';
-    $content .= '<button class="button" type="submit">跳转</button>';
+    $content .= '<label>Page Number</label><input class="input small" type="number" name="share_page" min="1" max="' . $sharePages . '" value="' . $sharePage . '">';
+    $content .= '<button class="button" type="submit">Go</button>';
     $content .= '</form>';
     $content .= '</div>';
     $content .= '</div>';
 
-    $content .= '<div class="card" id="access-stats"><h2>访问概况</h2>';
+    $content .= '<div class="card" id="access-stats"><h2>Access Overview</h2>';
     $content .= '<form method="post" action="' . base_path() . '/dashboard/access-stats/update" class="stats-settings">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="grid">';
-    $content .= '<div><label>访问统计</label><label class="checkbox stats-toggle"><input type="checkbox" name="access_enabled" value="1"' . ($accessEnabled ? ' checked' : '') . '> 开启</label></div>';
-    $content .= '<div><label>保留天数</label><input class="input" type="number" name="access_retention_days" min="1" max="365" value="' . (int)$accessRetention . '"></div>';
+    $content .= '<div><label>Access Statistics</label><label class="checkbox stats-toggle"><input type="checkbox" name="access_enabled" value="1"' . ($accessEnabled ? ' checked' : '') . '> On</label></div>';
+    $content .= '<div><label>Retention Days</label><input class="input" type="number" name="access_retention_days" min="1" max="365" value="' . (int)$accessRetention . '"></div>';
     $content .= '</div>';
-    $content .= '<div class="muted stats-note">访客数(UV) 按浏览器 Cookie 去重（按天），访问记录计入账号存储空间，默认保留最近 7 天（当前 ' . (int)$accessRetention . ' 天），可在此调整；存储不足会自动关闭并清空统计。</div>';
+    $content .= '<div class="muted stats-note">Visitors (UV) deduplicated by browser cookie (daily), access records count toward account storage space, default retention Last 7 days(current: ' . (int)$accessRetention . ' days), adjustable here; insufficient storage will automatically disable and clear statistics.</div>';
     if ($storageFull) {
-        $content .= '<div class="notice" style="margin-top:8px">存储空间已满，当前无法开启访问统计，请先清理空间。</div>';
+        $content .= '<div class="notice" style="margin-top:8px">Storage is full, cannot enable Access Statistics, please free up space first.</div>';
     }
     if (!$accessEnabled) {
-        $content .= '<div class="notice" style="margin-top:8px">访问统计已关闭，当前不会记录新的访问。</div>';
+        $content .= '<div class="notice" style="margin-top:8px">Access statistics are off, new visits will not be recorded.</div>';
     }
-    $content .= '<div style="margin-top:12px"><button class="button" type="submit">保存设置</button></div>';
+    $content .= '<div style="margin-top:12px"><button class="button" type="submit">Save Settings</button></div>';
     $content .= '</form>';
 
     $content .= '<form method="get" action="' . base_path() . '/dashboard#access-stats" class="filter-form">';
     $content .= render_hidden_inputs($accessFilterQuery);
     $content .= '<div class="grid">';
-    $content .= '<div><label>笔记筛选</label><select class="input" name="access_share">';
-    $content .= '<option value="all"' . ($accessShareId <= 0 ? ' selected' : '') . '>全部</option>';
+    $content .= '<div><label>Note Filter</label><select class="input" name="access_share">';
+    $content .= '<option value="all"' . ($accessShareId <= 0 ? ' selected' : '') . '>All</option>';
     foreach ($accessShareOptions as $option) {
         $optionId = (int)($option['id'] ?? 0);
         $optionTitle = (string)($option['title'] ?? '');
@@ -9949,24 +9949,24 @@ if ($path === '/dashboard') {
     }
     $content .= '</select></div>';
     $content .= '</div>';
-    $content .= '<div style="margin-top:12px"><button class="button" type="submit">筛选</button></div>';
+    $content .= '<div style="margin-top:12px"><button class="button" type="submit">Filter</button></div>';
     $content .= '</form>';
 
     $content .= '<div class="stats-block">';
-    $content .= '<div class="stats-title">访问概况</div>';
-    $content .= '<table class="table stats-table"><thead><tr><th></th><th>浏览量(PV)</th><th>访客数(UV)</th><th>IP 数量</th></tr></thead><tbody>';
-    $content .= '<tr><td>今日</td><td>' . $accessSummary['pv_today'] . '</td><td>' . $accessSummary['uv_today'] . '</td><td>' . $accessSummary['ip_today'] . '</td></tr>';
-    $content .= '<tr><td>昨日</td><td>' . $accessSummary['pv_yesterday'] . '</td><td>' . $accessSummary['uv_yesterday'] . '</td><td>' . $accessSummary['ip_yesterday'] . '</td></tr>';
-    $content .= '<tr><td>总计</td><td>' . $accessSummary['pv_total'] . '</td><td>' . $accessSummary['uv_total'] . '</td><td>' . $accessSummary['ip_total'] . '</td></tr>';
+    $content .= '<div class="stats-title">Access Overview</div>';
+    $content .= '<table class="table stats-table"><thead><tr><th></th><th>Views (PV)</th><th>Visitors (UV)</th><th>IP Count</th></tr></thead><tbody>';
+    $content .= '<tr><td>Today</td><td>' . $accessSummary['pv_today'] . '</td><td>' . $accessSummary['uv_today'] . '</td><td>' . $accessSummary['ip_today'] . '</td></tr>';
+    $content .= '<tr><td>Yesterday</td><td>' . $accessSummary['pv_yesterday'] . '</td><td>' . $accessSummary['uv_yesterday'] . '</td><td>' . $accessSummary['ip_yesterday'] . '</td></tr>';
+    $content .= '<tr><td>Total</td><td>' . $accessSummary['pv_total'] . '</td><td>' . $accessSummary['uv_total'] . '</td><td>' . $accessSummary['ip_total'] . '</td></tr>';
     $content .= '</tbody></table>';
     $content .= '</div>';
 
     $content .= '<div class="stats-block">';
-    $content .= '<div class="stats-title">来源页</div>';
+    $content .= '<div class="stats-title">Referrers</div>';
     if (empty($accessSources)) {
-        $content .= '<p class="muted">暂无来源数据。</p>';
+        $content .= '<p class="muted">No referrer data.</p>';
     } else {
-        $content .= '<table class="table stats-table"><thead><tr><th>排名</th><th>次数</th><th>来源地址</th></tr></thead><tbody>';
+        $content .= '<table class="table stats-table"><thead><tr><th>Rank</th><th>Count</th><th>Referrer</th></tr></thead><tbody>';
         $rank = 1;
         foreach ($accessSources as $row) {
             $referer = (string)($row['referer'] ?? '');
@@ -9976,33 +9976,33 @@ if ($path === '/dashboard') {
         }
         $content .= '</tbody></table>';
         $content .= '<div class="pagination">';
-        $content .= '<a class="button ghost" href="' . build_access_stats_query_url(['access_source_page' => max(1, $accessSourcePage - 1)]) . '">上一页</a>';
-        $content .= '<div class="pagination-info">第 ' . $accessSourcePage . ' / ' . $accessSourcePages . ' 页，共 ' . $accessSourceTotal . ' 条来源</div>';
-        $content .= '<a class="button ghost" href="' . build_access_stats_query_url(['access_source_page' => min($accessSourcePages, $accessSourcePage + 1)]) . '">下一页</a>';
+        $content .= '<a class="button ghost" href="' . build_access_stats_query_url(['access_source_page' => max(1, $accessSourcePage - 1)]) . '">Previous</a>';
+        $content .= '<div class="pagination-info">Page ' . $accessSourcePage . ' / ' . $accessSourcePages . ' of ' . $accessSourceTotal . ' referrers</div>';
+        $content .= '<a class="button ghost" href="' . build_access_stats_query_url(['access_source_page' => min($accessSourcePages, $accessSourcePage + 1)]) . '">Next</a>';
         $content .= '<form method="get" action="' . base_path() . '/dashboard#access-stats" class="pagination-form">';
         $content .= render_hidden_inputs(array_merge($accessSourceQuery, [
             'access_share' => $accessShareId > 0 ? $accessShareId : 'all',
         ]));
-        $content .= '<label>每页</label><select class="input" name="access_source_size">';
+        $content .= '<label>Per page</label><select class="input" name="access_source_size">';
         foreach ([10, 50, 200, 1000] as $size) {
             $selected = $accessSourceSize === $size ? ' selected' : '';
             $content .= '<option value="' . $size . '"' . $selected . '>' . $size . '</option>';
         }
         $content .= '</select>';
-        $content .= '<label>页码</label><input class="input small" type="number" name="access_source_page" min="1" max="' . $accessSourcePages . '" value="' . $accessSourcePage . '">';
-        $content .= '<button class="button" type="submit">跳转</button>';
+        $content .= '<label>Page Number</label><input class="input small" type="number" name="access_source_page" min="1" max="' . $accessSourcePages . '" value="' . $accessSourcePage . '">';
+        $content .= '<button class="button" type="submit">Go</button>';
         $content .= '</form>';
         $content .= '</div>';
     }
     $content .= '</div>';
 
     $content .= '<div class="stats-block">';
-    $content .= '<div class="stats-title">访客地域分析</div>';
+    $content .= '<div class="stats-title">Visitor Geography</div>';
     $content .= '<div class="stats-charts">';
     $content .= '<div class="stats-chart">';
-    $content .= '<div class="stats-subtitle">国内</div>';
+    $content .= '<div class="stats-subtitle">Domestic</div>';
     if (empty($accessRegionsCn)) {
-        $content .= '<p class="muted">暂无数据。</p>';
+        $content .= '<p class="muted">No data.</p>';
     } else {
         $content .= '<div class="stats-chart-list">';
         foreach ($accessRegionsCn as $row) {
@@ -10015,9 +10015,9 @@ if ($path === '/dashboard') {
     }
     $content .= '</div>';
     $content .= '<div class="stats-chart">';
-    $content .= '<div class="stats-subtitle">国际</div>';
+    $content .= '<div class="stats-subtitle">International</div>';
     if (empty($accessRegionsIntl)) {
-        $content .= '<p class="muted">暂无数据。</p>';
+        $content .= '<p class="muted">No data.</p>';
     } else {
         $content .= '<div class="stats-chart-list">';
         foreach ($accessRegionsIntl as $row) {
@@ -10033,29 +10033,29 @@ if ($path === '/dashboard') {
     $content .= '</div>';
 
     $content .= '<div class="stats-block">';
-    $content .= '<div class="stats-title">访问记录</div>';
+    $content .= '<div class="stats-title">Access Records</div>';
     $content .= '<div class="table-actions stats-actions">';
     $content .= '<form id="access-batch-form" method="post" action="' . base_path() . '/dashboard/access-stats/delete" class="inline-form" data-batch-form="access">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-    $content .= '<label class="checkbox"><input type="checkbox" data-check-all="access"> 全选</label>';
-    $content .= '<button class="button danger" type="submit">批量删除</button>';
+    $content .= '<label class="checkbox"><input type="checkbox" data-check-all="access"> Select All</label>';
+    $content .= '<button class="button danger" type="submit">Batch Delete</button>';
     $content .= '</form>';
-    $content .= '<form method="post" action="' . base_path() . '/dashboard/access-stats/delete-all" class="inline-form" data-confirm-message="确定删除全部访问记录吗？该操作不可恢复。">';
+    $content .= '<form method="post" action="' . base_path() . '/dashboard/access-stats/delete-all" class="inline-form" data-confirm-message="Confirm Deleteall access records? This action cannot be undone.">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-    $content .= '<button class="button danger" type="submit">删除全部（占用 ' . $accessLogTotalLabel . '）</button>';
+    $content .= '<button class="button danger" type="submit">Delete All (occupying ' . $accessLogTotalLabel . ')</button>';
     $content .= '</form>';
     $content .= '</div>';
     if (empty($accessLogs)) {
-        $content .= '<p class="muted">暂无访问记录。</p>';
+        $content .= '<p class="muted">No access records.</p>';
     } else {
-        $content .= '<table class="table stats-table"><thead><tr><th><input type="checkbox" data-check-all="access" form="access-batch-form"></th><th>标题</th><th>IP</th><th>IP归属地</th><th>访问日期</th></tr></thead><tbody>';
+        $content .= '<table class="table stats-table"><thead><tr><th><input type="checkbox" data-check-all="access" form="access-batch-form"></th><th>Title</th><th>IP</th><th>IP Location</th><th>Access Date</th></tr></thead><tbody>';
         foreach ($accessLogs as $log) {
             $logTitle = trim((string)($log['doc_title'] ?? ''));
             if ($logTitle === '') {
                 $logTitle = (string)($log['share_title'] ?? '');
             }
             if ($logTitle === '') {
-                $logTitle = '未命名';
+                $logTitle = 'Untitled';
             }
             $slug = (string)($log['slug'] ?? '');
             $docId = trim((string)($log['doc_id'] ?? ''));
@@ -10094,21 +10094,21 @@ if ($path === '/dashboard') {
         $content .= '</tbody></table>';
     }
     $content .= '<div class="pagination">';
-    $content .= '<a class="button ghost" href="' . build_access_stats_query_url(['access_page' => max(1, $accessPage - 1)]) . '">上一页</a>';
-    $content .= '<div class="pagination-info">第 ' . $accessPage . ' / ' . $accessPages . ' 页，共 ' . $accessTotal . ' 条访问</div>';
-    $content .= '<a class="button ghost" href="' . build_access_stats_query_url(['access_page' => min($accessPages, $accessPage + 1)]) . '">下一页</a>';
+    $content .= '<a class="button ghost" href="' . build_access_stats_query_url(['access_page' => max(1, $accessPage - 1)]) . '">Previous</a>';
+    $content .= '<div class="pagination-info">Page ' . $accessPage . ' / ' . $accessPages . ' of ' . $accessTotal . ' visits</div>';
+    $content .= '<a class="button ghost" href="' . build_access_stats_query_url(['access_page' => min($accessPages, $accessPage + 1)]) . '">Next</a>';
     $content .= '<form method="get" action="' . base_path() . '/dashboard#access-stats" class="pagination-form">';
     $content .= render_hidden_inputs(array_merge($accessQuery, [
         'access_share' => $accessShareId > 0 ? $accessShareId : 'all',
     ]));
-    $content .= '<label>每页</label><select class="input" name="access_size">';
+    $content .= '<label>Per page</label><select class="input" name="access_size">';
     foreach ([10, 50, 200, 1000] as $size) {
         $selected = $accessSize === $size ? ' selected' : '';
         $content .= '<option value="' . $size . '"' . $selected . '>' . $size . '</option>';
     }
     $content .= '</select>';
-    $content .= '<label>页码</label><input class="input small" type="number" name="access_page" min="1" max="' . $accessPages . '" value="' . $accessPage . '">';
-    $content .= '<button class="button" type="submit">跳转</button>';
+    $content .= '<label>Page Number</label><input class="input small" type="number" name="access_page" min="1" max="' . $accessPages . '" value="' . $accessPage . '">';
+    $content .= '<button class="button" type="submit">Go</button>';
     $content .= '</form>';
     $content .= '</div>';
     $content .= '</div>';
@@ -10116,13 +10116,13 @@ if ($path === '/dashboard') {
     $content .= '</div>';
 
     if ($user['role'] === 'admin') {
-        $content .= '<div class="card"><h2>管理员入口</h2>';
-        $content .= '<a class="button" href="' . base_path() . '/admin-home">进入后台</a>';
+        $content .= '<div class="card"><h2>Admin Portal</h2>';
+        $content .= '<a class="button" href="' . base_path() . '/admin-home">Enter Admin</a>';
         $content .= '</div>';
     }
 
-    $titleHtml = build_topbar_title('控制台', $user);
-    render_page('控制台', $content, $user, '', ['layout' => 'app', 'nav' => 'dashboard', 'title_html' => $titleHtml]);
+    $titleHtml = build_topbar_title('Dashboard', $user);
+    render_page('Dashboard', $content, $user, '', ['layout' => 'app', 'nav' => 'dashboard', 'title_html' => $titleHtml]);
 }
 
 if ($path === '/admin-home') {
@@ -10327,38 +10327,38 @@ if ($path === '/admin-home') {
     $instanceActive30 = $instanceStats ? (int)($instanceStats['active_30'] ?? 0) : null;
     $instanceUpdatedAt = $instanceStats ? (string)($instanceStats['updated_at'] ?? '') : '';
 
-    $greetingLabel = '你好';
+    $greetingLabel = 'Hello';
     $hour = (int)date('G');
     if ($hour < 6) {
-        $greetingLabel = '凌晨好';
+        $greetingLabel = 'Good early morning';
     } elseif ($hour < 12) {
-        $greetingLabel = '上午好';
+        $greetingLabel = 'Good morning';
     } elseif ($hour < 18) {
-        $greetingLabel = '下午好';
+        $greetingLabel = 'Good afternoon';
     } else {
-        $greetingLabel = '晚上好';
+        $greetingLabel = 'Good evening';
     }
     $adminName = htmlspecialchars((string)($admin['username'] ?? ''));
-    $greeting = $greetingLabel . '，' . $adminName;
+    $greeting = $greetingLabel . ', ' . $adminName;
 
     $content = '<section class="admin-home">';
     $content .= '<div class="admin-hero card">';
     $content .= '<div class="admin-hero__main">';
-    $content .= '<div class="admin-hero__eyebrow">数据统计</div>';
+    $content .= '<div class="admin-hero__eyebrow">Statistics</div>';
     $content .= '<div class="admin-hero__title">' . $greeting . '</div>';
-    $content .= '<div class="admin-hero__meta">今日访问 浏览量(PV) ' . number_format($todayPv) . ' / 访客数(UV) ' . number_format($todayUv) . '</div>';
+    $content .= '<div class="admin-hero__meta">Today Views (PV) ' . number_format($todayPv) . ' / Visitors (UV) ' . number_format($todayUv) . '</div>';
     $content .= '</div>';
     $content .= '<div class="admin-hero__aside">';
     $content .= '<div class="admin-hero__panel">';
-    $content .= '<div class="admin-hero__panel-label">系统在用实例</div>';
+    $content .= '<div class="admin-hero__panel-label">Active Instances</div>';
     if ($instanceTotal === null) {
         $content .= '<div class="admin-hero__panel-value">—</div>';
-        $content .= '<div class="admin-hero__panel-meta muted">统计暂不可用</div>';
+        $content .= '<div class="admin-hero__panel-meta muted">Statistics unavailable</div>';
     } else {
         $content .= '<div class="admin-hero__panel-value">' . number_format($instanceTotal) . '</div>';
-        $content .= '<div class="admin-hero__panel-meta">30天活跃 ' . number_format($instanceActive30 ?? 0) . '</div>';
+        $content .= '<div class="admin-hero__panel-meta">30-day active ' . number_format($instanceActive30 ?? 0) . '</div>';
         if ($instanceUpdatedAt !== '') {
-            $content .= '<div class="admin-hero__panel-sub muted">更新时间 ' . htmlspecialchars($instanceUpdatedAt) . '</div>';
+            $content .= '<div class="admin-hero__panel-sub muted">Updated ' . htmlspecialchars($instanceUpdatedAt) . '</div>';
         }
     }
     $content .= '</div>';
@@ -10372,15 +10372,15 @@ if ($path === '/admin-home') {
     $iconStorage = '<svg class="kpi-icon kpi-icon--storage" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 6c0-1.1 3.6-2 8-2s8 .9 8 2-3.6 2-8 2-8-.9-8-2zm0 4c0 1.1 3.6 2 8 2s8-.9 8-2V8c-1.7 1.2-5.1 2-8 2s-6.3-.8-8-2zm0 4c0 1.1 3.6 2 8 2s8-.9 8-2v-2c-1.7 1.2-5.1 2-8 2s-6.3-.8-8-2zm0 4c0 1.1 3.6 2 8 2s8-.9 8-2v-2c-1.7 1.2-5.1 2-8 2s-6.3-.8-8-2z"/></svg>';
 
     $storageValue = format_bytes($usedBytes) . ($totalLimitBytes > 0 ? ' / ' . format_bytes($totalLimitBytes) : '');
-    $storageMeta = $totalLimitBytes > 0 ? '剩余 ' . format_bytes($remainingBytes) : '总量不限';
+    $storageMeta = $totalLimitBytes > 0 ? 'Remaining: ' . format_bytes($remainingBytes) : 'Total Unlimited';
     $storageProgress = '<div class="admin-kpi__progress"><span style="width:' . $storagePercent . '%"></span></div>';
 
     $content .= '<div class="admin-kpi-grid">';
-    $content .= render_kpi_card('总用户', number_format($totalUsers), '含禁用 ' . number_format($disabledUsers), $iconUser);
-    $content .= render_kpi_card('活跃用户', number_format($activeUsers30), '近7天 ' . number_format($activeUsers7), $iconActive);
-    $content .= render_kpi_card('总分享', number_format($totalSharesActive), '已软删除 ' . number_format($deletedShares), $iconShare);
-    $content .= render_kpi_card('总访问', number_format($totalAccess), '访客数(UV) 总计 ' . number_format($totalUv), $iconAccess);
-    $content .= render_kpi_card('存储占用/剩余', htmlspecialchars($storageValue), htmlspecialchars($storageMeta), $iconStorage, $storageProgress);
+    $content .= render_kpi_card('Total Users', number_format($totalUsers), 'incl. disabled ' . number_format($disabledUsers), $iconUser);
+    $content .= render_kpi_card('Active Users', number_format($activeUsers30), 'Last 7 days ' . number_format($activeUsers7), $iconActive);
+    $content .= render_kpi_card('Total Shares', number_format($totalSharesActive), 'soft deleted ' . number_format($deletedShares), $iconShare);
+    $content .= render_kpi_card('Total Visits', number_format($totalAccess), 'UV total ' . number_format($totalUv), $iconAccess);
+    $content .= render_kpi_card('Storage Used/Free', htmlspecialchars($storageValue), htmlspecialchars($storageMeta), $iconStorage, $storageProgress);
     $content .= '</div>';
 
     $pvUvRangeSource = htmlspecialchars(json_encode([
@@ -10407,95 +10407,95 @@ if ($path === '/admin-home') {
     $content .= '<div class="admin-chart-grid">';
     $content .= '<div class="admin-chart-card" data-range-switch data-range-default="7" data-range-source="' . $pvUvRangeSource . '">';
     $content .= '<div class="admin-chart-card__head">';
-    $content .= '<div><div class="admin-chart-card__title">PV/UV 走势</div><div class="admin-chart-card__meta" data-range-label>近7天</div></div>';
+    $content .= '<div><div class="admin-chart-card__title">PV/UV Trend</div><div class="admin-chart-card__meta" data-range-label>Last 7 days</div></div>';
     $content .= '<div class="range-toggle">';
-    $content .= '<button class="range-btn is-active" type="button" data-range-value="7">7天</button>';
-    $content .= '<button class="range-btn" type="button" data-range-value="30">30天</button>';
-    $content .= '<button class="range-btn" type="button" data-range-value="custom">自定义</button>';
+    $content .= '<button class="range-btn is-active" type="button" data-range-value="7">7 days</button>';
+    $content .= '<button class="range-btn" type="button" data-range-value="30">30 days</button>';
+    $content .= '<button class="range-btn" type="button" data-range-value="custom">Custom</button>';
     $content .= '</div></div>';
     $content .= '<div class="admin-chart-card__body">';
     $content .= '<div class="admin-chart-panel" data-range-panel="7">';
-    $content .= '<div class="admin-chart-summary"><div class="admin-legend"><span class="legend-dot is-primary"></span>浏览量(PV) ' . number_format($pvTotal7) . '</div>';
-    $content .= '<div class="admin-legend"><span class="legend-dot is-accent"></span>访客数(UV) ' . number_format($uvTotal7) . '</div></div>';
+    $content .= '<div class="admin-chart-summary"><div class="admin-legend"><span class="legend-dot is-primary"></span>Views (PV) ' . number_format($pvTotal7) . '</div>';
+    $content .= '<div class="admin-legend"><span class="legend-dot is-accent"></span>Visitors (UV) ' . number_format($uvTotal7) . '</div></div>';
     $content .= $pvUvHolder7 . '</div>';
     $content .= '<div class="admin-chart-panel" data-range-panel="30" hidden>';
-    $content .= '<div class="admin-chart-summary"><div class="admin-legend"><span class="legend-dot is-primary"></span>浏览量(PV) ' . number_format($pvTotal30) . '</div>';
-    $content .= '<div class="admin-legend"><span class="legend-dot is-accent"></span>访客数(UV) ' . number_format($uvTotal30) . '</div></div>';
+    $content .= '<div class="admin-chart-summary"><div class="admin-legend"><span class="legend-dot is-primary"></span>Views (PV) ' . number_format($pvTotal30) . '</div>';
+    $content .= '<div class="admin-legend"><span class="legend-dot is-accent"></span>Visitors (UV) ' . number_format($uvTotal30) . '</div></div>';
     $content .= $pvUvHolder30 . '</div>';
     $content .= '<div class="admin-chart-panel" data-range-panel="custom" hidden>';
-    $content .= '<div class="admin-chart-summary"><div class="admin-legend"><span class="legend-dot is-primary"></span>浏览量(PV) <span data-range-metric="pv">0</span></div>';
-    $content .= '<div class="admin-legend"><span class="legend-dot is-accent"></span>访客数(UV) <span data-range-metric="uv">0</span></div></div>';
+    $content .= '<div class="admin-chart-summary"><div class="admin-legend"><span class="legend-dot is-primary"></span>Views (PV) <span data-range-metric="pv">0</span></div>';
+    $content .= '<div class="admin-legend"><span class="legend-dot is-accent"></span>Visitors (UV) <span data-range-metric="uv">0</span></div></div>';
     $content .= $pvUvHolder30;
-    $content .= '<div class="range-slider"><input type="range" min="1" max="30" value="7" data-range-slider><div class="range-slider__value">最近 <span data-range-days>7</span> 天</div></div>';
+    $content .= '<div class="range-slider"><input type="range" min="1" max="30" value="7" data-range-slider><div class="range-slider__value">Last <span data-range-days>7</span> days</div></div>';
     $content .= '</div>';
     $content .= '</div>';
     $content .= '</div>';
 
     $content .= '<div class="admin-chart-card" data-range-switch data-range-default="7" data-range-source="' . $shareRangeSource . '">';
     $content .= '<div class="admin-chart-card__head">';
-    $content .= '<div><div class="admin-chart-card__title">分享新增量</div><div class="admin-chart-card__meta" data-range-label>近7天</div></div>';
+    $content .= '<div><div class="admin-chart-card__title">New Shares</div><div class="admin-chart-card__meta" data-range-label>Last 7 days</div></div>';
     $content .= '<div class="range-toggle">';
-    $content .= '<button class="range-btn is-active" type="button" data-range-value="7">7天</button>';
-    $content .= '<button class="range-btn" type="button" data-range-value="30">30天</button>';
-    $content .= '<button class="range-btn" type="button" data-range-value="custom">自定义</button>';
+    $content .= '<button class="range-btn is-active" type="button" data-range-value="7">7 days</button>';
+    $content .= '<button class="range-btn" type="button" data-range-value="30">30 days</button>';
+    $content .= '<button class="range-btn" type="button" data-range-value="custom">Custom</button>';
     $content .= '</div></div>';
     $content .= '<div class="admin-chart-card__body">';
     $content .= '<div class="admin-chart-panel" data-range-panel="7">';
-    $content .= '<div class="admin-chart-summary muted">期间新增 ' . number_format($shareTotal7) . ' 条</div>';
+    $content .= '<div class="admin-chart-summary muted">New in period: ' . number_format($shareTotal7) . ' records</div>';
     $content .= $shareHolder7 . '</div>';
     $content .= '<div class="admin-chart-panel" data-range-panel="30" hidden>';
-    $content .= '<div class="admin-chart-summary muted">期间新增 ' . number_format($shareTotal30) . ' 条</div>';
+    $content .= '<div class="admin-chart-summary muted">New in period: ' . number_format($shareTotal30) . ' records</div>';
     $content .= $shareHolder30 . '</div>';
     $content .= '<div class="admin-chart-panel" data-range-panel="custom" hidden>';
-    $content .= '<div class="admin-chart-summary muted">期间新增 <span data-range-total>0</span> 条</div>';
+    $content .= '<div class="admin-chart-summary muted">New in period: <span data-range-total>0</span> records</div>';
     $content .= $shareHolder30;
-    $content .= '<div class="range-slider"><input type="range" min="1" max="30" value="7" data-range-slider><div class="range-slider__value">最近 <span data-range-days>7</span> 天</div></div>';
+    $content .= '<div class="range-slider"><input type="range" min="1" max="30" value="7" data-range-slider><div class="range-slider__value">Last <span data-range-days>7</span> days</div></div>';
     $content .= '</div>';
     $content .= '</div>';
     $content .= '</div>';
 
     $content .= '<div class="admin-chart-card" data-range-switch data-range-default="7" data-range-source="' . $userRangeSource . '">';
     $content .= '<div class="admin-chart-card__head">';
-    $content .= '<div><div class="admin-chart-card__title">用户新增量</div><div class="admin-chart-card__meta" data-range-label>近7天</div></div>';
+    $content .= '<div><div class="admin-chart-card__title">New Users</div><div class="admin-chart-card__meta" data-range-label>Last 7 days</div></div>';
     $content .= '<div class="range-toggle">';
-    $content .= '<button class="range-btn is-active" type="button" data-range-value="7">7天</button>';
-    $content .= '<button class="range-btn" type="button" data-range-value="30">30天</button>';
-    $content .= '<button class="range-btn" type="button" data-range-value="custom">自定义</button>';
+    $content .= '<button class="range-btn is-active" type="button" data-range-value="7">7 days</button>';
+    $content .= '<button class="range-btn" type="button" data-range-value="30">30 days</button>';
+    $content .= '<button class="range-btn" type="button" data-range-value="custom">Custom</button>';
     $content .= '</div></div>';
     $content .= '<div class="admin-chart-card__body">';
     $content .= '<div class="admin-chart-panel" data-range-panel="7">';
-    $content .= '<div class="admin-chart-summary muted">期间新增 ' . number_format($userTotal7) . ' 人</div>';
+    $content .= '<div class="admin-chart-summary muted">New in period: ' . number_format($userTotal7) . '</div>';
     $content .= $userHolder7 . '</div>';
     $content .= '<div class="admin-chart-panel" data-range-panel="30" hidden>';
-    $content .= '<div class="admin-chart-summary muted">期间新增 ' . number_format($userTotal30) . ' 人</div>';
+    $content .= '<div class="admin-chart-summary muted">New in period: ' . number_format($userTotal30) . '</div>';
     $content .= $userHolder30 . '</div>';
     $content .= '<div class="admin-chart-panel" data-range-panel="custom" hidden>';
-    $content .= '<div class="admin-chart-summary muted">期间新增 <span data-range-total>0</span> 人</div>';
+    $content .= '<div class="admin-chart-summary muted">New in period: <span data-range-total>0</span></div>';
     $content .= $userHolder30;
-    $content .= '<div class="range-slider"><input type="range" min="1" max="30" value="7" data-range-slider><div class="range-slider__value">最近 <span data-range-days>7</span> 天</div></div>';
+    $content .= '<div class="range-slider"><input type="range" min="1" max="30" value="7" data-range-slider><div class="range-slider__value">Last <span data-range-days>7</span> days</div></div>';
     $content .= '</div>';
     $content .= '</div>';
     $content .= '</div>';
 
     $content .= '<div class="admin-chart-card" data-range-switch data-range-default="7" data-range-source="' . $storageRangeSource . '">';
     $content .= '<div class="admin-chart-card__head">';
-    $content .= '<div><div class="admin-chart-card__title">存储增长</div><div class="admin-chart-card__meta" data-range-label>近7天</div></div>';
+    $content .= '<div><div class="admin-chart-card__title">Storage Growth</div><div class="admin-chart-card__meta" data-range-label>Last 7 days</div></div>';
     $content .= '<div class="range-toggle">';
-    $content .= '<button class="range-btn is-active" type="button" data-range-value="7">7天</button>';
-    $content .= '<button class="range-btn" type="button" data-range-value="30">30天</button>';
-    $content .= '<button class="range-btn" type="button" data-range-value="custom">自定义</button>';
+    $content .= '<button class="range-btn is-active" type="button" data-range-value="7">7 days</button>';
+    $content .= '<button class="range-btn" type="button" data-range-value="30">30 days</button>';
+    $content .= '<button class="range-btn" type="button" data-range-value="custom">Custom</button>';
     $content .= '</div></div>';
     $content .= '<div class="admin-chart-card__body">';
     $content .= '<div class="admin-chart-panel" data-range-panel="7">';
-    $content .= '<div class="admin-chart-summary muted">期间增长 ' . htmlspecialchars(format_bytes($storageTotal7)) . '</div>';
+    $content .= '<div class="admin-chart-summary muted">Growth in period: ' . htmlspecialchars(format_bytes($storageTotal7)) . '</div>';
     $content .= $storageHolder7 . '</div>';
     $content .= '<div class="admin-chart-panel" data-range-panel="30" hidden>';
-    $content .= '<div class="admin-chart-summary muted">期间增长 ' . htmlspecialchars(format_bytes($storageTotal30)) . '</div>';
+    $content .= '<div class="admin-chart-summary muted">Growth in period: ' . htmlspecialchars(format_bytes($storageTotal30)) . '</div>';
     $content .= $storageHolder30 . '</div>';
     $content .= '<div class="admin-chart-panel" data-range-panel="custom" hidden>';
-    $content .= '<div class="admin-chart-summary muted">期间增长 <span data-range-total>0</span></div>';
+    $content .= '<div class="admin-chart-summary muted">Growth in period: <span data-range-total>0</span></div>';
     $content .= $storageHolder30;
-    $content .= '<div class="range-slider"><input type="range" min="1" max="30" value="7" data-range-slider><div class="range-slider__value">最近 <span data-range-days>7</span> 天</div></div>';
+    $content .= '<div class="range-slider"><input type="range" min="1" max="30" value="7" data-range-slider><div class="range-slider__value">Last <span data-range-days>7</span> days</div></div>';
     $content .= '</div>';
     $content .= '</div>';
     $content .= '</div>';
@@ -10503,20 +10503,20 @@ if ($path === '/admin-home') {
 
     $content .= '<div class="admin-governance-grid">';
     $content .= '<div class="admin-governance card">';
-    $content .= '<div class="admin-governance__label">评论总量</div>';
+    $content .= '<div class="admin-governance__label">Total Comments</div>';
     $content .= '<div class="admin-governance__value">' . number_format($commentTotal) . '</div>';
-    $content .= '<div class="admin-governance__meta">近7天新增 ' . number_format($commentNew7) . '</div>';
+    $content .= '<div class="admin-governance__meta">New last 7 days: ' . number_format($commentNew7) . '</div>';
     $content .= '</div>';
     $content .= '<div class="admin-governance card">';
-    $content .= '<div class="admin-governance__label">举报总量</div>';
+    $content .= '<div class="admin-governance__label">Total Reports</div>';
     $content .= '<div class="admin-governance__value">' . number_format($reportTotal) . '</div>';
-    $content .= '<div class="admin-governance__meta">待处理 ' . number_format($reportPending) . '</div>';
+    $content .= '<div class="admin-governance__meta">Pending: ' . number_format($reportPending) . '</div>';
     $content .= '</div>';
     $content .= '</div>';
     $content .= '</section>';
 
-    $titleHtml = build_topbar_title('数据统计', $admin);
-    render_page('数据统计', $content, $admin, '', ['layout' => 'app', 'nav' => 'admin-home', 'title_html' => $titleHtml]);
+    $titleHtml = build_topbar_title('Statistics', $admin);
+    render_page('Statistics', $content, $admin, '', ['layout' => 'app', 'nav' => 'admin-home', 'title_html' => $titleHtml]);
 }
 
 if ($path === '/api-key/rotate' && $_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -10542,19 +10542,19 @@ if ($path === '/dashboard/comment-notify' && $_SERVER['REQUEST_METHOD'] === 'POS
     $shareId = (int)($_POST['share_id'] ?? 0);
     $action = (string)($_POST['action'] ?? '');
     if ($shareId <= 0 || !in_array($action, ['enable', 'disable'], true)) {
-        flash('error', '请求参数错误');
+        flash('error', 'Invalid request parameters');
         redirect('/dashboard#shares');
     }
     $pdo = db();
     $stmt = $pdo->prepare('SELECT id FROM shares WHERE id = :id AND user_id = :uid AND deleted_at IS NULL');
     $stmt->execute([':id' => $shareId, ':uid' => $user['id']]);
     if (!$stmt->fetchColumn()) {
-        flash('error', '分享不存在');
+        flash('error', 'Share not found');
         redirect('/dashboard#shares');
     }
     $enable = $action === 'enable';
     if ($enable && !smtp_enabled()) {
-        flash('error', '请先在后台开启 SMTP，再启用评论邮件通知');
+        flash('error', 'Please enable SMTP in Admin first, then enable Comment Email Notify');
         redirect('/dashboard#shares');
     }
     $update = $pdo->prepare('UPDATE shares SET comment_notify = :notify WHERE id = :id AND user_id = :uid');
@@ -10563,7 +10563,7 @@ if ($path === '/dashboard/comment-notify' && $_SERVER['REQUEST_METHOD'] === 'POS
         ':id' => $shareId,
         ':uid' => $user['id'],
     ]);
-    flash('info', $enable ? '已开启评论邮件通知' : '已关闭评论邮件通知');
+    flash('info', $enable ? 'Comment email notifications enabled' : 'Comment email notifications disabled');
     redirect('/dashboard#shares');
 }
 
@@ -10580,14 +10580,14 @@ if ($path === '/dashboard/access-stats/update' && $_SERVER['REQUEST_METHOD'] ===
         $limit = get_user_limit_bytes($user);
         if ($limit > 0 && $used >= $limit) {
             set_user_setting($userId, 'access_stats_enabled', '0');
-            flash('error', '存储空间已满，无法开启访问统计');
+            flash('error', 'Storage is full, cannot enable Access Statistics');
             redirect('/dashboard#access-stats');
         }
         set_user_setting($userId, 'access_stats_enabled', '1');
     } else {
         set_user_setting($userId, 'access_stats_enabled', '0');
     }
-    flash('info', '访问统计设置已更新');
+    flash('info', 'Access statistics settings updated');
     redirect('/dashboard#access-stats');
 }
 
@@ -10608,7 +10608,7 @@ if ($path === '/dashboard/access-stats/delete' && $_SERVER['REQUEST_METHOD'] ===
     $delStmt = $pdo->prepare('DELETE FROM share_access_logs WHERE user_id = ? AND id IN (' . $placeholders . ')');
     $delStmt->execute(array_merge([$userId], $ids));
     adjust_user_storage($userId, -$total);
-    flash('info', '已删除选中的访问记录');
+    flash('info', 'Deleted selected access records');
     redirect('/dashboard#access-stats');
 }
 
@@ -10617,7 +10617,7 @@ if ($path === '/dashboard/access-stats/delete-all' && $_SERVER['REQUEST_METHOD']
     check_csrf();
     $userId = (int)$user['id'];
     purge_user_access_logs($userId);
-    flash('info', '已清空全部访问记录');
+    flash('info', 'Cleared all access records');
     redirect('/dashboard#access-stats');
 }
 
@@ -10647,9 +10647,9 @@ if ($path === '/admin') {
     $defaultLimitBytes = default_storage_limit_bytes();
     $defaultLimitMb = mb_from_bytes($defaultLimitBytes);
     $emailFrom = get_setting('email_from', 'no-reply@example.com');
-    $emailFromName = get_setting('email_from_name', '思源笔记分享');
-    $emailSubject = get_setting('email_subject', '邮箱验证码');
-    $emailResetSubject = get_setting('email_reset_subject', '重置密码验证码');
+    $emailFromName = get_setting('email_from_name', 'SiYuan Note Share');
+    $emailSubject = get_setting('email_subject', 'Email Verification Code');
+    $emailResetSubject = get_setting('email_reset_subject', 'Password Reset Verification Code');
     $smtpEnabled = smtp_enabled();
     $smtpHost = get_setting('smtp_host', '');
     $smtpPort = get_setting('smtp_port', '587');
@@ -10681,7 +10681,7 @@ if ($path === '/admin') {
     }
     $scanProgressHidden = $scanLogHtml === '' ? ' hidden' : '';
     $scanReady = $scanDone || $scanLogHtml !== '';
-    $scanStatusLabel = $scanReady ? ('扫描完成，共命中 ' . number_format($scanTotal) . ' 条记录') : '等待扫描...';
+    $scanStatusLabel = $scanReady ? ('Scan complete, matched ' . number_format($scanTotal) . ' records') : 'Waiting for scan...';
     $scanBarStyle = $scanReady ? ' style="width:100%"' : '';
     [$scanPage, $scanSize, $scanPages, $scanOffset] = paginate($scanTotal, $scanPage, $scanSize);
     $scanPageResults = array_slice($scanResults, $scanOffset, $scanSize);
@@ -10832,93 +10832,93 @@ if ($path === '/admin') {
         $content .= '<div class="flash">' . htmlspecialchars($info) . '</div>';
     }
 
-    $content .= '<div class="card" id="settings"><h2>站点设置</h2>';
+    $content .= '<div class="card" id="settings"><h2>Site Settings</h2>';
     $content .= '<form method="post" action="' . base_path() . '/admin/settings">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="grid">';
-    $content .= '<div><label>默认存储上限 (MB)</label><input class="input" name="default_storage_limit_mb" type="number" min="0" value="' . (int)$defaultLimitMb . '"></div>';
-    $content .= '<div><label>邮箱发件人</label><input class="input" name="email_from" value="' . htmlspecialchars((string)$emailFrom) . '"></div>';
-    $content .= '<div><label>发件人名称</label><input class="input" name="email_from_name" value="' . htmlspecialchars((string)$emailFromName) . '"></div>';
-    $content .= '<div><label>验证码主题</label><input class="input" name="email_subject" value="' . htmlspecialchars((string)$emailSubject) . '"></div>';
-    $content .= '<div><label>重置密码主题</label><input class="input" name="email_reset_subject" value="' . htmlspecialchars((string)$emailResetSubject) . '"></div>';
-    $content .= '<div><label>ICP备案号</label><input class="input" name="site_icp" value="' . htmlspecialchars((string)$siteIcp) . '"></div>';
-    $content .= '<div><label>联系邮箱</label><input class="input" name="site_contact_email" value="' . htmlspecialchars((string)$siteContactEmail) . '"></div>';
-    $content .= '<div><label>网站地址（分享链接前缀）<button class="link-button" type="button" data-report-open data-report-target="site-base-url-help">说明</button></label><input class="input" name="site_base_url" placeholder="https://share.example.com" value="' . htmlspecialchars((string)$siteBaseUrl) . '"></div>';
+    $content .= '<div><label>Default Storage Limit (MB)</label><input class="input" name="default_storage_limit_mb" type="number" min="0" value="' . (int)$defaultLimitMb . '"></div>';
+    $content .= '<div><label>Email Sender</label><input class="input" name="email_from" value="' . htmlspecialchars((string)$emailFrom) . '"></div>';
+    $content .= '<div><label>Sender Name</label><input class="input" name="email_from_name" value="' . htmlspecialchars((string)$emailFromName) . '"></div>';
+    $content .= '<div><label>Verification Code Subject</label><input class="input" name="email_subject" value="' . htmlspecialchars((string)$emailSubject) . '"></div>';
+    $content .= '<div><label>Password Reset Subject</label><input class="input" name="email_reset_subject" value="' . htmlspecialchars((string)$emailResetSubject) . '"></div>';
+    $content .= '<div><label>ICP Registration</label><input class="input" name="site_icp" value="' . htmlspecialchars((string)$siteIcp) . '"></div>';
+    $content .= '<div><label>Contact Email</label><input class="input" name="site_contact_email" value="' . htmlspecialchars((string)$siteContactEmail) . '"></div>';
+    $content .= '<div><label>Site URL (share link prefix)<button class="link-button" type="button" data-report-open data-report-target="site-base-url-help">Info</button></label><input class="input" name="site_base_url" placeholder="https://share.example.com" value="' . htmlspecialchars((string)$siteBaseUrl) . '"></div>';
     $content .= '</div>';
     $content .= '<div style="margin-top:12px">';
-    $content .= '<label>违禁词（用 | 分隔）</label>';
-    $content .= '<textarea class="input" name="banned_words" rows="2" placeholder="示例：词1|词2|词3">' . htmlspecialchars($bannedWordsRaw) . '</textarea>';
-    $content .= '<div class="muted">用户分享和分享页评论命中任意违禁词将拒绝分享和评论，并在扫描结果中标记。</div>';
+    $content .= '<label>Banned Words (separated by |)</label>';
+    $content .= '<textarea class="input" name="banned_words" rows="2" placeholder="Example: word1|word2|word3">' . htmlspecialchars($bannedWordsRaw) . '</textarea>';
+    $content .= '<div class="muted">User shares and comments matching any banned word will be rejected and flagged in scan results.</div>';
     $content .= '</div>';
     $content .= '<div style="margin-top:12px">';
-    $content .= '<label>HTML Head 插入内容</label>';
-    $content .= '<textarea class="input" name="site_head_html" rows="4" placeholder="例如：&lt;script src=&quot;https://example.com/xxx.js&quot;&gt;&lt;/script&gt;">' . htmlspecialchars((string)$siteHeadHtml) . '</textarea>';
-    $content .= '<div class="muted">会插入到页面 &lt;head&gt; 中，可用于统计脚本。</div>';
+    $content .= '<label>HTML Head Insert Content</label>';
+    $content .= '<textarea class="input" name="site_head_html" rows="4" placeholder="e.g.: &lt;script src=&quot;https://example.com/xxx.js&quot;&gt;&lt;/script&gt;">' . htmlspecialchars((string)$siteHeadHtml) . '</textarea>';
+    $content .= '<div class="muted">Will be inserted into the page &lt;head&gt;, useful for analytics scripts.</div>';
     $content .= '</div>';
     $content .= '<div class="grid" style="margin-top:12px">';
-    $content .= '<label><input type="checkbox" name="allow_registration" value="1"' . ($allowRegistration ? ' checked' : '') . '> 允许注册</label>';
-    $content .= '<label><input type="checkbox" name="captcha_enabled" value="1"' . ($captchaEnabled ? ' checked' : '') . '> 启用验证码</label>';
-    $content .= '<label><input type="checkbox" name="email_verification_enabled" value="1"' . ($emailVerifyEnabled ? ' checked' : '') . '> 启用邮箱验证码</label>';
-    $content .= '<label><input type="checkbox" name="smtp_enabled" value="1"' . ($smtpEnabled ? ' checked' : '') . '> 启用 SMTP</label>';
+    $content .= '<label><input type="checkbox" name="allow_registration" value="1"' . ($allowRegistration ? ' checked' : '') . '> Allow Registration</label>';
+    $content .= '<label><input type="checkbox" name="captcha_enabled" value="1"' . ($captchaEnabled ? ' checked' : '') . '> Enable Captcha</label>';
+    $content .= '<label><input type="checkbox" name="email_verification_enabled" value="1"' . ($emailVerifyEnabled ? ' checked' : '') . '> EnableEmail Verification Code</label>';
+    $content .= '<label><input type="checkbox" name="smtp_enabled" value="1"' . ($smtpEnabled ? ' checked' : '') . '> Enable SMTP</label>';
     $content .= '</div>';
     $content .= '<div class="grid" style="margin-top:12px">';
-    $content .= '<div><label>SMTP 主机</label><input class="input" name="smtp_host" value="' . htmlspecialchars((string)$smtpHost) . '"></div>';
-    $content .= '<div><label>SMTP 端口</label><input class="input" name="smtp_port" type="number" min="0" value="' . htmlspecialchars((string)$smtpPort) . '"></div>';
-    $content .= '<div><label>加密方式</label><select class="input" name="smtp_secure">';
-    $content .= '<option value="none"' . ($smtpSecure === 'none' ? ' selected' : '') . '>无</option>';
+    $content .= '<div><label>SMTP Host</label><input class="input" name="smtp_host" value="' . htmlspecialchars((string)$smtpHost) . '"></div>';
+    $content .= '<div><label>SMTP Port</label><input class="input" name="smtp_port" type="number" min="0" value="' . htmlspecialchars((string)$smtpPort) . '"></div>';
+    $content .= '<div><label>Encryption</label><select class="input" name="smtp_secure">';
+    $content .= '<option value="none"' . ($smtpSecure === 'none' ? ' selected' : '') . '>None</option>';
     $content .= '<option value="tls"' . ($smtpSecure === 'tls' ? ' selected' : '') . '>TLS</option>';
     $content .= '<option value="ssl"' . ($smtpSecure === 'ssl' ? ' selected' : '') . '>SSL</option>';
     $content .= '</select></div>';
-    $content .= '<div><label>SMTP 用户名</label><input class="input" name="smtp_user" value="' . htmlspecialchars((string)$smtpUser) . '"></div>';
-    $content .= '<div><label>SMTP 密码</label><input class="input" type="password" name="smtp_pass" value="' . htmlspecialchars((string)$smtpPass) . '"></div>';
+    $content .= '<div><label>SMTP Username</label><input class="input" name="smtp_user" value="' . htmlspecialchars((string)$smtpUser) . '"></div>';
+    $content .= '<div><label>SMTP Password</label><input class="input" type="password" name="smtp_pass" value="' . htmlspecialchars((string)$smtpPass) . '"></div>';
     $content .= '</div>';
-    $content .= '<div style="margin-top:12px"><button class="button primary" type="submit">保存设置</button></div>';
+    $content .= '<div style="margin-top:12px"><button class="button primary" type="submit">Save Settings</button></div>';
     $content .= '</form></div>';
     $content .= '<div class="modal" id="site-base-url-help" data-report-modal hidden>';
     $content .= '<div class="modal-backdrop" data-modal-close></div>';
     $content .= '<div class="modal-card">';
-    $content .= '<div class="modal-header">网站地址说明</div>';
+    $content .= '<div class="modal-header">Site URL Info</div>';
     $content .= '<div class="modal-body">';
-    $content .= '<p><strong>留空：</strong>自动识别当前访问地址（协议/域名/端口）。</p>';
-    $content .= '<p><strong>填写：</strong>分享链接统一使用该前缀，适合反代/HTTPS 终止/端口丢失等场景。</p>';
-    $content .= '<p><strong>示例：</strong><code>https://share.example.com</code> 或 <code>https://IP:端口</code></p>';
-    $content .= '<p><strong>说明：</strong>仅影响分享链接前缀，不会限制其他访问方式。</p>';
+    $content .= '<p><strong>Leave blank: </strong>Auto-detect current access URL (protocol/domain/port).</p>';
+    $content .= '<p><strong>Fill in: </strong>Share links will use this prefix; useful for reverse proxy/HTTPS termination scenarios.</p>';
+    $content .= '<p><strong>Example: </strong><code>https://share.example.com</code> or <code>https://IP:port</code></p>';
+    $content .= '<p><strong>Note: </strong>Only affects the share link prefix; does not restrict other access methods.</p>';
     $content .= '</div>';
-    $content .= '<div class="modal-actions"><button class="button" type="button" data-modal-close>关闭</button></div>';
+    $content .= '<div class="modal-actions"><button class="button" type="button" data-modal-close>Close</button></div>';
     $content .= '</div>';
     $content .= '</div>';
 
-    $content .= '<div class="card"><h2>SMTP 测试</h2>';
+    $content .= '<div class="card"><h2>SMTP Test</h2>';
     $content .= '<form method="post" action="' . base_path() . '/admin/smtp-test">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="grid">';
-    $content .= '<div><label>测试邮箱</label><input class="input" name="test_email" placeholder="例如 test@example.com" required></div>';
+    $content .= '<div><label>Test Email Address</label><input class="input" name="test_email" placeholder="e.g. test@example.com" required></div>';
     $content .= '</div>';
-    $content .= '<div style="margin-top:12px"><button class="button" type="submit">发送测试邮件</button></div>';
+    $content .= '<div style="margin-top:12px"><button class="button" type="submit">Send Test Email</button></div>';
     $content .= '</form></div>';
 
-    $content .= '<div class="card" id="announcements"><h2>发布公告</h2>';
+    $content .= '<div class="card" id="announcements"><h2>Post Announcement</h2>';
     $content .= '<form method="post" action="' . base_path() . '/admin/announcement/create">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="grid">';
-    $content .= '<div><label>标题</label><input class="input" name="title" required></div>';
-    $content .= '<div><label>内容</label><textarea class="input" name="content" rows="4" required></textarea></div>';
+    $content .= '<div><label>Title</label><input class="input" name="title" required></div>';
+    $content .= '<div><label>Content</label><textarea class="input" name="content" rows="4" required></textarea></div>';
     $content .= '</div>';
-    $content .= '<div class="muted" style="margin-top:6px">支持 HTML，保存后将直接渲染。</div>';
+    $content .= '<div class="muted" style="margin-top:6px">Supports HTML; will be rendered directly after saving.</div>';
     $content .= '<div style="margin-top:12px">';
-    $content .= '<label><input type="checkbox" name="active" value="1" checked> 立即发布</label>';
+    $content .= '<label><input type="checkbox" name="active" value="1" checked> Publish Now</label>';
     $content .= '</div>';
-    $content .= '<div style="margin-top:12px"><button class="button primary" type="submit">发布公告</button></div>';
+    $content .= '<div style="margin-top:12px"><button class="button primary" type="submit">Post Announcement</button></div>';
     $content .= '</form></div>';
 
-    $content .= '<div class="card"><h2>公告列表</h2>';
+    $content .= '<div class="card"><h2>Announcement List</h2>';
     if (empty($announcements)) {
-        $content .= '<p class="muted">暂无公告。</p>';
+        $content .= '<p class="muted">No announcements.</p>';
     } else {
-        $content .= '<table class="table"><thead><tr><th>标题</th><th>状态</th><th>发布人</th><th>发布时间</th><th>操作</th></tr></thead><tbody>';
+        $content .= '<table class="table"><thead><tr><th>Title</th><th>Status</th><th>Author</th><th>Published At</th><th>Actions</th></tr></thead><tbody>';
         foreach ($announcements as $item) {
-            $status = ((int)$item['active'] === 1) ? '已启用' : '已停用';
-            $author = $item['author'] ?? '系统';
+            $status = ((int)$item['active'] === 1) ? 'Enabled' : 'Disabled';
+            $author = $item['author'] ?? 'System';
             $content .= '<tr>';
             $content .= '<td>' . htmlspecialchars($item['title']) . '</td>';
             $content .= '<td>' . htmlspecialchars($status) . '</td>';
@@ -10928,25 +10928,25 @@ if ($path === '/admin') {
             $content .= '<form method="post" action="' . base_path() . '/admin/announcement/toggle" class="inline-form">';
             $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
             $content .= '<input type="hidden" name="announcement_id" value="' . (int)$item['id'] . '">';
-            $content .= '<button class="button" type="submit">' . (((int)$item['active'] === 1) ? '停用' : '启用') . '</button>';
+            $content .= '<button class="button" type="submit">' . (((int)$item['active'] === 1) ? 'Disable' : 'Enable') . '</button>';
             $content .= '</form>';
             $content .= '<form method="post" action="' . base_path() . '/admin/announcement/delete" class="inline-form">';
             $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
             $content .= '<input type="hidden" name="announcement_id" value="' . (int)$item['id'] . '">';
-            $content .= '<button class="button danger" type="submit">删除</button>';
+            $content .= '<button class="button danger" type="submit">Delete</button>';
             $content .= '</form>';
             $content .= '<details class="announcement-edit">';
-            $content .= '<summary class="button">编辑</summary>';
+            $content .= '<summary class="button">Edit</summary>';
             $content .= '<form method="post" action="' . base_path() . '/admin/announcement/update" class="announcement-edit-form">';
             $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
             $content .= '<input type="hidden" name="announcement_id" value="' . (int)$item['id'] . '">';
             $content .= '<div class="grid">';
-            $content .= '<div><label>标题</label><input class="input" name="title" value="' . htmlspecialchars($item['title']) . '" required></div>';
-            $content .= '<div><label>内容</label><textarea class="input" name="content" rows="4" required>' . htmlspecialchars((string)$item['content']) . '</textarea></div>';
+            $content .= '<div><label>Title</label><input class="input" name="title" value="' . htmlspecialchars($item['title']) . '" required></div>';
+            $content .= '<div><label>Content</label><textarea class="input" name="content" rows="4" required>' . htmlspecialchars((string)$item['content']) . '</textarea></div>';
             $content .= '</div>';
-            $content .= '<div class="muted" style="margin-top:6px">支持 HTML，保存后将直接渲染。</div>';
-            $content .= '<label style="margin-top:8px"><input type="checkbox" name="active" value="1"' . (((int)$item['active'] === 1) ? ' checked' : '') . '> 启用</label>';
-            $content .= '<div style="margin-top:8px"><button class="button primary" type="submit">保存修改</button></div>';
+            $content .= '<div class="muted" style="margin-top:6px">Supports HTML; will be rendered directly after saving.</div>';
+            $content .= '<label style="margin-top:8px"><input type="checkbox" name="active" value="1"' . (((int)$item['active'] === 1) ? ' checked' : '') . '> Enable</label>';
+            $content .= '<div style="margin-top:8px"><button class="button primary" type="submit">Save Changes</button></div>';
             $content .= '</form>';
             $content .= '</details>';
             $content .= '</td>';
@@ -10956,32 +10956,32 @@ if ($path === '/admin') {
     }
     $content .= '</div>';
 
-    $content .= '<div class="card" id="reports"><h2>举报管理</h2>';
+    $content .= '<div class="card" id="reports"><h2>Report Management</h2>';
     $content .= '<form method="get" action="' . base_path() . '/admin#reports" class="filter-form">';
     $content .= render_hidden_inputs($reportQuery);
     $content .= '<div class="grid">';
-    $content .= '<div><label>状态筛选</label><select class="input" name="report_status">';
-    $content .= '<option value="pending"' . ($reportStatus === 'pending' ? ' selected' : '') . '>未处理</option>';
-    $content .= '<option value="handled"' . ($reportStatus === 'handled' ? ' selected' : '') . '>已处理</option>';
-    $content .= '<option value="all"' . ($reportStatus === 'all' ? ' selected' : '') . '>全部</option>';
+    $content .= '<div><label>Filter by Status</label><select class="input" name="report_status">';
+    $content .= '<option value="pending"' . ($reportStatus === 'pending' ? ' selected' : '') . '>Unhandled</option>';
+    $content .= '<option value="handled"' . ($reportStatus === 'handled' ? ' selected' : '') . '>Handled</option>';
+    $content .= '<option value="all"' . ($reportStatus === 'all' ? ' selected' : '') . '>All</option>';
     $content .= '</select></div>';
     $content .= '</div>';
-    $content .= '<div style="margin-top:12px"><button class="button" type="submit">筛选</button></div>';
+    $content .= '<div style="margin-top:12px"><button class="button" type="submit">Filter</button></div>';
     $content .= '</form>';
-    $content .= '<form id="report-batch-form" method="post" action="' . base_path() . '/admin/report-batch" data-confirm-message="确定删除选中的举报记录吗？">';
+    $content .= '<form id="report-batch-form" method="post" action="' . base_path() . '/admin/report-batch" data-confirm-message="Are you sure you want to delete the selected report records?">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="table-actions">';
-    $content .= '<label class="checkbox"><input type="checkbox" data-check-all="reports" form="report-batch-form"> 全选</label>';
+    $content .= '<label class="checkbox"><input type="checkbox" data-check-all="reports" form="report-batch-form"> Select All</label>';
     $content .= '<select class="input" name="action">';
-    $content .= '<option value="delete">批量删除</option>';
+    $content .= '<option value="delete">Batch Delete</option>';
     $content .= '</select>';
-    $content .= '<button class="button" type="submit">执行</button>';
+    $content .= '<button class="button" type="submit">Apply</button>';
     $content .= '</div>';
     $content .= '</form>';
     if (empty($reports)) {
-        $content .= '<p class="muted" style="margin-top:12px">暂无举报记录。</p>';
+        $content .= '<p class="muted" style="margin-top:12px">No report records.</p>';
     } else {
-        $content .= '<table class="table" style="margin-top:12px"><thead><tr><th><input type="checkbox" data-check-all="reports" form="report-batch-form"></th><th>时间</th><th>分享</th><th>用户</th><th>状态</th><th>操作</th></tr></thead><tbody>';
+        $content .= '<table class="table" style="margin-top:12px"><thead><tr><th><input type="checkbox" data-check-all="reports" form="report-batch-form"></th><th>Time</th><th>Share</th><th>User</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
         foreach ($reports as $report) {
             $reportId = (int)($report['id'] ?? 0);
             $shareTitle = htmlspecialchars((string)($report['share_title'] ?? ''));
@@ -10990,14 +10990,14 @@ if ($path === '/admin') {
             $shareUserId = (int)($report['share_user_id'] ?? 0);
             $shareUser = htmlspecialchars((string)($report['share_username'] ?? ''));
             $reporter = (string)($report['reporter_username'] ?? '');
-            $reporterLabel = $reporter !== '' ? htmlspecialchars($reporter) : '游客';
+            $reporterLabel = $reporter !== '' ? htmlspecialchars($reporter) : 'Visitor';
             $reportEmailRaw = (string)($report['report_email'] ?? '');
             $reportEmailLabel = $reportEmailRaw !== '' ? $reportEmailRaw : '-';
             $reason = report_reason_label((string)($report['reason_type'] ?? ''));
             $detailRaw = (string)($report['reason_detail'] ?? '');
             $created = htmlspecialchars((string)($report['created_at'] ?? ''));
             $handledAt = (string)($report['handled_at'] ?? '');
-            $statusLabel = $handledAt !== '' ? '已处理' : '未处理';
+            $statusLabel = $handledAt !== '' ? 'Handled' : 'Unhandled';
             $modalId = 'report-view-' . $reportId;
             $content .= '<tr>';
             $content .= '<td><input type="checkbox" name="report_ids[]" value="' . $reportId . '" data-check-item="reports" form="report-batch-form"></td>';
@@ -11007,7 +11007,7 @@ if ($path === '/admin') {
                 $content .= '<a href="' . htmlspecialchars($shareUrl) . '" target="_blank">' . $shareTitle . '</a>';
                 $content .= '<div class="muted">/s/' . htmlspecialchars($shareSlug) . '</div>';
             } else {
-                $content .= $shareTitle !== '' ? $shareTitle : '已删除';
+                $content .= $shareTitle !== '' ? $shareTitle : 'Deleted';
             }
             $content .= '</td>';
             $content .= '<td>';
@@ -11019,47 +11019,47 @@ if ($path === '/admin') {
             $content .= '</td>';
             $content .= '<td>' . htmlspecialchars($statusLabel) . '</td>';
             $content .= '<td class="actions">';
-            $content .= '<button class="button ghost" type="button" data-report-open data-report-target="' . htmlspecialchars($modalId) . '">查看举报内容</button>';
+            $content .= '<button class="button ghost" type="button" data-report-open data-report-target="' . htmlspecialchars($modalId) . '">View Report</button>';
             if ($handledAt === '') {
                 $content .= '<form method="post" action="' . base_path() . '/admin/report-handle" class="inline-form">';
                 $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
                 $content .= '<input type="hidden" name="report_id" value="' . $reportId . '">';
-                $content .= '<button class="button" type="submit">标记已处理</button>';
+                $content .= '<button class="button" type="submit">Mark Handled</button>';
                 $content .= '</form>';
             }
             if ($handledAt !== '') {
-                $content .= '<form method="post" action="' . base_path() . '/admin/report-delete" class="inline-form" data-confirm-message="确定删除该举报记录吗？">';
+                $content .= '<form method="post" action="' . base_path() . '/admin/report-delete" class="inline-form" data-confirm-message="Are you sure you want to delete this report record?">';
                 $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
                 $content .= '<input type="hidden" name="report_id" value="' . $reportId . '">';
-                $content .= '<button class="button ghost" type="submit">删除记录</button>';
+                $content .= '<button class="button ghost" type="submit">Delete Record</button>';
                 $content .= '</form>';
             }
             if ($shareSlug !== '') {
-                $content .= '<form method="post" action="' . base_path() . '/admin/report-share-delete" class="inline-form" data-confirm-message="确定彻底删除该分享吗？该操作不可恢复。">';
+                $content .= '<form method="post" action="' . base_path() . '/admin/report-share-delete" class="inline-form" data-confirm-message="Are you sure you want to permanently delete this share? This action is irreversible.">';
                 $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
                 $content .= '<input type="hidden" name="report_id" value="' . $reportId . '">';
-                $content .= '<button class="button danger" type="submit">彻底删除分享</button>';
+                $content .= '<button class="button danger" type="submit">Permanently Delete Share</button>';
                 $content .= '</form>';
             }
             if ($shareUserId > 0) {
-                $content .= '<form method="post" action="' . base_path() . '/admin/report-user-disable" class="inline-form" data-confirm-message="确定禁用该账号吗？">';
+                $content .= '<form method="post" action="' . base_path() . '/admin/report-user-disable" class="inline-form" data-confirm-message="Are you sure you want to disable this account?">';
                 $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
                 $content .= '<input type="hidden" name="report_id" value="' . $reportId . '">';
-                $content .= '<button class="button" type="submit">禁用账号</button>';
+                $content .= '<button class="button" type="submit">Disable Account</button>';
                 $content .= '</form>';
             }
             $content .= '<div class="modal report-modal" id="' . htmlspecialchars($modalId) . '" data-report-modal hidden>';
             $content .= '<div class="modal-backdrop" data-modal-close></div>';
             $content .= '<div class="modal-card">';
-            $content .= '<div class="modal-header"><h3>举报内容</h3></div>';
+            $content .= '<div class="modal-header"><h3>Report Content</h3></div>';
             $content .= '<div class="modal-body">';
             $content .= '<div class="report-grid">';
-            $content .= '<div><label>举报类型</label><input class="input" value="' . htmlspecialchars($reason) . '" readonly></div>';
-            $content .= '<div><label>举报邮箱</label><input class="input" value="' . htmlspecialchars($reportEmailLabel) . '" readonly></div>';
-            $content .= '<div><label>举报者</label><input class="input" value="' . htmlspecialchars($reporterLabel) . '" readonly></div>';
-            $content .= '<div class="report-wide"><label>补充说明</label><textarea class="input" rows="4" readonly>' . htmlspecialchars($detailRaw) . '</textarea></div>';
+            $content .= '<div><label>Report Type</label><input class="input" value="' . htmlspecialchars($reason) . '" readonly></div>';
+            $content .= '<div><label>Reporter Email</label><input class="input" value="' . htmlspecialchars($reportEmailLabel) . '" readonly></div>';
+            $content .= '<div><label>Reporter</label><input class="input" value="' . htmlspecialchars($reporterLabel) . '" readonly></div>';
+            $content .= '<div class="report-wide"><label>Additional Notes</label><textarea class="input" rows="4" readonly>' . htmlspecialchars($detailRaw) . '</textarea></div>';
             $content .= '</div>';
-            $content .= '<div class="modal-actions"><button class="button" type="button" data-modal-close>关闭</button></div>';
+            $content .= '<div class="modal-actions"><button class="button" type="button" data-modal-close>Close</button></div>';
             $content .= '</div>';
             $content .= '</div>';
             $content .= '</div>';
@@ -11069,70 +11069,70 @@ if ($path === '/admin') {
         $content .= '</tbody></table>';
     }
     $content .= '<div class="pagination">';
-    $content .= '<a class="button ghost" href="' . build_admin_query_url('reports', ['report_page' => max(1, $reportPage - 1)]) . '">上一页</a>';
-    $content .= '<div class="pagination-info">第' . $reportPage . ' / ' . $reportPages . ' 页，共 ' . $reportTotal . ' 条举报</div>';
-    $content .= '<a class="button ghost" href="' . build_admin_query_url('reports', ['report_page' => min($reportPages, $reportPage + 1)]) . '">下一页</a>';
+    $content .= '<a class="button ghost" href="' . build_admin_query_url('reports', ['report_page' => max(1, $reportPage - 1)]) . '">Previous</a>';
+    $content .= '<div class="pagination-info">Page ' . $reportPage . ' / ' . $reportPages . ' of ' . $reportTotal . ' reports</div>';
+    $content .= '<a class="button ghost" href="' . build_admin_query_url('reports', ['report_page' => min($reportPages, $reportPage + 1)]) . '">Next</a>';
     $content .= '<form method="get" action="' . base_path() . '/admin#reports" class="pagination-form">';
     $content .= render_hidden_inputs(array_merge($reportQuery, [
         'report_status' => $reportStatus,
     ]));
-    $content .= '<label>每页</label><select class="input" name="report_size">';
+    $content .= '<label>Per page</label><select class="input" name="report_size">';
     foreach ([10, 50, 200, 1000] as $size) {
         $selected = $reportSize === $size ? ' selected' : '';
         $content .= '<option value="' . $size . '"' . $selected . '>' . $size . '</option>';
     }
     $content .= '</select>';
-    $content .= '<label>页码</label><input class="input small" type="number" name="report_page" min="1" max="' . $reportPages . '" value="' . $reportPage . '">';
-    $content .= '<button class="button" type="submit">跳转</button>';
+    $content .= '<label>Page Number</label><input class="input small" type="number" name="report_page" min="1" max="' . $reportPages . '" value="' . $reportPage . '">';
+    $content .= '<button class="button" type="submit">Go</button>';
     $content .= '</form>';
     $content .= '</div>';
     $content .= '</div>';
 
-    $content .= '<div class="card" id="users"><h2>用户管理</h2>';
+    $content .= '<div class="card" id="users"><h2>User Management</h2>';
     $content .= '<form method="get" action="' . base_path() . '/admin#users" class="filter-form">';
     $content .= render_hidden_inputs($userQuery);
     $content .= '<div class="grid">';
-    $content .= '<div><label>关键词</label><input class="input" name="user_search" placeholder="用户名 / 邮箱" value="' . htmlspecialchars($userSearch) . '"></div>';
-    $content .= '<div><label>状态筛选</label><select class="input" name="user_status">';
-    $content .= '<option value="all"' . ($userStatus === 'all' ? ' selected' : '') . '>全部</option>';
-    $content .= '<option value="active"' . ($userStatus === 'active' ? ' selected' : '') . '>正常</option>';
-    $content .= '<option value="disabled"' . ($userStatus === 'disabled' ? ' selected' : '') . '>已禁用</option>';
+    $content .= '<div><label>Keyword</label><input class="input" name="user_search" placeholder="Username / Email" value="' . htmlspecialchars($userSearch) . '"></div>';
+    $content .= '<div><label>Filter by Status</label><select class="input" name="user_status">';
+    $content .= '<option value="all"' . ($userStatus === 'all' ? ' selected' : '') . '>All</option>';
+    $content .= '<option value="active"' . ($userStatus === 'active' ? ' selected' : '') . '>Active</option>';
+    $content .= '<option value="disabled"' . ($userStatus === 'disabled' ? ' selected' : '') . '>Disabled</option>';
     $content .= '</select></div>';
-    $content .= '<div><label>角色筛选</label><select class="input" name="user_role">';
-    $content .= '<option value="all"' . ($userRole === 'all' ? ' selected' : '') . '>全部</option>';
-    $content .= '<option value="admin"' . ($userRole === 'admin' ? ' selected' : '') . '>管理员</option>';
-    $content .= '<option value="user"' . ($userRole === 'user' ? ' selected' : '') . '>普通用户</option>';
+    $content .= '<div><label>Filter by Role</label><select class="input" name="user_role">';
+    $content .= '<option value="all"' . ($userRole === 'all' ? ' selected' : '') . '>All</option>';
+    $content .= '<option value="admin"' . ($userRole === 'admin' ? ' selected' : '') . '>Admin</option>';
+    $content .= '<option value="user"' . ($userRole === 'user' ? ' selected' : '') . '>User</option>';
     $content .= '</select></div>';
     $content .= '</div>';
     $content .= '<div class="table-actions">';
-    $content .= '<button class="button" type="submit">筛选</button>';
-    $content .= '<button class="button" type="button" data-user-create-open>添加账号</button>';
+    $content .= '<button class="button" type="submit">Filter</button>';
+    $content .= '<button class="button" type="button" data-user-create-open>Add Account</button>';
     $content .= '</div>';
     $content .= '</form>';
 
     $content .= '<form id="user-batch-form" method="post" action="' . base_path() . '/admin/user-batch" data-batch-form="user">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="table-actions">';
-    $content .= '<label class="checkbox"><input type="checkbox" data-check-all="users" form="user-batch-form"> 全选</label>';
+    $content .= '<label class="checkbox"><input type="checkbox" data-check-all="users" form="user-batch-form"> Select All</label>';
     $content .= '<select class="input" name="action">';
-    $content .= '<option value="disable">批量禁用</option>';
-    $content .= '<option value="enable">批量启用</option>';
-    $content .= '<option value="delete">批量删除</option>';
+    $content .= '<option value="disable">Batch Disable</option>';
+    $content .= '<option value="enable">Batch Enable</option>';
+    $content .= '<option value="delete">Batch Delete</option>';
     $content .= '</select>';
-    $content .= '<button class="button" type="submit">执行</button>';
+    $content .= '<button class="button" type="submit">Apply</button>';
     $content .= '</div>';
     $content .= '</form>';
     if (empty($users)) {
-        $content .= '<p class="muted" style="margin-top:12px">暂无用户记录。</p>';
+        $content .= '<p class="muted" style="margin-top:12px">No users found.</p>';
     } else {
-        $content .= '<table class="table"><thead><tr><th><input type="checkbox" data-check-all="users" form="user-batch-form"></th><th>用户名</th><th>角色</th><th>状态</th><th>邮箱</th><th>存储</th><th>操作</th></tr></thead><tbody>';
+        $content .= '<table class="table"><thead><tr><th><input type="checkbox" data-check-all="users" form="user-batch-form"></th><th>Username</th><th>Role</th><th>Status</th><th>Email</th><th>Storage</th><th>Actions</th></tr></thead><tbody>';
         foreach ($users as $u) {
-            $status = (int)$u['disabled'] === 1 ? '禁用' : '正常';
-            $roleLabel = $u['role'] === 'admin' ? '管理员' : '用户';
+            $status = (int)$u['disabled'] === 1 ? 'Disabled' : 'Active';
+            $roleLabel = $u['role'] === 'admin' ? 'Admin' : 'User';
             $limitMb = mb_from_bytes((int)$u['storage_limit_bytes']);
             $limitLabel = (int)$u['storage_limit_bytes'] > 0
                 ? format_bytes((int)$u['storage_limit_bytes'])
-                : ($defaultLimitBytes > 0 ? '默认(' . format_bytes($defaultLimitBytes) . ')' : '不限');
+                : ($defaultLimitBytes > 0 ? 'Default (' . format_bytes($defaultLimitBytes) . ')' : 'Unlimited');
             $usedLabel = format_bytes((int)$u['storage_used_bytes']);
             $disabledAttr = $u['role'] === 'admin' ? ' disabled' : '';
             $content .= '<tr>';
@@ -11143,14 +11143,14 @@ if ($path === '/admin') {
             $content .= '<td>' . htmlspecialchars((string)$u['email']) . '</td>';
             $content .= '<td>' . htmlspecialchars($usedLabel) . ' / ' . htmlspecialchars($limitLabel) . '</td>';
             $content .= '<td class="actions">';
-            $content .= '<button class="button" type="button" data-user-edit data-user-id="' . (int)$u['id'] . '" data-user-name="' . htmlspecialchars($u['username']) . '" data-user-email="' . htmlspecialchars((string)$u['email']) . '" data-user-role="' . htmlspecialchars((string)$u['role']) . '" data-user-disabled="' . (int)$u['disabled'] . '" data-user-limit="' . (int)$limitMb . '">编辑</button>';
+            $content .= '<button class="button" type="button" data-user-edit data-user-id="' . (int)$u['id'] . '" data-user-name="' . htmlspecialchars($u['username']) . '" data-user-email="' . htmlspecialchars((string)$u['email']) . '" data-user-role="' . htmlspecialchars((string)$u['role']) . '" data-user-disabled="' . (int)$u['disabled'] . '" data-user-limit="' . (int)$limitMb . '">Edit</button>';
             $shareUrl = build_admin_query_url('shares', ['user' => (int)$u['id'], 'status' => 'all']);
-            $content .= '<a class="button" href="' . htmlspecialchars($shareUrl) . '">查看分享</a>';
+            $content .= '<a class="button" href="' . htmlspecialchars($shareUrl) . '">View Shares</a>';
             if ($u['role'] !== 'admin' && (int)$u['id'] !== (int)$admin['id']) {
-                $content .= '<form method="post" action="' . base_path() . '/admin/user-delete" class="inline-form" data-confirm-message="确定删除该用户及其所有分享吗？该操作不可恢复。">';
+                $content .= '<form method="post" action="' . base_path() . '/admin/user-delete" class="inline-form" data-confirm-message="Are you sure you want to delete this user and all their shares? This action is irreversible.">';
                 $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
                 $content .= '<input type="hidden" name="user_id" value="' . (int)$u['id'] . '">';
-                $content .= '<button class="button danger" type="submit">删除</button>';
+                $content .= '<button class="button danger" type="submit">Delete</button>';
                 $content .= '</form>';
             }
             $content .= '</td>';
@@ -11161,77 +11161,77 @@ if ($path === '/admin') {
     $content .= '';
 
     $content .= '<div class="pagination">';
-    $content .= '<a class="button ghost" href="' . build_admin_query_url('users', ['user_page' => max(1, $userPage - 1)]) . '">上一页</a>';
-    $content .= '<div class="pagination-info">第 ' . $userPage . ' / ' . $userPages . ' 页，共 ' . $totalUsers . ' 个用户</div>';
-    $content .= '<a class="button ghost" href="' . build_admin_query_url('users', ['user_page' => min($userPages, $userPage + 1)]) . '">下一页</a>';
+    $content .= '<a class="button ghost" href="' . build_admin_query_url('users', ['user_page' => max(1, $userPage - 1)]) . '">Previous</a>';
+    $content .= '<div class="pagination-info">Page ' . $userPage . ' / ' . $userPages . ' of ' . $totalUsers . ' users</div>';
+    $content .= '<a class="button ghost" href="' . build_admin_query_url('users', ['user_page' => min($userPages, $userPage + 1)]) . '">Next</a>';
     $content .= '<form method="get" action="' . base_path() . '/admin#users" class="pagination-form">';
     $content .= render_hidden_inputs(array_merge($userQuery, [
         'user_search' => $userSearch,
         'user_status' => $userStatus,
         'user_role' => $userRole,
     ]));
-    $content .= '<label>每页</label><select class="input" name="user_size">';
+    $content .= '<label>Per page</label><select class="input" name="user_size">';
     foreach ([10, 50, 200, 1000] as $size) {
         $selected = $userSize === $size ? ' selected' : '';
         $content .= '<option value="' . $size . '"' . $selected . '>' . $size . '</option>';
     }
     $content .= '</select>';
-    $content .= '<label>页码</label><input class="input small" type="number" name="user_page" min="1" max="' . $userPages . '" value="' . $userPage . '">';
-    $content .= '<button class="button" type="submit">跳转</button>';
+    $content .= '<label>Page Number</label><input class="input small" type="number" name="user_page" min="1" max="' . $userPages . '" value="' . $userPage . '">';
+    $content .= '<button class="button" type="submit">Go</button>';
     $content .= '</form>';
     $content .= '</div>';
     $content .= '</div>';
 
-    $content .= '<div class="card" id="shares"><h2>分享管理</h2>';
+    $content .= '<div class="card" id="shares"><h2>Share Management</h2>';
     $content .= '<form method="get" action="' . base_path() . '/admin#shares" class="filter-form">';
     $content .= render_hidden_inputs($shareQuery);
     $content .= '<div class="grid">';
-    $content .= '<div><label>关键词</label><input class="input" name="share_search" placeholder="标题 / Slug" value="' . htmlspecialchars($shareSearch) . '"></div>';
-    $content .= '<div><label>用户筛选</label><select class="input" name="user">';
-    $content .= '<option value="0">全部用户</option>';
+    $content .= '<div><label>Keyword</label><input class="input" name="share_search" placeholder="Title / Slug" value="' . htmlspecialchars($shareSearch) . '"></div>';
+    $content .= '<div><label>Filter by User</label><select class="input" name="user">';
+    $content .= '<option value="0">All Users</option>';
     foreach ($allUsers as $u) {
         $selected = ($filterUser === (int)$u['id']) ? ' selected' : '';
         $content .= '<option value="' . (int)$u['id'] . '"' . $selected . '>' . htmlspecialchars($u['username']) . '</option>';
     }
     $content .= '</select></div>';
-    $content .= '<div><label>状态筛选</label><select class="input" name="status">';
-    $content .= '<option value="all"' . ($filterStatus === 'all' ? ' selected' : '') . '>全部</option>';
-    $content .= '<option value="active"' . ($filterStatus === 'active' ? ' selected' : '') . '>正常</option>';
-    $content .= '<option value="deleted"' . ($filterStatus === 'deleted' ? ' selected' : '') . '>已删除</option>';
+    $content .= '<div><label>Filter by Status</label><select class="input" name="status">';
+    $content .= '<option value="all"' . ($filterStatus === 'all' ? ' selected' : '') . '>All</option>';
+    $content .= '<option value="active"' . ($filterStatus === 'active' ? ' selected' : '') . '>Active</option>';
+    $content .= '<option value="deleted"' . ($filterStatus === 'deleted' ? ' selected' : '') . '>Deleted</option>';
     $content .= '</select></div>';
     $content .= '</div>';
-    $content .= '<div style="margin-top:12px"><button class="button" type="submit">筛选</button></div>';
+    $content .= '<div style="margin-top:12px"><button class="button" type="submit">Filter</button></div>';
     $content .= '</form>';
 
     $content .= '<form id="share-batch-form" method="post" action="' . base_path() . '/admin/share-batch" data-batch-form="share">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="table-actions">';
-    $content .= '<label class="checkbox"><input type="checkbox" data-check-all="shares" form="share-batch-form"> 全选</label>';
+    $content .= '<label class="checkbox"><input type="checkbox" data-check-all="shares" form="share-batch-form"> Select All</label>';
     $content .= '<select class="input" name="action">';
-    $content .= '<option value="soft_delete">批量软删除</option>';
-    $content .= '<option value="restore">批量恢复</option>';
-    $content .= '<option value="hard_delete">批量彻底删除</option>';
+    $content .= '<option value="soft_delete">Batch Soft Delete</option>';
+    $content .= '<option value="restore">Batch Restore</option>';
+    $content .= '<option value="hard_delete">Batch Hard Delete</option>';
     $content .= '</select>';
-    $content .= '<button class="button" type="submit" data-confirm="hard_delete">执行</button>';
+    $content .= '<button class="button" type="submit" data-confirm="hard_delete">Apply</button>';
     $content .= '</div>';
     $content .= '</form>';
     if (empty($shares)) {
-        $content .= '<p class="muted" style="margin-top:12px">暂无分享记录。</p>';
+        $content .= '<p class="muted" style="margin-top:12px">No shares found.</p>';
     } else {
-        $content .= '<table class="table" style="margin-top:12px"><thead><tr><th><input type="checkbox" data-check-all="shares" form="share-batch-form"></th><th>标题</th><th>链接</th><th>类型</th><th>用户</th><th>密码</th><th>到期</th><th>访客上限</th><th>状态</th><th>评论邮件通知</th><th>大小</th><th>更新时间</th><th>操作</th></tr></thead><tbody>';
+        $content .= '<table class="table" style="margin-top:12px"><thead><tr><th><input type="checkbox" data-check-all="shares" form="share-batch-form"></th><th>Title</th><th>Link</th><th>Type</th><th>User</th><th>Password</th><th>Expires</th><th>Visitor Limit</th><th>Status</th><th>Comment Email Notify</th><th>Size</th><th>UpdatedTime</th><th>Actions</th></tr></thead><tbody>';
         foreach ($shares as $share) {
-            $type = $share['type'] === 'notebook' ? '笔记本' : '文档';
-            $status = $share['deleted_at'] ? '已删除' : '正常';
+            $type = $share['type'] === 'notebook' ? 'Notebook' : 'Document';
+            $status = $share['deleted_at'] ? 'Deleted' : 'Active';
             $size = format_bytes((int)($share['size_bytes'] ?? 0));
             $url = share_url((string)$share['slug']);
-            $hasPassword = !empty($share['password_hash']) ? '有密码' : '无密码';
-            $expiresAt = !empty($share['expires_at']) ? date('Y-m-d H:i', (int)$share['expires_at']) : '永久';
+            $hasPassword = !empty($share['password_hash']) ? 'Password set' : 'No password';
+            $expiresAt = !empty($share['expires_at']) ? date('Y-m-d H:i', (int)$share['expires_at']) : 'Never';
             $visitorLimit = (int)($share['visitor_limit'] ?? 0);
             if ($visitorLimit > 0) {
                 $visitorCount = share_visitor_count((int)$share['id']);
                 $visitorLabel = $visitorCount . '/' . $visitorLimit;
             } else {
-                $visitorLabel = '不限';
+                $visitorLabel = 'Unlimited';
             }
             $content .= '<tr>';
             $content .= '<td><input type="checkbox" name="share_ids[]" value="' . (int)$share['id'] . '" data-check-item="shares" form="share-batch-form"></td>';
@@ -11243,7 +11243,7 @@ if ($path === '/admin') {
             $content .= '<td>' . htmlspecialchars($expiresAt) . '</td>';
             $content .= '<td>' . htmlspecialchars($visitorLabel) . '</td>';
             $content .= '<td>' . htmlspecialchars($status) . '</td>';
-            $content .= '<td>' . (((int)($share['comment_notify'] ?? 0) === 1) ? '开启' : '关闭') . '</td>';
+            $content .= '<td>' . (((int)($share['comment_notify'] ?? 0) === 1) ? 'On' : 'Close') . '</td>';
             $content .= '<td>' . htmlspecialchars($size) . '</td>';
             $content .= '<td>' . htmlspecialchars($share['updated_at']) . '</td>';
             $content .= '<td class="actions">';
@@ -11251,19 +11251,19 @@ if ($path === '/admin') {
                 $content .= '<form method="post" action="' . base_path() . '/admin/share-restore" class="inline-form">';
                 $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
                 $content .= '<input type="hidden" name="share_id" value="' . (int)$share['id'] . '">';
-                $content .= '<button class="button" type="submit">恢复</button>';
+                $content .= '<button class="button" type="submit">Restore</button>';
                 $content .= '</form>';
             } else {
                 $content .= '<form method="post" action="' . base_path() . '/admin/share-delete" class="inline-form">';
                 $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
                 $content .= '<input type="hidden" name="share_id" value="' . (int)$share['id'] . '">';
-                $content .= '<button class="button" type="submit">软删除</button>';
+                $content .= '<button class="button" type="submit">Soft Delete</button>';
                 $content .= '</form>';
             }
             $content .= '<form method="post" action="' . base_path() . '/admin/share-hard-delete" class="inline-form">';
             $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
             $content .= '<input type="hidden" name="share_id" value="' . (int)$share['id'] . '">';
-            $content .= '<button class="button danger" type="submit">彻底删除</button>';
+            $content .= '<button class="button danger" type="submit">Hard Delete</button>';
             $content .= '</form>';
             $content .= '</td>';
             $content .= '</tr>';
@@ -11273,38 +11273,38 @@ if ($path === '/admin') {
     $content .= '';
 
     $content .= '<div class="pagination">';
-    $content .= '<a class="button ghost" href="' . build_admin_query_url('shares', ['share_page' => max(1, $sharePage - 1)]) . '">上一页</a>';
-    $content .= '<div class="pagination-info">第 ' . $sharePage . ' / ' . $sharePages . ' 页，共 ' . $totalShares . ' 条分享</div>';
-    $content .= '<a class="button ghost" href="' . build_admin_query_url('shares', ['share_page' => min($sharePages, $sharePage + 1)]) . '">下一页</a>';
+    $content .= '<a class="button ghost" href="' . build_admin_query_url('shares', ['share_page' => max(1, $sharePage - 1)]) . '">Previous</a>';
+    $content .= '<div class="pagination-info">Page ' . $sharePage . ' / ' . $sharePages . ' of ' . $totalShares . ' recordsShare</div>';
+    $content .= '<a class="button ghost" href="' . build_admin_query_url('shares', ['share_page' => min($sharePages, $sharePage + 1)]) . '">Next</a>';
     $content .= '<form method="get" action="' . base_path() . '/admin#shares" class="pagination-form">';
     $content .= render_hidden_inputs(array_merge($shareQuery, [
         'share_search' => $shareSearch,
         'user' => $filterUser,
         'status' => $filterStatus,
     ]));
-    $content .= '<label>每页</label><select class="input" name="share_size">';
+    $content .= '<label>Per page</label><select class="input" name="share_size">';
     foreach ([10, 50, 200, 1000] as $size) {
         $selected = $shareSize === $size ? ' selected' : '';
         $content .= '<option value="' . $size . '"' . $selected . '>' . $size . '</option>';
     }
     $content .= '</select>';
-    $content .= '<label>页码</label><input class="input small" type="number" name="share_page" min="1" max="' . $sharePages . '" value="' . $sharePage . '">';
-    $content .= '<button class="button" type="submit">跳转</button>';
+    $content .= '<label>Page Number</label><input class="input small" type="number" name="share_page" min="1" max="' . $sharePages . '" value="' . $sharePage . '">';
+    $content .= '<button class="button" type="submit">Go</button>';
     $content .= '</form>';
     $content .= '</div>';
     $content .= '</div>';
 
     $chunkTtlHours = $chunkTtlSeconds > 0 ? ($chunkTtlSeconds / 3600) : 2;
-    $content .= '<div class="card" id="chunks"><h2>分片清理</h2>';
-    $content .= '<div class="muted">仅显示超过 ' . htmlspecialchars(number_format($chunkTtlHours, 1)) . ' 小时未更新的分片目录。</div>';
+    $content .= '<div class="card" id="chunks"><h2>Chunk Cleanup</h2>';
+    $content .= '<div class="muted">Showing chunks older than ' . htmlspecialchars(number_format($chunkTtlHours, 1)) . ' hours without update.</div>';
     if (empty($staleChunks)) {
-        $content .= '<p class="muted" style="margin-top:12px">暂无过期分片。</p>';
+        $content .= '<p class="muted" style="margin-top:12px">No expired chunks.</p>';
     } else {
         $content .= '<form method="post" action="' . base_path() . '/admin/chunk-clean" class="inline-form" style="margin-top:12px">';
         $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-        $content .= '<button class="button danger" type="submit">清理全部过期分片</button>';
+        $content .= '<button class="button danger" type="submit">Clean All Expired Chunks</button>';
         $content .= '</form>';
-        $content .= '<table class="table" style="margin-top:12px"><thead><tr><th>目录</th><th>最后更新</th><th>已过期</th><th>操作</th></tr></thead><tbody>';
+        $content .= '<table class="table" style="margin-top:12px"><thead><tr><th>Directory</th><th>Last Updated</th><th>Expired</th><th>Actions</th></tr></thead><tbody>';
         foreach ($staleChunks as $chunk) {
             $chunkId = (string)$chunk['id'];
             $mtime = (int)$chunk['mtime'];
@@ -11312,12 +11312,12 @@ if ($path === '/admin') {
             $content .= '<tr>';
             $content .= '<td><span class="muted">' . htmlspecialchars($chunkId) . '</span></td>';
             $content .= '<td>' . htmlspecialchars(date('Y-m-d H:i', $mtime)) . '</td>';
-            $content .= '<td>' . htmlspecialchars(number_format($ageHours, 1)) . ' 小时</td>';
+            $content .= '<td>' . htmlspecialchars(number_format($ageHours, 1)) . ' hours</td>';
             $content .= '<td class="actions">';
             $content .= '<form method="post" action="' . base_path() . '/admin/chunk-delete" class="inline-form">';
             $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
             $content .= '<input type="hidden" name="chunk_id" value="' . htmlspecialchars($chunkId) . '">';
-            $content .= '<button class="button danger" type="submit">删除</button>';
+            $content .= '<button class="button danger" type="submit">Delete</button>';
             $content .= '</form>';
             $content .= '</td>';
             $content .= '</tr>';
@@ -11326,13 +11326,13 @@ if ($path === '/admin') {
     }
     $content .= '</div>';
 
-    $content .= '<div class="card" id="scan"><h2>违禁词扫描</h2>';
+    $content .= '<div class="card" id="scan"><h2>Banned Word Scan</h2>';
     if ($bannedWordsRaw === '') {
-        $content .= '<div class="notice">请先在“站点设置”里配置违禁词。</div>';
+        $content .= '<div class="notice">Please configure banned words in Site Settings first.</div>';
     }
     $content .= '<form method="post" action="' . base_path() . '/admin/scan" data-scan-form="1">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-    $content .= '<button class="button" type="submit">开始扫描</button>';
+    $content .= '<button class="button" type="submit">Start Scan</button>';
     $content .= '</form>';
     $content .= '<div class="scan-progress" data-scan-progress' . $scanProgressHidden . '>';
     $content .= '<div class="scan-progress__bar"><span data-scan-bar' . $scanBarStyle . '></span></div>';
@@ -11349,31 +11349,31 @@ if ($path === '/admin') {
             $shareIds[(int)$hit['share_id']] = true;
             $userIds[(int)$hit['user_id']] = true;
         }
-        $scanTimeLabel = $scanAt ? date('Y-m-d H:i', $scanAt) : '未知';
-        $content .= '<div class="muted" style="margin-top:10px">最近扫描：' . htmlspecialchars($scanTimeLabel) . '，命中 ' . count($scanResults) . ' 条记录，涉及 ' . count($shareIds) . ' 个分享 / ' . count($userIds) . ' 个账号。</div>';
+        $scanTimeLabel = $scanAt ? date('Y-m-d H:i', $scanAt) : 'Unknown';
+        $content .= '<div class="muted" style="margin-top:10px">Last scan: ' . htmlspecialchars($scanTimeLabel) . ', matched ' . count($scanResults) . ' records, involving ' . count($shareIds) . ' shares / ' . count($userIds) . ' accounts.</div>';
         $content .= '<div class="scan-actions" style="margin-top:10px">';
         $content .= '<form method="post" action="' . base_path() . '/admin/scan/delete" class="inline-form">';
         $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-        $content .= '<button class="button danger" type="submit">一键删除违规分享</button>';
+        $content .= '<button class="button danger" type="submit">Delete All Violating Shares</button>';
         $content .= '</form>';
         $content .= '<form method="post" action="' . base_path() . '/admin/scan/disable" class="inline-form">';
         $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
-        $content .= '<button class="button" type="submit">一键停用违规账号</button>';
+        $content .= '<button class="button" type="submit">Disable All Violating Accounts</button>';
         $content .= '</form>';
         $content .= '</div>';
 
         $content .= '<form id="scan-batch-form" method="post" action="' . base_path() . '/admin/scan/batch">';
         $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
         $content .= '<div class="table-actions">';
-        $content .= '<label class="checkbox"><input type="checkbox" data-check-all="scan" form="scan-batch-form"> 全选</label>';
+        $content .= '<label class="checkbox"><input type="checkbox" data-check-all="scan" form="scan-batch-form"> Select All</label>';
         $content .= '<select class="input" name="action">';
-        $content .= '<option value="delete">批量删除分享</option>';
-        $content .= '<option value="disable">批量停用账号</option>';
+        $content .= '<option value="delete">Batch DeleteShare</option>';
+        $content .= '<option value="disable">Batch Disable Accounts</option>';
         $content .= '</select>';
-        $content .= '<button class="button" type="submit">执行</button>';
+        $content .= '<button class="button" type="submit">Apply</button>';
         $content .= '</div>';
         $content .= '</form>';
-        $content .= '<table class="table scan-table" style="margin-top:12px"><thead><tr><th><input type="checkbox" data-check-all="scan" form="scan-batch-form"></th><th>分享</th><th>文档/评论</th><th>用户</th><th>违禁词</th><th>预览</th><th>链接</th></tr></thead><tbody>';
+        $content .= '<table class="table scan-table" style="margin-top:12px"><thead><tr><th><input type="checkbox" data-check-all="scan" form="scan-batch-form"></th><th>Share</th><th>Document/Comment</th><th>User</th><th>Banned Word</th><th>Preview</th><th>Link</th></tr></thead><tbody>';
         foreach ($scanPageResults as $hit) {
             $itemType = (string)($hit['item_type'] ?? 'doc');
             $shareTitleRaw = (string)($hit['share_title'] ?? '');
@@ -11396,9 +11396,9 @@ if ($path === '/admin') {
             $docId = (string)($hit['doc_id'] ?? '');
             if ($itemType === 'doc') {
                 $docLabel = trim($docTitleRaw) !== '' ? $docTitleRaw : $docId;
-                $docLabel = $docLabel !== '' ? '文档：' . $docLabel : '文档';
+                $docLabel = $docLabel !== '' ? 'Document: ' . $docLabel : 'Document';
                 $detailTitleHtml = htmlspecialchars($docLabel);
-                $detailMeta = $hPath !== '' ? '路径：' . $hPath : '';
+                $detailMeta = $hPath !== '' ? 'Path: ' . $hPath : '';
                 $docUrl = $shareUrl;
                 if ($slug !== '' && $docId !== '') {
                     $docUrl = base_url() . build_share_redirect_path($slug, $docId, '');
@@ -11411,10 +11411,10 @@ if ($path === '/admin') {
             if ($itemType === 'comment') {
                 $metaParts = [];
                 if ($commentEmail !== '') {
-                    $metaParts[] = '邮箱：' . $commentEmail;
+                    $metaParts[] = 'Email: ' . $commentEmail;
                 }
                 if ($commentCreatedAt !== '') {
-                    $metaParts[] = '时间：' . format_share_datetime($commentCreatedAt);
+                    $metaParts[] = 'Time: ' . format_share_datetime($commentCreatedAt);
                 }
                 $detailMeta = implode(' / ', $metaParts);
                 if ($shareUrl !== '' && $commentId > 0) {
@@ -11427,9 +11427,9 @@ if ($path === '/admin') {
                         . ' data-admin-comment-created="' . htmlspecialchars(format_share_datetime($commentCreatedAt), ENT_QUOTES) . '"'
                         . ' data-admin-comment-share="' . htmlspecialchars($shareTitleRaw, ENT_QUOTES) . '"'
                         . ' data-admin-comment-content="' . htmlspecialchars($commentContent, ENT_QUOTES) . '"'
-                        . '>评论#' . $commentId . '</button>';
+                        . '>Comment #' . $commentId . '</button>';
                 } else {
-                    $detailTitleHtml = '评论';
+                    $detailTitleHtml = 'Comment';
                 }
             }
             $content .= '<tr>';
@@ -11445,7 +11445,7 @@ if ($path === '/admin') {
             $content .= '<td><div class="scan-snippet">' . $snippet . '</div></td>';
             $content .= '<td>';
             if ($shareUrl !== '') {
-                $content .= '<a href="' . htmlspecialchars($shareUrl) . '" target="_blank">打开</a>';
+                $content .= '<a href="' . htmlspecialchars($shareUrl) . '" target="_blank">Open</a>';
             } else {
                 $content .= '-';
             }
@@ -11455,49 +11455,49 @@ if ($path === '/admin') {
         $content .= '</tbody></table>';
 
         $content .= '<div class="pagination">';
-        $content .= '<a class="button ghost" href="' . build_admin_query_url('scan', ['scan_page' => max(1, $scanPage - 1), 'scan_keep' => $scanKeepParam]) . '">上一页</a>';
-        $content .= '<div class="pagination-info">第 ' . $scanPage . ' / ' . $scanPages . ' 页，共 ' . $scanTotal . ' 条记录</div>';
-        $content .= '<a class="button ghost" href="' . build_admin_query_url('scan', ['scan_page' => min($scanPages, $scanPage + 1), 'scan_keep' => $scanKeepParam]) . '">下一页</a>';
+        $content .= '<a class="button ghost" href="' . build_admin_query_url('scan', ['scan_page' => max(1, $scanPage - 1), 'scan_keep' => $scanKeepParam]) . '">Previous</a>';
+        $content .= '<div class="pagination-info">Page ' . $scanPage . ' / ' . $scanPages . ' of ' . $scanTotal . ' records</div>';
+        $content .= '<a class="button ghost" href="' . build_admin_query_url('scan', ['scan_page' => min($scanPages, $scanPage + 1), 'scan_keep' => $scanKeepParam]) . '">Next</a>';
         $content .= '<form method="get" action="' . base_path() . '/admin#scan" class="pagination-form">';
         $content .= render_hidden_inputs($scanQuery);
-        $content .= '<label>每页</label><select class="input" name="scan_size">';
+        $content .= '<label>Per page</label><select class="input" name="scan_size">';
         foreach ([10, 50, 200, 1000] as $size) {
             $selected = $scanSize === $size ? ' selected' : '';
             $content .= '<option value="' . $size . '"' . $selected . '>' . $size . '</option>';
         }
         $content .= '</select>';
-        $content .= '<label>页码</label><input class="input small" type="number" name="scan_page" min="1" max="' . $scanPages . '" value="' . $scanPage . '">';
-        $content .= '<button class="button" type="submit">跳转</button>';
+        $content .= '<label>Page Number</label><input class="input small" type="number" name="scan_page" min="1" max="' . $scanPages . '" value="' . $scanPage . '">';
+        $content .= '<button class="button" type="submit">Go</button>';
         $content .= '</form>';
         $content .= '</div>';
     } else {
-        $content .= '<p class="muted" style="margin-top:12px">暂无扫描结果。</p>';
+        $content .= '<p class="muted" style="margin-top:12px">No scan results.</p>';
     }
     $content .= '</div>';
 
-    $content .= '<div class="card danger-zone"><h2>危险操作</h2>';
-    $content .= '<p class="muted">删除所有数据将清空用户、分享与公告，仅保留初始管理员。</p>';
+    $content .= '<div class="card danger-zone"><h2>Danger Zone</h2>';
+    $content .= '<p class="muted">Deleting all data will clear users, shares, and announcements, keeping only the initial admin.</p>';
     $content .= '<form method="post" action="' . base_path() . '/admin/reset-data">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="grid">';
-    $content .= '<div><label>输入“确认删除”继续</label><input class="input" name="confirm_phrase" placeholder="确认删除" required></div>';
+    $content .= '<div><label>Enter "confirm delete" to proceed</label><input class="input" name="confirm_phrase" placeholder="confirm delete" required></div>';
     $content .= '</div>';
-    $content .= '<div style="margin-top:12px"><button class="button danger" type="submit">删除所有数据</button></div>';
+    $content .= '<div style="margin-top:12px"><button class="button danger" type="submit">Delete All Data</button></div>';
     $content .= '</form></div>';
 $content .= '<div class="modal admin-comment-modal" data-admin-comment-modal hidden>';
     $content .= '<div class="modal-backdrop" data-modal-close></div>';
     $content .= '<div class="modal-card">';
-    $content .= '<div class="modal-header">编辑评论</div>';
+    $content .= '<div class="modal-header">Edit Comment</div>';
     $content .= '<form method="post" action="' . base_path() . '/admin/comment/edit" data-admin-comment-form>';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<input type="hidden" name="comment_id" value="" data-admin-comment-id>';
     $content .= '<div class="modal-body">';
     $content .= '<div class="muted" data-admin-comment-note hidden></div>';
-    $content .= '<textarea class="input" name="content" rows="6" placeholder="请输入评论内容" data-admin-comment-content required></textarea>';
+    $content .= '<textarea class="input" name="content" rows="6" placeholder="Enter comment content" data-admin-comment-content required></textarea>';
     $content .= '</div>';
     $content .= '<div class="modal-actions">';
-    $content .= '<button class="button" type="button" data-modal-close>取消</button>';
-    $content .= '<button class="button primary" type="submit">保存修改</button>';
+    $content .= '<button class="button" type="button" data-modal-close>Cancel</button>';
+    $content .= '<button class="button primary" type="submit">Save Changes</button>';
     $content .= '</div>';
     $content .= '</form>';
     $content .= '</div>';
@@ -11506,21 +11506,21 @@ $content .= '<div class="modal admin-comment-modal" data-admin-comment-modal hid
     $content .= '<div class="modal" data-user-modal hidden>';
     $content .= '<div class="modal-backdrop" data-modal-close></div>';
     $content .= '<div class="modal-card">';
-    $content .= '<div class="modal-header">编辑用户</div>';
+    $content .= '<div class="modal-header">Edit User</div>';
     $content .= '<form method="post" action="' . base_path() . '/admin/user-update" class="modal-form">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<input type="hidden" name="user_id" value="" data-user-field="id">';
     $content .= '<div class="grid">';
-    $content .= '<div><label>用户名</label><input class="input" name="username" data-user-field="username" required></div>';
-    $content .= '<div><label>邮箱</label><input class="input" name="email" data-user-field="email"></div>';
-    $content .= '<div><label>角色</label><select class="input" name="role" data-user-field="role"><option value="user">普通用户</option><option value="admin">管理员</option></select></div>';
-    $content .= '<div><label>状态</label><select class="input" name="disabled" data-user-field="disabled"><option value="0">正常</option><option value="1">禁用</option></select></div>';
-    $content .= '<div><label>存储上限 (MB)</label><input class="input" name="limit_mb" type="number" min="0" data-user-field="limit"></div>';
-    $content .= '<div><label>新密码（留空不修改）</label><input class="input" name="password" type="password" placeholder="********"></div>';
+    $content .= '<div><label>Username</label><input class="input" name="username" data-user-field="username" required></div>';
+    $content .= '<div><label>Email</label><input class="input" name="email" data-user-field="email"></div>';
+    $content .= '<div><label>Role</label><select class="input" name="role" data-user-field="role"><option value="user">User</option><option value="admin">Admin</option></select></div>';
+    $content .= '<div><label>Status</label><select class="input" name="disabled" data-user-field="disabled"><option value="0">Active</option><option value="1">Disabled</option></select></div>';
+    $content .= '<div><label>Storage Limit (MB)</label><input class="input" name="limit_mb" type="number" min="0" data-user-field="limit"></div>';
+    $content .= '<div><label>New Password (leave blank to keep)</label><input class="input" name="password" type="password" placeholder="********"></div>';
     $content .= '</div>';
     $content .= '<div class="modal-actions">';
-    $content .= '<button class="button ghost" type="button" data-modal-close>取消</button>';
-    $content .= '<button class="button primary" type="submit">保存</button>';
+    $content .= '<button class="button ghost" type="button" data-modal-close>Cancel</button>';
+    $content .= '<button class="button primary" type="submit">Save</button>';
     $content .= '</div>';
     $content .= '</form>';
     $content .= '</div>';
@@ -11533,26 +11533,26 @@ $content .= '<div class="modal admin-comment-modal" data-admin-comment-modal hid
     $content .= '<div class="modal" data-user-create-modal' . $createModalHidden . '>';
     $content .= '<div class="modal-backdrop" data-modal-close></div>';
     $content .= '<div class="modal-card">';
-    $content .= '<div class="modal-header">添加账号</div>';
+    $content .= '<div class="modal-header">Add Account</div>';
     $content .= '<form method="post" action="' . base_path() . '/admin/user-create" class="modal-form">';
     $content .= '<input type="hidden" name="csrf" value="' . csrf_token() . '">';
     $content .= '<div class="grid">';
-    $content .= '<div><label>用户名</label><input class="input" name="username" value="' . htmlspecialchars($createUsername) . '" required></div>';
-    $content .= '<div><label>邮箱</label><input class="input" name="email" value="' . htmlspecialchars($createEmail) . '"></div>';
-    $content .= '<div><label>角色</label><select class="input" name="role"><option value="user"' . $roleUserSelected . '>普通用户</option><option value="admin"' . $roleAdminSelected . '>管理员</option></select></div>';
-    $content .= '<div><label>状态</label><select class="input" name="disabled"><option value="0"' . $activeSelected . '>正常</option><option value="1"' . $disabledSelected . '>禁用</option></select></div>';
-    $content .= '<div><label>存储上限 (MB)</label><input class="input" name="limit_mb" type="number" min="0" value="' . htmlspecialchars($createLimitMb) . '"></div>';
-    $content .= '<div><label>密码</label><input class="input" name="password" type="password" value="' . htmlspecialchars($createPassword) . '" required></div>';
+    $content .= '<div><label>Username</label><input class="input" name="username" value="' . htmlspecialchars($createUsername) . '" required></div>';
+    $content .= '<div><label>Email</label><input class="input" name="email" value="' . htmlspecialchars($createEmail) . '"></div>';
+    $content .= '<div><label>Role</label><select class="input" name="role"><option value="user"' . $roleUserSelected . '>User</option><option value="admin"' . $roleAdminSelected . '>Admin</option></select></div>';
+    $content .= '<div><label>Status</label><select class="input" name="disabled"><option value="0"' . $activeSelected . '>Active</option><option value="1"' . $disabledSelected . '>Disabled</option></select></div>';
+    $content .= '<div><label>Storage Limit (MB)</label><input class="input" name="limit_mb" type="number" min="0" value="' . htmlspecialchars($createLimitMb) . '"></div>';
+    $content .= '<div><label>Password</label><input class="input" name="password" type="password" value="' . htmlspecialchars($createPassword) . '" required></div>';
     $content .= '</div>';
     $content .= '<div class="modal-actions">';
-    $content .= '<button class="button ghost" type="button" data-modal-close>取消</button>';
-    $content .= '<button class="button primary" type="submit">添加</button>';
+    $content .= '<button class="button ghost" type="button" data-modal-close>Cancel</button>';
+    $content .= '<button class="button primary" type="submit">Add</button>';
     $content .= '</div>';
     $content .= '</form>';
     $content .= '</div>';
     $content .= '</div>';
-    $titleHtml = build_topbar_title('后台', $admin);
-    render_page('后台', $content, $admin, '', ['layout' => 'app', 'nav' => 'admin-settings', 'title_html' => $titleHtml]);
+    $titleHtml = build_topbar_title('Admin', $admin);
+    render_page('Admin', $content, $admin, '', ['layout' => 'app', 'nav' => 'admin-settings', 'title_html' => $titleHtml]);
 }
 
 if ($path === '/admin/settings' && $_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -11599,7 +11599,7 @@ if ($path === '/admin/settings' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     set_setting('smtp_user', $smtpUser);
     set_setting('smtp_pass', $smtpPass);
     set_setting('banned_words', $bannedWords);
-    flash('info', '站点设置已更新');
+    flash('info', 'Site settings updated');
     redirect('/admin#settings');
 }
 
@@ -11610,7 +11610,7 @@ if ($path === '/admin/announcement/create' && $_SERVER['REQUEST_METHOD'] === 'PO
     $content = trim((string)($_POST['content'] ?? ''));
     $active = isset($_POST['active']) ? 1 : 0;
     if ($title === '' || $content === '') {
-        flash('error', '公告标题和内容不能为空');
+        flash('error', 'Announcement title and content cannot be empty');
         redirect('/admin#announcements');
     }
     $pdo = db();
@@ -11623,7 +11623,7 @@ if ($path === '/admin/announcement/create' && $_SERVER['REQUEST_METHOD'] === 'PO
         ':created_by' => $admin['id'],
         ':created_at' => now(),
     ]);
-    flash('info', '公告已发布');
+    flash('info', 'Announcement published');
     redirect('/admin#announcements');
 }
 
@@ -11635,7 +11635,7 @@ if ($path === '/admin/announcement/update' && $_SERVER['REQUEST_METHOD'] === 'PO
     $content = trim((string)($_POST['content'] ?? ''));
     $active = isset($_POST['active']) ? 1 : 0;
     if ($id <= 0 || $title === '' || $content === '') {
-        flash('error', '公告标题和内容不能为空');
+        flash('error', 'Announcement title and content cannot be empty');
         redirect('/admin#announcements');
     }
     $pdo = db();
@@ -11646,7 +11646,7 @@ if ($path === '/admin/announcement/update' && $_SERVER['REQUEST_METHOD'] === 'PO
         ':active' => $active,
         ':id' => $id,
     ]);
-    flash('info', '公告已更新');
+    flash('info', 'Announcement updated');
     redirect('/admin#announcements');
 }
 
@@ -11657,7 +11657,7 @@ if ($path === '/admin/announcement/toggle' && $_SERVER['REQUEST_METHOD'] === 'PO
     $pdo = db();
     $stmt = $pdo->prepare('UPDATE announcements SET active = CASE WHEN active = 1 THEN 0 ELSE 1 END WHERE id = :id');
     $stmt->execute([':id' => $id]);
-    flash('info', '公告状态已更新');
+    flash('info', 'Announcement status updated');
     redirect('/admin#announcements');
 }
 
@@ -11668,7 +11668,7 @@ if ($path === '/admin/announcement/delete' && $_SERVER['REQUEST_METHOD'] === 'PO
     $pdo = db();
     $stmt = $pdo->prepare('DELETE FROM announcements WHERE id = :id');
     $stmt->execute([':id' => $id]);
-    flash('info', '公告已删除');
+    flash('info', 'AnnouncementsDeleted');
     redirect('/admin#announcements');
 }
 
@@ -11677,19 +11677,19 @@ if ($path === '/admin/smtp-test' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $email = trim((string)($_POST['test_email'] ?? ''));
     if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        flash('error', '请输入有效的测试邮箱');
+        flash('error', 'Please enter a valid test email address');
         redirect('/admin#settings');
     }
     if (!smtp_enabled()) {
-        flash('error', '请先启用 SMTP');
+        flash('error', 'Please enable SMTP first');
         redirect('/admin#settings');
     }
-    $sent = send_mail($email, 'SMTP 测试邮件', '这是一封 SMTP 配置测试邮件。');
+    $sent = send_mail($email, 'SMTP Test Email', 'This is an SMTP configuration test email.');
     if ($sent) {
-        flash('info', '测试邮件发送成功');
+        flash('info', 'Test email sent successfully');
     } else {
         $detail = trim((string)($GLOBALS['smtp_last_error'] ?? ''));
-        $message = $detail !== '' ? '测试邮件发送失败：' . $detail : '测试邮件发送失败';
+        $message = $detail !== '' ? 'Test email failed: ' . $detail : 'Test email failed';
         flash('error', $message);
     }
     redirect('/admin#settings');
@@ -11702,7 +11702,7 @@ if ($path === '/admin/user-batch' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = (string)($_POST['action'] ?? '');
     $ids = array_unique(array_filter(array_map('intval', is_array($ids) ? $ids : [$ids])));
     if (empty($ids)) {
-        flash('error', '请先选择用户');
+        flash('error', 'Please select a user first');
         redirect('/admin#users');
     }
     $pdo = db();
@@ -11728,9 +11728,9 @@ if ($path === '/admin/user-batch' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     if ($action === 'delete') {
-        flash('info', '已删除 ' . $deleted . ' 个用户');
+        flash('info', 'Deleted ' . $deleted . ' users');
     } else {
-        flash('info', '已处理 ' . $updated . ' 个用户');
+        flash('info', 'Handled ' . $updated . ' users');
     }
     redirect('/admin#users');
 }
@@ -11740,14 +11740,14 @@ if ($path === '/admin/user-delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $userId = (int)($_POST['user_id'] ?? 0);
     if ($userId <= 0 || $userId === (int)$admin['id']) {
-        flash('error', '无法删除该用户');
+        flash('error', 'Cannot delete this user');
         redirect('/admin#users');
     }
     if (!delete_user_account($userId)) {
-        flash('error', '删除用户失败');
+        flash('error', 'Failed to delete user');
         redirect('/admin#users');
     }
-    flash('info', '用户已删除');
+    flash('info', 'UserDeleted');
     redirect('/admin#users');
 }
 
@@ -11774,17 +11774,17 @@ if ($path === '/admin/user-create' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
     if ($username === '' || $password === '') {
         $_SESSION['user_create_form'] = $createForm;
-        flash('error', '请输入用户名和密码');
+        flash('error', 'Please enter username and password');
         redirect('/admin#users');
     }
     if (strlen($password) < 6) {
         $_SESSION['user_create_form'] = $createForm;
-        flash('error', '密码至少 6 位');
+        flash('error', 'Password must be at least 6 characters');
         redirect('/admin#users');
     }
     if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['user_create_form'] = $createForm;
-        flash('error', '邮箱格式不正确');
+        flash('error', 'Invalid email format');
         redirect('/admin#users');
     }
     $pdo = db();
@@ -11793,7 +11793,7 @@ if ($path === '/admin/user-create' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $checkEmail->execute([':email' => $email]);
         if ($checkEmail->fetch()) {
             $_SESSION['user_create_form'] = $createForm;
-            flash('error', '邮箱已被其他账号使用');
+            flash('error', 'Email already in use by another account');
             redirect('/admin#users');
         }
     }
@@ -11801,7 +11801,7 @@ if ($path === '/admin/user-create' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $check->execute([':username' => $username]);
     if ($check->fetch()) {
         $_SESSION['user_create_form'] = $createForm;
-        flash('error', '用户名已存在');
+        flash('error', 'Username already exists');
         redirect('/admin#users');
     }
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -11827,11 +11827,11 @@ if ($path === '/admin/user-create' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     } catch (PDOException $e) {
         $_SESSION['user_create_form'] = $createForm;
-        flash('error', '账号创建失败');
+        flash('error', 'Account creation failed');
         redirect('/admin#users');
     }
     unset($_SESSION['user_create_form']);
-    flash('info', '账号已添加');
+    flash('info', 'Account added');
     redirect('/admin#users');
 }
 
@@ -11846,11 +11846,11 @@ if ($path === '/admin/user-update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $limitMb = max(0, (int)($_POST['limit_mb'] ?? 0));
     $password = (string)($_POST['password'] ?? '');
     if ($userId <= 0 || $username === '') {
-        flash('error', '请输入有效的用户名');
+        flash('error', 'Please enter a valid username');
         redirect('/admin#users');
     }
     if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        flash('error', '邮箱格式不正确');
+        flash('error', 'Invalid email format');
         redirect('/admin#users');
     }
     if (!in_array($role, ['admin', 'user'], true)) {
@@ -11865,14 +11865,14 @@ if ($path === '/admin/user-update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $checkEmail = $pdo->prepare('SELECT id FROM users WHERE email = :email AND id != :id');
         $checkEmail->execute([':email' => $email, ':id' => $userId]);
         if ($checkEmail->fetch()) {
-            flash('error', '邮箱已被其他账号使用');
+            flash('error', 'Email already in use by another account');
             redirect('/admin#users');
         }
     }
     $check = $pdo->prepare('SELECT id FROM users WHERE username = :username AND id != :id');
     $check->execute([':username' => $username, ':id' => $userId]);
     if ($check->fetch()) {
-        flash('error', '用户名已存在');
+        flash('error', 'Username already exists');
         redirect('/admin#users');
     }
     $stmt = $pdo->prepare('UPDATE users SET username = :username, email = :email, role = :role, disabled = :disabled, storage_limit_bytes = :limit, updated_at = :updated_at WHERE id = :id');
@@ -11893,7 +11893,7 @@ if ($path === '/admin/user-update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
             ':id' => $userId,
         ]);
     }
-    flash('info', '用户信息已更新');
+    flash('info', 'User information updated');
     redirect('/admin#users');
 }
 
@@ -11904,7 +11904,7 @@ if ($path === '/admin/share-batch' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = (string)($_POST['action'] ?? '');
     $ids = array_unique(array_filter(array_map('intval', is_array($ids) ? $ids : [$ids])));
     if (empty($ids)) {
-        flash('error', '请先选择分享');
+        flash('error', 'Please select a share first');
         redirect('/admin#shares');
     }
     $pdo = db();
@@ -11930,7 +11930,7 @@ if ($path === '/admin/share-batch' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach (array_keys($affectedOwners) as $ownerId) {
         recalculate_user_storage($ownerId);
     }
-    flash('info', '批量操作已完成');
+    flash('info', 'Batch operation completed');
     redirect('/admin#shares');
 }
 
@@ -11941,7 +11941,7 @@ if ($path === '/admin/scan/batch' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $pairs = $_POST['scan_ids'] ?? [];
     $pairs = is_array($pairs) ? $pairs : [$pairs];
     if (empty($pairs)) {
-        flash('error', '请先选择记录');
+        flash('error', 'Please select a record first');
         redirect('/admin#scan');
     }
     $shareIds = [];
@@ -11964,7 +11964,7 @@ if ($path === '/admin/scan/batch' && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([':deleted_at' => now(), ':id' => $shareId]);
             purge_share_access_logs($shareId);
         }
-        flash('info', '已删除 ' . count($shareIds) . ' 个违规分享');
+        flash('info', 'Deleted ' . count($shareIds) . ' violating shares');
         redirect('/admin#scan');
     }
     if ($action === 'disable' && !empty($userIds)) {
@@ -11972,10 +11972,10 @@ if ($path === '/admin/scan/batch' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach (array_keys($userIds) as $userId) {
             $stmt->execute([':id' => $userId]);
         }
-        flash('info', '已停用 ' . count($userIds) . ' 个违规账号');
+        flash('info', 'Disabled ' . count($userIds) . ' violating accounts');
         redirect('/admin#scan');
     }
-    flash('error', '未找到可处理的记录');
+    flash('error', 'No processable records found');
     redirect('/admin#scan');
 }
 
@@ -11984,13 +11984,13 @@ if ($path === '/admin/user-toggle' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $userId = (int)($_POST['user_id'] ?? 0);
     if ($userId === (int)$admin['id']) {
-        flash('error', '不能禁用自己');
+        flash('error', 'Cannot disable yourself');
         redirect('/admin#users');
     }
     $pdo = db();
     $stmt = $pdo->prepare('UPDATE users SET disabled = CASE WHEN disabled = 1 THEN 0 ELSE 1 END WHERE id = :id');
     $stmt->execute([':id' => $userId]);
-    flash('info', '用户状态已更新');
+    flash('info', 'User status updated');
     redirect('/admin#users');
 }
 
@@ -11999,13 +11999,13 @@ if ($path === '/admin/user-role' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $userId = (int)($_POST['user_id'] ?? 0);
     if ($userId === (int)$admin['id']) {
-        flash('error', '不能修改自己的角色');
+        flash('error', 'Cannot change your own role');
         redirect('/admin#users');
     }
     $pdo = db();
     $stmt = $pdo->prepare('UPDATE users SET role = CASE WHEN role = "admin" THEN "user" ELSE "admin" END WHERE id = :id');
     $stmt->execute([':id' => $userId]);
-    flash('info', '用户角色已更新');
+    flash('info', 'User role updated');
     redirect('/admin#users');
 }
 
@@ -12020,7 +12020,7 @@ if ($path === '/admin/user-limit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         ':limit' => bytes_from_mb($limitMb),
         ':id' => $userId,
     ]);
-    flash('info', '用户存储上限已更新');
+    flash('info', 'User storage limit updated');
     redirect('/admin#users');
 }
 
@@ -12041,7 +12041,7 @@ if ($path === '/admin/share-delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($ownerId) {
         recalculate_user_storage($ownerId);
     }
-    flash('info', '分享已软删除');
+    flash('info', 'Share soft deleted');
     redirect('/admin#shares');
 }
 
@@ -12058,7 +12058,7 @@ if ($path === '/admin/share-restore' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($ownerId) {
         recalculate_user_storage($ownerId);
     }
-    flash('info', '分享已恢复');
+    flash('info', 'Share restored');
     redirect('/admin#shares');
 }
 
@@ -12068,9 +12068,9 @@ if ($path === '/admin/share-hard-delete' && $_SERVER['REQUEST_METHOD'] === 'POST
     $shareId = (int)($_POST['share_id'] ?? 0);
     $deleted = hard_delete_share($shareId);
     if ($deleted === null) {
-        flash('error', '分享不存在');
+        flash('error', 'Share not found');
     } else {
-        flash('info', '分享已彻底删除');
+        flash('info', 'Share permanently deleted');
     }
     redirect('/admin#shares');
 }
@@ -12080,7 +12080,7 @@ if ($path === '/admin/report-handle' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $reportId = (int)($_POST['report_id'] ?? 0);
     if ($reportId <= 0) {
-        flash('error', '举报不存在');
+        flash('error', 'Report not found');
         redirect('/admin#reports');
     }
     $pdo = db();
@@ -12090,7 +12090,7 @@ if ($path === '/admin/report-handle' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         ':handled_by' => (int)$admin['id'],
         ':id' => $reportId,
     ]);
-    flash('info', '举报已处理');
+    flash('info', 'Report handled');
     redirect('/admin#reports');
 }
 
@@ -12099,7 +12099,7 @@ if ($path === '/admin/report-share-delete' && $_SERVER['REQUEST_METHOD'] === 'PO
     check_csrf();
     $reportId = (int)($_POST['report_id'] ?? 0);
     if ($reportId <= 0) {
-        flash('error', '举报不存在');
+        flash('error', 'Report not found');
         redirect('/admin#reports');
     }
     $pdo = db();
@@ -12107,15 +12107,15 @@ if ($path === '/admin/report-share-delete' && $_SERVER['REQUEST_METHOD'] === 'PO
     $stmt->execute([':id' => $reportId]);
     $shareId = (int)($stmt->fetchColumn() ?: 0);
     if ($shareId <= 0) {
-        flash('error', '分享不存在');
+        flash('error', 'Share not found');
         redirect('/admin#reports');
     }
     $deleted = hard_delete_share($shareId);
     if ($deleted === null) {
-        flash('error', '分享不存在');
+        flash('error', 'Share not found');
         redirect('/admin#reports');
     }
-    flash('info', '分享已彻底删除');
+    flash('info', 'Share permanently deleted');
     redirect('/admin#reports');
 }
 
@@ -12125,21 +12125,21 @@ if ($path === '/admin/report-user-disable' && $_SERVER['REQUEST_METHOD'] === 'PO
     $reportId = (int)($_POST['report_id'] ?? 0);
     $pdo = db();
     if ($reportId <= 0) {
-        flash('error', '举报不存在');
+        flash('error', 'Report not found');
         redirect('/admin#reports');
     }
     $stmt = $pdo->prepare('SELECT share_user_id FROM share_reports WHERE id = :id');
     $stmt->execute([':id' => $reportId]);
     $userId = (int)($stmt->fetchColumn() ?: 0);
     if ($userId <= 0) {
-        flash('error', '用户不存在');
+        flash('error', 'User not found');
         redirect('/admin#reports');
     }
     $roleStmt = $pdo->prepare('SELECT role FROM users WHERE id = :id');
     $roleStmt->execute([':id' => $userId]);
     $role = (string)($roleStmt->fetchColumn() ?? '');
     if ($role === 'admin') {
-        flash('error', '无法禁用管理员账号');
+        flash('error', 'Cannot disable an admin account');
         redirect('/admin#reports');
     }
     $stmt = $pdo->prepare('UPDATE users SET disabled = 1 WHERE id = :id');
@@ -12150,7 +12150,7 @@ if ($path === '/admin/report-user-disable' && $_SERVER['REQUEST_METHOD'] === 'PO
             ':handled_by' => (int)$admin['id'],
             ':id' => $reportId,
         ]);
-    flash('info', '账号已禁用');
+    flash('info', 'Account disabled');
     redirect('/admin#reports');
 }
 
@@ -12159,7 +12159,7 @@ if ($path === '/admin/report-delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $reportId = (int)($_POST['report_id'] ?? 0);
     if ($reportId <= 0) {
-        flash('error', '举报不存在');
+        flash('error', 'Report not found');
         redirect('/admin#reports');
     }
     $pdo = db();
@@ -12167,11 +12167,11 @@ if ($path === '/admin/report-delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([':id' => $reportId]);
     $handledAt = (string)($stmt->fetchColumn() ?? '');
     if ($handledAt === '') {
-        flash('error', '请先处理举报再删除');
+        flash('error', 'Please handle the report before deleting');
         redirect('/admin#reports');
     }
     $pdo->prepare('DELETE FROM share_reports WHERE id = :id')->execute([':id' => $reportId]);
-    flash('info', '举报记录已删除');
+    flash('info', 'Report record deleted');
     redirect('/admin#reports');
 }
 
@@ -12182,7 +12182,7 @@ if ($path === '/admin/report-batch' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = (string)($_POST['action'] ?? '');
     $ids = array_unique(array_filter(array_map('intval', is_array($ids) ? $ids : [$ids])));
     if (empty($ids) || $action !== 'delete') {
-        flash('error', '请先选择要删除的举报');
+        flash('error', 'Please select a report to delete first');
         redirect('/admin#reports');
     }
     $pdo = db();
@@ -12190,7 +12190,7 @@ if ($path === '/admin/report-batch' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $del = $pdo->prepare('DELETE FROM share_reports WHERE id IN (' . $placeholders . ')');
     $del->execute($ids);
     $deleted = $del->rowCount();
-    flash('info', '已删除 ' . $deleted . ' 条举报');
+    flash('info', 'Deleted ' . $deleted . ' reports');
     redirect('/admin#reports');
 }
 
@@ -12233,7 +12233,7 @@ if ($path === '/admin/scan/start' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $words = get_banned_words();
     if (empty($words)) {
-        api_response(400, null, '请先设置违禁词');
+        api_response(400, null, 'Please configure banned words first');
     }
     $total = count_scannable_docs();
     $_SESSION['scan_results'] = [];
@@ -12249,7 +12249,7 @@ if ($path === '/admin/scan/step' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $words = get_banned_words();
     if (empty($words)) {
-        api_response(400, null, '请先设置违禁词');
+        api_response(400, null, 'Please configure banned words first');
     }
     $offset = max(0, (int)($_POST['offset'] ?? 0));
     $limit = max(1, min(200, (int)($_POST['limit'] ?? 50)));
@@ -12285,7 +12285,7 @@ if ($path === '/admin/scan' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $words = get_banned_words();
     if (empty($words)) {
-        flash('error', '请先设置违禁词');
+        flash('error', 'Please configure banned words first');
         redirect('/admin#scan');
     }
     $results = scan_banned_shares($words);
@@ -12293,7 +12293,7 @@ if ($path === '/admin/scan' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['scan_logs'] = [];
     $_SESSION['scan_done'] = 1;
     $_SESSION['scan_at'] = time();
-    flash('info', '扫描完成，共命中 ' . count($results) . ' 条记录');
+    flash('info', 'Scan complete, matched ' . count($results) . ' records');
     redirect('/admin#scan');
 }
 
@@ -12302,7 +12302,7 @@ if ($path === '/admin/scan/delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $results = $_SESSION['scan_results'] ?? [];
     if (empty($results) || !is_array($results)) {
-        flash('error', '暂无扫描结果');
+        flash('error', 'No scan results');
         redirect('/admin#scan');
     }
     $shareIds = [];
@@ -12312,7 +12312,7 @@ if ($path === '/admin/scan/delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     if (empty($shareIds)) {
-        flash('error', '暂无可删除分享');
+        flash('error', 'No shares to delete');
         redirect('/admin#scan');
     }
     $pdo = db();
@@ -12320,7 +12320,7 @@ if ($path === '/admin/scan/delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach (array_keys($shareIds) as $shareId) {
         $stmt->execute([':deleted_at' => now(), ':id' => $shareId]);
     }
-    flash('info', '已删除 ' . count($shareIds) . ' 个违规分享');
+    flash('info', 'Deleted ' . count($shareIds) . ' violating shares');
     redirect('/admin#scan');
 }
 
@@ -12329,7 +12329,7 @@ if ($path === '/admin/scan/disable' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
     $results = $_SESSION['scan_results'] ?? [];
     if (empty($results) || !is_array($results)) {
-        flash('error', '暂无扫描结果');
+        flash('error', 'No scan results');
         redirect('/admin#scan');
     }
     $userIds = [];
@@ -12339,7 +12339,7 @@ if ($path === '/admin/scan/disable' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     if (empty($userIds)) {
-        flash('error', '暂无可停用账号');
+        flash('error', 'No accounts to disable');
         redirect('/admin#scan');
     }
     $pdo = db();
@@ -12347,7 +12347,7 @@ if ($path === '/admin/scan/disable' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach (array_keys($userIds) as $userId) {
         $stmt->execute([':id' => $userId]);
     }
-    flash('info', '已停用 ' . count($userIds) . ' 个违规账号');
+    flash('info', 'Disabled ' . count($userIds) . ' violating accounts');
     redirect('/admin#scan');
 }
 
@@ -12357,23 +12357,23 @@ if ($path === '/admin/comment/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $commentId = max(0, (int)($_POST['comment_id'] ?? 0));
     $content = trim((string)($_POST['content'] ?? ''));
     if ($commentId <= 0) {
-        flash('error', '缺少评论ID');
+        flash('error', 'Missing comment ID');
         redirect('/admin#scan');
     }
     if ($content === '') {
-        flash('error', '评论内容不能为空');
+        flash('error', 'Comment content cannot be empty');
         redirect('/admin#scan');
     }
     $contentLength = function_exists('mb_strlen') ? mb_strlen($content, 'UTF-8') : strlen($content);
     if ($contentLength > 2000) {
-        flash('error', '评论内容过长');
+        flash('error', 'Comment content too long');
         redirect('/admin#scan');
     }
     $bannedWords = get_banned_words();
     if (!empty($bannedWords)) {
         $hit = find_banned_word($content, $bannedWords);
         if ($hit) {
-            flash('error', '触发违禁词：' . $hit['word']);
+            flash('error', 'Triggered banned word: ' . $hit['word']);
             redirect('/admin#scan');
         }
     }
@@ -12384,13 +12384,13 @@ if ($path === '/admin/comment/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([':id' => $commentId]);
     $comment = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$comment) {
-        flash('error', '评论不存在');
+        flash('error', 'Comment not found');
         redirect('/admin#scan');
     }
     $shareId = (int)($comment['share_id'] ?? 0);
     $shareUserId = (int)($comment['share_user_id'] ?? 0);
     if ($shareId <= 0 || $shareUserId <= 0) {
-        flash('error', '评论关联的分享不存在');
+        flash('error', 'Associated share for comment not found');
         redirect('/admin#scan');
     }
     $commentEmail = (string)($comment['email'] ?? '');
@@ -12408,13 +12408,13 @@ if ($path === '/admin/comment/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($netDelta > 0) {
         $owner = get_user_by_id($shareUserId);
         if (!$owner) {
-            flash('error', '分享所属用户不存在');
+            flash('error', 'Share owner not found');
             redirect('/admin#scan');
         }
         $used = recalculate_user_storage((int)$owner['id']);
         $limit = get_user_limit_bytes($owner);
         if ($limit > 0 && ($used + $netDelta) > $limit) {
-            flash('error', '存储空间不足，无法保存修改');
+            flash('error', 'Insufficient storage space to save changes');
             redirect('/admin#scan');
         }
     }
@@ -12430,7 +12430,7 @@ if ($path === '/admin/comment/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         adjust_share_size($shareId, $totalDelta);
         adjust_user_storage($shareUserId, $totalDelta);
     }
-    flash('info', '评论已更新');
+    flash('info', 'Comment updated');
     redirect('/admin#scan');
 }
 
@@ -12438,8 +12438,8 @@ if ($path === '/admin/reset-data' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     require_admin();
     check_csrf();
     $phrase = trim((string)($_POST['confirm_phrase'] ?? ''));
-    if ($phrase !== '确认删除') {
-        flash('error', '确认口令错误');
+    if ($phrase !== 'confirm delete') {
+        flash('error', 'Incorrect confirmation passphrase');
         redirect('/admin');
     }
     reset_database();
@@ -12447,7 +12447,7 @@ if ($path === '/admin/reset-data' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if (session_status() === PHP_SESSION_ACTIVE) {
         session_regenerate_id(true);
     }
-    flash('info', '数据已重置，请使用默认管理员登录');
+    flash('info', 'Data has been reset; please log in with the default admin credentials');
     redirect('/login');
 }
 
@@ -12474,75 +12474,75 @@ if ($path === '/') {
 
     $content = '<section class="home-hero">';
     $content .= '<div class="home-hero__main">';
-    $content .= '<div class="home-badge">官方 Markdown 导出</div>';
+    $content .= '<div class="home-badge">Official Markdown Export</div>';
     $content .= '<h1 class="home-title">' . $appName . $versionHtml . '</h1>';
-    $content .= '<p class="home-lead">让文档与笔记本以可控的外链分享：自动同步、密码与到期控制、统一链接管理。</p>';
+    $content .= '<p class="home-lead">Share documents and notebooks via controlled external links: auto-sync, password & expiry controls, unified link management.</p>';
     $content .= '<div class="home-actions">';
-    $content .= '<a class="button primary" href="' . $loginUrl . '">立即登录</a>';
+    $content .= '<a class="button primary" href="' . $loginUrl . '">Login</a>';
     if ($allowRegistration) {
-        $content .= '<a class="button" href="' . $registerUrl . '">注册账号</a>';
+        $content .= '<a class="button" href="' . $registerUrl . '">Register</a>';
     }
     $content .= '</div>';
-    $content .= '<div class="home-hero__meta">支持文档 / 笔记本 · 权限可控 · 多用户协作</div>';
+    $content .= '<div class="home-hero__meta">Documents / Notebooks · Access Control · Multi-user Collaboration</div>';
     $content .= '</div>';
     $content .= '<div class="home-hero__visual">';
     $content .= '<div class="hero-card hero-card--preview">';
-    $content .= '<div class="hero-card__title">分享预览</div>';
+    $content .= '<div class="hero-card__title">Share Preview</div>';
     $content .= '<div class="hero-card__lines"><span></span><span></span><span></span><span></span></div>';
-    $content .= '<div class="hero-card__chips"><span>访问 128</span><span>到期 2026-01-10</span><span>密码保护</span></div>';
+    $content .= '<div class="hero-card__chips"><span>Views 128</span><span>Expires 2026-01-10</span><span>Password Protected</span></div>';
     $content .= '</div>';
     $content .= '<div class="hero-card hero-card--flow">';
-    $content .= '<div class="hero-card__title">同步流程</div>';
-    $content .= '<ol class="hero-flow"><li>生成 API Key</li><li>一键验证同步</li><li>复制链接分享</li></ol>';
+    $content .= '<div class="hero-card__title">Sync Workflow</div>';
+    $content .= '<ol class="hero-flow"><li>Generate API Key</li><li>One-click Verify & Sync</li><li>Copy Link to Share</li></ol>';
     $content .= '</div>';
     $content .= '</div>';
     $content .= '</section>';
 
     $content .= '<section class="home-metrics">';
-    $content .= '<div class="home-metric"><strong>文档与笔记本</strong><span>保持层级与目录结构</span></div>';
-    $content .= '<div class="home-metric"><strong>权限与到期</strong><span>密码、有效期、禁用一应俱全</span></div>';
-    $content .= '<div class="home-metric"><strong>集中管理</strong><span>分享列表统一检索与追踪</span></div>';
+    $content .= '<div class="home-metric"><strong>Documents & Notebooks</strong><span>Preserves hierarchy and directory structure</span></div>';
+    $content .= '<div class="home-metric"><strong>Access & Expiry</strong><span>Password, expiry, and disabled state all supported</span></div>';
+    $content .= '<div class="home-metric"><strong>Centralized Management</strong><span>Unified share list for search and tracking</span></div>';
     $content .= '</section>';
 
     $content .= '<section class="home-section">';
-    $content .= '<h2>核心能力</h2>';
+    $content .= '<h2>Key Features</h2>';
     $content .= '<div class="home-grid">';
-    $content .= '<div class="home-card"><h3>完整 Markdown 支持</h3><p>公式、表格、任务列表、Mermaid 与代码高亮全部可用。</p></div>';
-    $content .= '<div class="home-card"><h3>统一链接管理</h3><p>软删/恢复/彻底删除，分享状态一目了然。</p></div>';
-    $content .= '<div class="home-card"><h3>多用户与审核</h3><p>账号管理、公告发布、违禁词扫描集中处理。</p></div>';
+    $content .= '<div class="home-card"><h3>Full Markdown Support</h3><p>Math, tables, task lists, Mermaid, and code highlighting all supported.</p></div>';
+    $content .= '<div class="home-card"><h3>Unified Link Management</h3><p>Soft delete / restore / hard delete, share status at a glance.</p></div>';
+    $content .= '<div class="home-card"><h3>Multi-user & Moderation</h3><p>Account management, announcements, and banned word scanning in one place.</p></div>';
     $content .= '</div>';
     $content .= '</section>';
 
     $content .= '<section class="home-section">';
-    $content .= '<h2>使用流程</h2>';
+    $content .= '<h2>Getting Started</h2>';
     $content .= '<div class="home-steps">';
-    $content .= '<div class="home-step"><span>1</span> 登录后台生成 API Key</div>';
-    $content .= '<div class="home-step"><span>2</span> 插件填写地址与 Key</div>';
-    $content .= '<div class="home-step"><span>3</span> 一键验证并同步</div>';
-    $content .= '<div class="home-step"><span>4</span> 复制链接对外分享</div>';
+    $content .= '<div class="home-step"><span>1</span> LoginAdminGenerate API Key</div>';
+    $content .= '<div class="home-step"><span>2</span> Enter the URL and Key in the plugin</div>';
+    $content .= '<div class="home-step"><span>3</span> One-click verify and sync</div>';
+    $content .= '<div class="home-step"><span>4</span> Copy link to share externally</div>';
     $content .= '</div>';
     $content .= '</section>';
 
     $content .= '<section class="home-section">';
-    $content .= '<h2>适用场景</h2>';
+    $content .= '<h2>Use Cases</h2>';
     $content .= '<div class="home-grid">';
-    $content .= '<div class="home-card"><h3>产品文档</h3><p>对外发布手册，自动同步更新。</p></div>';
-    $content .= '<div class="home-card"><h3>团队知识库</h3><p>内部分享、权限控制、到期管理。</p></div>';
-    $content .= '<div class="home-card"><h3>课程与教程</h3><p>长文输出，目录清晰可导航。</p></div>';
+    $content .= '<div class="home-card"><h3>Product Docs</h3><p>Publish manuals externally, auto-sync updates.</p></div>';
+    $content .= '<div class="home-card"><h3>Team Knowledge Base</h3><p>Internal sharing, access control, expiry management.</p></div>';
+    $content .= '<div class="home-card"><h3>Courses & Tutorials</h3><p>Long-form content with clear, navigable directory.</p></div>';
     $content .= '</div>';
     $content .= '</section>';
 
     $footerItems = [];
     if (trim((string)$siteIcp) !== '') {
-        $footerItems[] = 'ICP备案：' . htmlspecialchars((string)$siteIcp);
+        $footerItems[] = 'ICP: ' . htmlspecialchars((string)$siteIcp);
     }
     if (trim((string)$siteContactEmail) !== '') {
-        $footerItems[] = '联系邮箱：' . htmlspecialchars((string)$siteContactEmail);
+        $footerItems[] = 'Contact: ' . htmlspecialchars((string)$siteContactEmail);
     }
     if (!empty($footerItems)) {
         $content .= '<footer class="home-footer">' . implode(' · ', $footerItems) . '</footer>';
     }
-    render_page('首页', $content, null);
+    render_page('Home', $content, null);
 }
 
 render_404_page();
