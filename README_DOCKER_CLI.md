@@ -1,48 +1,48 @@
-# 思源笔记分享服务 - Docker 部署指南（纯 Docker 命令版）
+# Siyuan Note Share Service - Docker Deployment Guide (Pure Docker CLI)
 
-本文档仅使用 `docker` 命令部署，不使用其他编排工具。
+This document deploys the service using only `docker` commands, without any orchestration tools.
 
-## 📋 前置要求
+## 📋 Prerequisites
 
 - Docker 20.10+
-- 可访问 Docker Hub 的网络环境
+- Network access to Docker Hub
 
-检查安装：
+Check your installation:
 
 ```bash
 docker --version
 ```
 
-## 🚀 快速启动
+## 🚀 Quick Start
 
-### 1. 准备工作目录
+### 1. Prepare the Working Directory
 
 ```bash
-# 下方 `~` 可替换为你的实际部署目录，后续命令请保持一致
+# Replace `~` below with your actual deployment directory; keep it consistent in all subsequent commands
 mkdir -p ~/siyuan-share/php-site/storage ~/siyuan-share/php-site/uploads
 cd ~/siyuan-share
 ```
 
-> ⚠️ 除特别说明外，后续命令默认都在部署目录执行（示例：`~/siyuan-share`）。
-> 如果你把路径改成了其他目录，请先 `cd` 到对应目录再执行命令。
+> ⚠️ Unless otherwise noted, all subsequent commands should be run from the deployment directory (e.g. `~/siyuan-share`).
+> If you chose a different path, `cd` to that directory first before running any command.
 
-### 2. 配置文件说明（可选）
+### 2. Configuration File (Optional)
 
-`config.php` 不是必需文件。  
-你可以先不创建，直接用默认配置启动容器。
+`config.php` is not required.
+You can skip it and start the container with the default configuration.
 
-只有在你需要自定义参数时（例如改应用名、上传目录、分片参数等），再创建并挂载 `config.php`。
+Only create and mount `config.php` if you need to customize parameters (e.g. app name, upload directory, chunk parameters, etc.).
 
-### 3. 拉取镜像
+### 3. Pull the Image
 
 ```bash
 docker pull b8l8u8e8/siyuan-share-web:latest
 ```
 
-### 4. 启动容器
+### 4. Start the Container
 
 ```bash
-# 请先进入部署目录（示例：cd ~/siyuan-share）
+# Make sure you are in the deployment directory first (e.g. cd ~/siyuan-share)
 docker run -d \
   --name siyuan-share-web \
   --restart unless-stopped \
@@ -58,44 +58,44 @@ docker run -d \
   b8l8u8e8/siyuan-share-web:latest
 ```
 
-### 5. 查看日志
+### 5. View Logs
 
 ```bash
 docker logs -f siyuan-share-web
 ```
 
-### 6. 访问应用
+### 6. Access the Application
 
-浏览器打开：`http://服务器IP:38080`
+Open in your browser: `http://<server-ip>:38080`
 
-默认管理员账号：
+Default admin credentials:
 
-- 用户名：`admin`
-- 密码：`123456`
+- Username: `admin`
+- Password: `123456`
 
-首次登录后请立即修改密码。
+Change your password immediately after the first login.
 
-## 📁 数据目录说明
+## 📁 Data Directories
 
-- `php-site/storage`：数据库等持久化数据
-- `php-site/uploads`：上传文件
-- `php-site/config.php`：可选站点配置（仅在你需要自定义时才挂载）
+- `php-site/storage`: Database and other persistent data
+- `php-site/uploads`: Uploaded files
+- `php-site/config.php`: Optional site configuration (mount only when customization is needed)
 
-## ⚙️ 可选：启用自定义 `config.php`
+## ⚙️ Optional: Enable a Custom `config.php`
 
-如果你需要使用自定义配置，推荐直接从镜像里的 `config.example.php` 复制，避免手敲：
+If you need a custom configuration, it is recommended to copy `config.example.php` directly from the image to avoid typos:
 
 ```bash
-# 请先进入部署目录（示例：cd ~/siyuan-share）
+# Make sure you are in the deployment directory first (e.g. cd ~/siyuan-share)
 docker create --name sps-config-tmp b8l8u8e8/siyuan-share-web:latest
 docker cp sps-config-tmp:/var/www/html/config.example.php ./php-site/config.php
 docker rm sps-config-tmp
 ```
 
-然后重建容器并添加挂载：
+Then recreate the container with the config file mounted:
 
 ```bash
-# 请先进入部署目录（示例：cd ~/siyuan-share）
+# Make sure you are in the deployment directory first (e.g. cd ~/siyuan-share)
 docker rm -f siyuan-share-web
 docker run -d \
   --name siyuan-share-web \
@@ -113,42 +113,42 @@ docker run -d \
   b8l8u8e8/siyuan-share-web:latest
 ```
 
-## 🔧 常用运维命令
+## 🔧 Common Operations
 
-查看容器状态：
+View container status:
 
 ```bash
 docker ps -a --filter "name=siyuan-share-web"
 ```
 
-查看最近日志：
+View recent logs:
 
 ```bash
 docker logs --tail=200 siyuan-share-web
 ```
 
-重启容器：
+Restart the container:
 
 ```bash
 docker restart siyuan-share-web
 ```
 
-停止容器：
+Stop the container:
 
 ```bash
 docker stop siyuan-share-web
 ```
 
-删除容器（不会删除主机挂载数据）：
+Remove the container (mounted data on the host is not deleted):
 
 ```bash
 docker rm -f siyuan-share-web
 ```
 
-## 🔄 更新应用
+## 🔄 Updating the Application
 
 ```bash
-# 请先进入部署目录（示例：cd ~/siyuan-share）
+# Make sure you are in the deployment directory first (e.g. cd ~/siyuan-share)
 docker pull b8l8u8e8/siyuan-share-web:latest
 docker rm -f siyuan-share-web
 docker run -d \
@@ -166,9 +166,9 @@ docker run -d \
   b8l8u8e8/siyuan-share-web:latest
 ```
 
-## 💾 数据备份与恢复
+## 💾 Backup and Restore
 
-备份：
+Backup:
 
 ```bash
 cd ~/siyuan-share
@@ -177,7 +177,7 @@ tar -czf backup-$(date +%Y%m%d).tar.gz \
   php-site/uploads
 ```
 
-如果你用了自定义 `config.php`，请把它也加入备份：
+If you are using a custom `config.php`, include it in the backup as well:
 
 ```bash
 tar -czf backup-$(date +%Y%m%d).tar.gz \
@@ -186,7 +186,7 @@ tar -czf backup-$(date +%Y%m%d).tar.gz \
   php-site/config.php
 ```
 
-恢复：
+Restore:
 
 ```bash
 cd ~/siyuan-share
@@ -194,35 +194,35 @@ tar -xzf backup-20260114.tar.gz
 docker restart siyuan-share-web
 ```
 
-## 🩺 故障排查
+## 🩺 Troubleshooting
 
-### 1) 镜像拉取失败
+### 1) Image Pull Fails
 
-- 检查镜像名是否正确
-- 检查服务器是否能访问 Docker Hub
-- 测试命令：`docker pull b8l8u8e8/siyuan-share-web:latest`
+- Check that the image name is correct
+- Check that the server can reach Docker Hub
+- Test with: `docker pull b8l8u8e8/siyuan-share-web:latest`
 
-### 2) 端口冲突
+### 2) Port Conflict
 
-如果 `38080` 已占用，把启动命令里的 `-p 38080:80` 改成其他端口，例如 `-p 39180:80`。
+If port `38080` is already in use, change `-p 38080:80` in the run command to another port, e.g. `-p 39180:80`.
 
-### 3) 目录权限问题
+### 3) Directory Permission Issues
 
 ```bash
 sudo chown -R $(id -u):$(id -g) ~/siyuan-share/php-site/storage ~/siyuan-share/php-site/uploads
 chmod -R 775 ~/siyuan-share/php-site/storage ~/siyuan-share/php-site/uploads
 ```
 
-### 4) 健康检查异常
+### 4) Health Check Failing
 
-查看健康状态：
+View the health status:
 
 ```bash
 docker inspect siyuan-share-web --format '{{json .State.Health}}'
 ```
 
-## ❗注意事项
+## ❗ Notes
 
-1. 请务必备份 `php-site/storage`、`php-site/uploads`（若使用了 `config.php` 也要一并备份）。
-2. 删除容器前确认已使用挂载目录保存数据。
-3. 生产环境建议在前面加反向代理并配置 HTTPS。
+1. Always back up `php-site/storage` and `php-site/uploads` (and `php-site/config.php` if you use it).
+2. Make sure data is saved to mounted directories before removing the container.
+3. In production, it is recommended to add a reverse proxy and configure HTTPS.
