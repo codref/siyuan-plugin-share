@@ -4037,7 +4037,7 @@ function render_announcement_modal(array $items): string {
     }
     $html .= '</div>';
     $html .= '<div class="modal-footer">';
-    $html .= '<label class="checkbox"><input type="checkbox" data-announcement-hide> Don't show again today</label>';
+    $html .= '<label class="checkbox"><input type="checkbox" data-announcement-hide> Don\'t show again today</label>';
     $html .= '<button class="button primary" data-modal-close="1">Got it</button>';
     $html .= '</div></div></div>';
     return $html;
@@ -9112,7 +9112,7 @@ if ($path === '/login') {
             $content .= '</form>';
         }
     }
-    $content .= '<div class="auth-footer">Don't have an account? <a class="link" href="' . base_path() . '/register">Register now</a></div>';
+    $content .= '<div class="auth-footer">Don\'t have an account? <a class="link" href="' . base_path() . '/register">Register now</a></div>';
     $content .= '</div>';
     render_page('Login', $content, null, '', ['layout' => 'auth']);
 }
